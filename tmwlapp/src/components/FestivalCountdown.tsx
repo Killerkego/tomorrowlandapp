@@ -112,7 +112,7 @@ export function FestivalCountdown({ variant = 'default' }: Props) {
     return () => clearInterval(interval);
   }, []);
 
-  const containerStyle: ViewStyle[] = [styles.container, hero && styles.heroContainer];
+  const containerStyle: ViewStyle[] = [styles.container, hero ? styles.heroContainer : {}];
 
   return (
     <View style={containerStyle}>
