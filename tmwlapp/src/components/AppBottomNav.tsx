@@ -9,6 +9,8 @@ export function AppBottomNav() {
   const pathname = usePathname();
   const isHomeActive = pathname === '/' || pathname === '/index';
   const isLineupActive = pathname === '/lineup';
+  const isFavoriteActive = pathname === '/favorite';
+  const isMapActive = pathname === '/map';
 
   return (
     <View style={[styles.bottomNav, { paddingBottom: Math.max(insets.bottom, 12) }]}>
@@ -17,6 +19,12 @@ export function AppBottomNav() {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push('/lineup')}>
         <Ionicons name="musical-notes-outline" size={32} color={isLineupActive ? '#d4af37' : '#ffffff'} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/favorite')}>
+        <Ionicons name="heart-outline" size={32} color={isFavoriteActive ? '#d4af37' : '#ffffff'} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.push('/map')}>
+        <Ionicons name="map-outline" size={32} color={isMapActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
       <TouchableOpacity>
         <Ionicons name="menu-outline" size={36} color="white" />
