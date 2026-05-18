@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+
 import { FALLBACK_NEWS } from '@/data/fallbackNews';
 import type { NewsArticle } from '@/types/news';
 
@@ -114,6 +116,11 @@ async function fetchWelcomeHtml(): Promise<string> {
 }
 
 export async function fetchBelgiumNews(limit = 3): Promise<NewsArticle[]> {
+  // Browsers block cross-origin HTML fetch (CORS); native apps can load live data.
+  if (Platform.OS === 'web') {
+    return FALLBACK_NEWS.slice(0, limit);
+  }
+
   try {
     const html = await fetchWelcomeHtml();
     const fromNextData = parseNextData(html, limit);
