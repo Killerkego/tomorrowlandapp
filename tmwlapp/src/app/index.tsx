@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 
 import { FestivalCountdown } from '@/components/FestivalCountdown';
 import { NewsCard } from '@/components/NewsCard';
@@ -114,11 +115,21 @@ export default function HomeScreen() {
               )}
 
               {!newsLoading &&
-                news.map((article) => (
+                news.map((article, index) => (
                   <NewsCard
                     key={article.url}
                     article={article}
-                    onPress={() => openArticle(article.url)}
+                    onPress={() => {
+                      if (index === 0) {
+                        router.push('/ticket-guide');
+                      } else if (index === 1) {
+                        router.push('/lineup');
+                      } else if (index === 2) {
+                        router.push('/this-is-tomorrowland');
+                      } else {
+                        openArticle(article.url);
+                      }
+                    }}
                   />
                 ))}
             </View>
