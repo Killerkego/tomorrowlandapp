@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 
 export function AppHeader() {
@@ -11,7 +11,7 @@ export function AppHeader() {
   return (
     <View style={styles.heroHeader}>
       <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
-        <MaterialCommunityIcons name="web" size={34} color={isContactActive ? '#d4af37' : '#ffffff'} />
+        <Ionicons name="information-circle-outline" size={36} color={isContactActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
 
       <View style={styles.headerCenter}>
