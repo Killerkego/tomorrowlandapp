@@ -21,13 +21,45 @@ const MUTED = 'rgba(255,255,255,0.75)';
 const BORDER = 'rgba(255,255,255,0.12)';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-// ── Carousel images ───────────────────────────────────────────────────────
 const CAROUSEL_IMAGES = [
   require('../../assets/images/what_is_tomorowland_1.jpg'),
   require('../../assets/images/what_is_tomorowland_2.jpg'),
   require('../../assets/images/what_is_tomorowland_3.jpg'),
   require('../../assets/images/what_is_tomorowland_4.jpg'),
   require('../../assets/images/what_is_tomorowland_5.jpg'),
+];
+
+const DREAMVILLE_IMAGES = [
+  require('../../assets/images/DreamVille_1.jpg'),
+  require('../../assets/images/DreamVille_2.jpg'),
+  require('../../assets/images/DreamVille_3.jpg'),
+  require('../../assets/images/DreamVille_4.jpg'),
+  require('../../assets/images/DreamVille_5.jpg'),
+  require('../../assets/images/DreamVille_6.jpg'),
+];
+
+const GLOBAL_JOURNEY_IMAGES = [
+  require('../../assets/images/Global_Journey_1.jpg'),
+  require('../../assets/images/Global_Journey_2.jpg'),
+  require('../../assets/images/Global_Journey_3.jpg'),
+  require('../../assets/images/Global_Journey_4.jpg'),
+  require('../../assets/images/Global_Journey_5.jpg'),
+];
+
+const WINTER_IMAGES = [
+  require('../../assets/images/Winter_1.jpg'),
+  require('../../assets/images/Winter_2.jpg'),
+  require('../../assets/images/Winter_3.jpg'),
+  require('../../assets/images/Winter_4.jpg'),
+  require('../../assets/images/Winter_5.jpg'),
+];
+
+const BRASIL_IMAGES = [
+  require('../../assets/images/Brasil_1.jpg'),
+  require('../../assets/images/Brasil_2.jpg'),
+  require('../../assets/images/Brasil_3.jpg'),
+  require('../../assets/images/Brasil_4.jpg'),
+  require('../../assets/images/Brasil_5.jpg'),
 ];
 
 export default function ThisIsTomorrowlandScreen() {
@@ -42,9 +74,6 @@ export default function ThisIsTomorrowlandScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* ══════════════════════════════════════════════════════════════
-            HERO — "This is Tomorrowland"
-        ══════════════════════════════════════════════════════════════ */}
         <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
           <Image
             source={require('../../assets/images/this-is-tmwl-hero.webp')}
@@ -57,8 +86,7 @@ export default function ThisIsTomorrowlandScreen() {
             style={StyleSheet.absoluteFillObject}
           />
 
-          {/* Transparent overlay header — absolutely pinned to the top */}
-          <View style={[styles.overlayHeader, { top: 0 }]}>
+          <View style={[styles.overlayHeader, { top: insets.top }]}>
             <TouchableOpacity style={styles.headerSide} onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={28} color={WHITE} />
             </TouchableOpacity>
@@ -81,22 +109,15 @@ export default function ThisIsTomorrowlandScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* Hero text — bottom of hero */}
           <View style={styles.heroContent}>
             <Text style={styles.heroBreadcrumb}>Welcome</Text>
             <Text style={styles.heroTitle}>This is Tomorrowland</Text>
           </View>
         </View>
 
-        {/* ══════════════════════════════════════════════════════════════
-            BODY
-        ══════════════════════════════════════════════════════════════ */}
         <View style={styles.body}>
+          <ImageSlideshow images={CAROUSEL_IMAGES} />
 
-          {/* ── Block 1: Carousel slideshow ── */}
-          <ImageSlideshow />
-
-          {/* ── Block 1 text: What is Tomorrowland? ── */}
           <View style={styles.slideshowText}>
             <Text style={typo.h3}>What is Tomorrowland?</Text>
             <Text style={typo.p}>
@@ -106,43 +127,61 @@ export default function ThisIsTomorrowlandScreen() {
 
           <View style={styles.sectionDivider} />
 
-          {/* ── Block 2: DreamVille slideshow + text ── */}
-          <MediaText
-            image={require('../../assets/images/this-is-tmwl-dreamville.webp')}
-            imageOnLeft={true}
-            title="DreamVille"
-            body="A true city within the festival, DreamVille is the camping experience at Tomorrowland. Located next to the festival grounds, DreamVille offers various camping categories ranging from comfortable tents to luxury apartments. DreamVille guests enjoy exclusive access to the festival, unique amenities, and a community of like-minded music lovers from around the globe."
-          />
+          <ImageSlideshow images={DREAMVILLE_IMAGES} />
+
+          <View style={styles.slideshowText}>
+            <Text style={typo.h3}>What is DreamVille?</Text>
+            <Text style={typo.p}>
+              DreamVille, Tomorrowland’s official campsite located right next to the festival grounds, is a vibrant city that welcomes tens of thousands of festival visitors after an exuberant day at Tomorrowland.
+            </Text>
+            <Text style={typo.p}>
+              DreamVille offers a unique camping experience with a wide range of accommodations, so everyone can find a place to fall in love with.
+            </Text>
+          </View>
 
           <View style={styles.sectionDivider} />
 
-          {/* ── Block 3: Global Journey ── */}
-          <MediaText
-            image={require('../../assets/images/this-is-tmwl-festival.webp')}
-            imageOnLeft={false}
-            title="Global Journey"
-            body="Tomorrowland's Global Journey Travel Packages are the ultimate all-in experience. Travel from your home country in a group of fellow festival-goers and arrive at Tomorrowland in full comfort. The packages include a full festival pass, DreamVille accommodation or hotel stay, and return transportation — all perfectly organized so you can focus on enjoying the magic."
-          />
+          <ImageSlideshow images={GLOBAL_JOURNEY_IMAGES} />
+
+          <View style={styles.slideshowText}>
+            <Text style={typo.h3}>What is Global Journey?</Text>
+            <Text style={typo.p}>
+              Thanks to Global Journey, Tomorrowland's official travel program, people from every corner of the globe can travel all united in an all-in travel experience to Tomorrowland by plane, train, or bus from cities all over the world. Global Journey Travel Packages offer visitors a carefree all-in experience that combines the festival with both transport and hotel or camping stay, covering your trip from the moment you leave home and guiding you straight to the magical gates of Tomorrowland.
+            </Text>
+            <Text style={typo.p}>
+              Every package includes a Tomorrowland Full Madness ticket and shuttle transport to and from the festival – making it the easiest way to travel to Tomorrowland.
+            </Text>
+          </View>
 
           <View style={styles.sectionDivider} />
 
-          {/* ── Block 4: Tomorrowland Winter ── */}
-          <MediaText
-            image={require('../../assets/images/this-is-tmwl-hero.webp')}
-            imageOnLeft={true}
-            title="Tomorrowland Winter"
-            body="Tomorrowland Winter takes place in the French Alps in Alpe d'Huez. The world's biggest electronic music festival meets the world's best ski resort for an unforgettable experience combining skiing, snowboarding, and world-class electronic music in a breathtaking alpine setting."
-          />
+          <ImageSlideshow images={WINTER_IMAGES} />
+
+          <View style={styles.slideshowText}>
+            <Text style={typo.preTitle}>TOMORROWLAND AROUND THE WORLD</Text>
+            <Text style={typo.h3}>Tomorrowland Winter</Text>
+            <Text style={typo.p}>
+              In March 2019, the first edition of Tomorrowland Winter was organized in the breathtaking ski resort of Alpe d'Huez in France. Taking place annually in March ever since, festivalgoers unite for a week-long winter festival adventure high up in the beautiful French mountains, filled with snow, skiing, snowboarding, and the finest electronic music.
+            </Text>
+            <Text style={typo.p}>
+              Each year, more than 150 of the world's best electronic artists perform across a collection of magnificent indoor and outdoor stages in the ski resort and on the mountains, boasting spectacular views of Alpe d'Huez and the surrounding mountains.
+            </Text>
+          </View>
 
           <View style={styles.sectionDivider} />
 
-          {/* ── Block 5: Tomorrowland Brasil ── */}
-          <MediaText
-            image={require('../../assets/images/this-is-tmwl-dreamville.webp')}
-            imageOnLeft={false}
-            title="Tomorrowland Brasil"
-            body="Tomorrowland Brasil brings the magic of Tomorrowland to South America. Set in the beautiful nature of Itu, São Paulo, the festival welcomes People of Tomorrow from across the continent and the world, delivering the same immersive, world-class production that defines every Tomorrowland event."
-          />
+          <ImageSlideshow images={BRASIL_IMAGES} />
+
+          <View style={styles.slideshowText}>
+            <Text style={typo.preTitle}>TOMORROWLAND AROUND THE WORLD</Text>
+            <Text style={typo.h3}>Tomorrowland Brasil</Text>
+            <Text style={typo.p}>
+              The first two festival editions of Tomorrowland Brasil took place in 2015 and 2016 in the beautiful festival area of Parque Maeda in in Itu, São Paulo.
+            </Text>
+            <Text style={typo.p}>
+              After years of dreaming of a return, Tomorrowland finally headed back to Brazil in 2023, becoming a yearly highlight once again. Offering the ultimate escape from the city during three days of bliss in October, People of Tomorrow from around the world are treated to breathtaking performances by more than 150 of the world's finest electronic artists across 6 mesmerizing stages in the lush and green scenery of Parque Maeda.
+            </Text>
+          </View>
 
           <View style={{ height: 40 }} />
         </View>
@@ -153,59 +192,30 @@ export default function ThisIsTomorrowlandScreen() {
   );
 }
 
-// ─── Helper components ────────────────────────────────────────────────────────
-
-function MediaText({
-  image,
-  imageOnLeft,
-  title,
-  body,
-}: {
-  image: any;
-  imageOnLeft: boolean;
-  title: string | null;
-  body: string;
-}) {
-  return (
-    <View style={styles.mediaText}>
-      <View style={styles.mediaImageContainer}>
-        <Image source={image} style={styles.mediaImage} contentFit="cover" />
-      </View>
-      <View style={styles.mediaBody}>
-        {title && <Text style={typo.h3}>{title}</Text>}
-        <Text style={typo.p}>{body}</Text>
-      </View>
-    </View>
-  );
-}
-
-// ── ImageSlideshow — index-based (works reliably inside ScrollView) ───────────
-function ImageSlideshow() {
+function ImageSlideshow({ images }: { images: any[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const total = CAROUSEL_IMAGES.length;
+  const total = images.length;
 
   const prev = () => setActiveIndex(i => Math.max(0, i - 1));
   const next = () => setActiveIndex(i => Math.min(total - 1, i + 1));
 
   return (
     <View style={ss.slideshowWrapper}>
-      {/* Current image only — instant swap, no nested scroll conflict */}
       <View style={ss.slide}>
         <RNImage
-          source={CAROUSEL_IMAGES[activeIndex]}
+          source={images[activeIndex]}
           style={ss.slideImg}
           resizeMode="cover"
         />
       </View>
 
-      {/* Controls row: prev  ──progress bar──  next */}
       <View style={ss.controls}>
         <TouchableOpacity style={ss.navBtn} onPress={prev}>
           <Ionicons name="chevron-back" size={20} color={WHITE} />
         </TouchableOpacity>
 
         <View style={ss.progressRow}>
-          {CAROUSEL_IMAGES.map((_, i) => (
+          {images.map((_, i) => (
             <View
               key={i}
               style={[
@@ -224,15 +234,11 @@ function ImageSlideshow() {
   );
 }
 
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
-
 const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: BG },
   scroll: { flex: 1 },
   scrollContent: { flexGrow: 1 },
 
-  // ── Hero ──────────────────────────────────────────────────────────────────
   heroContainer: {
     minHeight: 340,
     backgroundColor: BG,
@@ -280,11 +286,11 @@ const styles = StyleSheet.create({
   },
   heroBreadcrumb: {
     color: WHITE,
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: '700',
-    letterSpacing: 2,
+    letterSpacing: 3,
     textTransform: 'uppercase',
-    opacity: 0.7,
+    opacity: 0.8,
   },
   heroTitle: {
     color: WHITE,
@@ -294,7 +300,6 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
 
-  // ── Body ──────────────────────────────────────────────────────────────────
   body: {
     backgroundColor: BG,
     paddingHorizontal: 20,
@@ -306,32 +311,22 @@ const styles = StyleSheet.create({
     marginVertical: 32,
   },
 
-  // ── Media text ────────────────────────────────────────────────────────────
-  mediaText: {
-    gap: 20,
-  },
-  mediaImageContainer: {
-    width: '100%',
-    aspectRatio: 16 / 9,
-    borderRadius: 12,
-    overflow: 'hidden',
-    backgroundColor: '#111',
-  },
-  mediaImage: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  mediaBody: {
-    gap: 12,
-  },
   slideshowText: {
     marginTop: 20,
     gap: 12,
   },
-
 });
 
-// ─── Typography ───────────────────────────────────────────────────────────────
 const typo = StyleSheet.create({
+  preTitle: {
+    color: WHITE,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    opacity: 0.5,
+    marginBottom: -4,
+  },
   h3: {
     color: WHITE,
     fontSize: 24,
@@ -345,7 +340,6 @@ const typo = StyleSheet.create({
   },
 });
 
-// ─── Slideshow styles — matches website carousel exactly ──────────────────────
 const ACCENT = '#c8417a';
 const SLIDE_WIDTH = SCREEN_WIDTH - 40;
 
@@ -364,14 +358,12 @@ const ss = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  // Controls row below the image
   controls: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 16,
     gap: 12,
   },
-  // Circular nav button — dark semi-transparent, border
   navBtn: {
     width: 44,
     height: 44,
@@ -382,21 +374,18 @@ const ss = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // Segmented progress row
   progressRow: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
   },
-  // Individual segment — dim by default
   progressSegment: {
     flex: 1,
     height: 3,
     borderRadius: 2,
     backgroundColor: 'rgba(255,255,255,0.2)',
   },
-  // Active segment — pink accent
   progressSegmentActive: {
     backgroundColor: ACCENT,
   },

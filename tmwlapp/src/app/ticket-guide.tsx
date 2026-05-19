@@ -14,10 +14,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 
-// ─── Exact Tomorrowland Belgium website colours ──────────────────────────────
-const BG = '#000000';           // --background (hsl 0,0%,0%)
-const WHITE = '#ffffff';         // --font-color-primary on dark bg
-const MUTED = 'rgba(255,255,255,0.75)'; // body text on dark bg
+const BG = '#000000';
+const WHITE = '#ffffff';
+const MUTED = 'rgba(255,255,255,0.75)';
 const BORDER = 'rgba(255,255,255,0.12)';
 
 export default function TicketGuideScreen() {
@@ -27,27 +26,17 @@ export default function TicketGuideScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={[]}>
-
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        {/* ══════════════════════════════════════════════════════════════════
-            HERO  —  same layout as website:
-            full-width image (opacity 0.8) + gradient overlay fading to black,
-            text centred over the top half
-        ══════════════════════════════════════════════════════════════════ */}
         <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
-          {/* background image at 80 % opacity */}
           <Image
             source={require('../../assets/images/sales-info-hero.webp')}
             style={styles.heroBgImage}
             contentFit="cover"
           />
-          {/* gradient: transparent → black — matches website CSS exactly:
-            linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 30%,
-            rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.7) 70%, #000 100%) */}
           <LinearGradient
             colors={[
               'transparent',
@@ -60,14 +49,11 @@ export default function TicketGuideScreen() {
             style={StyleSheet.absoluteFillObject}
           />
 
-          {/* ── Transparent overlay header — matches AppHeader layout ── */}
           <View style={styles.overlayHeader}>
-            {/* Left: back chevron */}
             <TouchableOpacity style={styles.headerSide} onPress={() => router.back()}>
               <Ionicons name="chevron-back" size={28} color={WHITE} />
             </TouchableOpacity>
 
-            {/* Center: Tomorrowland logo (absolute so it doesn't push sides) */}
             <View style={styles.headerCenter} pointerEvents="none">
               <RNImage
                 source={require('../../assets/images/tmwl_logo.png')}
@@ -76,7 +62,6 @@ export default function TicketGuideScreen() {
               />
             </View>
 
-            {/* Right: profile icon */}
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
               onPress={() => router.push('/user')}
@@ -89,7 +74,6 @@ export default function TicketGuideScreen() {
             </TouchableOpacity>
           </View>
 
-          {/* centred text content */}
           <View style={styles.heroContent}>
             <Text style={styles.heroBreadcrumb}>Sales Info</Text>
             <Text style={styles.heroTitle}>
@@ -102,23 +86,9 @@ export default function TicketGuideScreen() {
           </View>
         </View>
 
-        {/* ══════════════════════════════════════════════════════════════════
-            BODY  —  black background, website typography
-        ══════════════════════════════════════════════════════════════════ */}
         <View style={styles.body}>
-
-          {/* ── Page heading ── */}
           <H2>Order Process</H2>
 
-          {/* ── Section tabs ── */}
-          <View style={styles.anchorRow}>
-            <AnchorPill label="Global Journey Travel Packages" />
-            <AnchorPill label="Tomorrowland Passes & DreamVille Packages" />
-          </View>
-
-          {/* ─────────────────────────────────────────────────────────── */}
-          {/* SECTION: Tomorrowland Passes & DreamVille                   */}
-          {/* ─────────────────────────────────────────────────────────── */}
           <View style={styles.divider} />
 
           <StepBlock step="STEP 1: PRE-REGISTRATION">
@@ -178,9 +148,6 @@ export default function TicketGuideScreen() {
             ]} />
           </StepBlock>
 
-          {/* ─────────────────────────────────────────────────────────── */}
-          {/* SECTION: Global Journey Travel Packages                     */}
-          {/* ─────────────────────────────────────────────────────────── */}
           <View style={styles.sectionDivider} />
           <H3>Global Journey Travel Packages</H3>
 
@@ -268,8 +235,6 @@ export default function TicketGuideScreen() {
   );
 }
 
-// ─── Mini components matching website typography ──────────────────────────────
-
 function H2({ children }: { children: React.ReactNode }) {
   return <Text style={typo.h2}>{children}</Text>;
 }
@@ -314,16 +279,12 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: BG,
   },
-  // ── Transparent overlay header ────────────────────────────────────────────
   overlayHeader: {
-    // Matches AppHeader: height 56, row, space-between, paddingH 20
     height: 56,
     flexDirection: 'row',
     alignItems: 'center',
@@ -353,9 +314,7 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { flexGrow: 1 },
 
-  // ── Hero ──────────────────────────────────────────────────────────────────
   heroContainer: {
-    // The website hero is tall: image fills, text centred
     minHeight: 340,
     backgroundColor: BG,
     overflow: 'hidden',
@@ -363,7 +322,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   heroBgImage: {
-    // absolute fill, 80% opacity — matches website "opacity:.8"
     ...StyleSheet.absoluteFillObject,
     opacity: 0.8,
   },
@@ -384,7 +342,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   heroTitle: {
-    // --typography-heading-1: 48px on desktop, ~32px on mobile
     color: WHITE,
     fontSize: 32,
     fontWeight: '700',
@@ -394,7 +351,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   heroSubtitle: {
-    // heading-4: 12–14px, 700, letterSpacing 3px, uppercase
     color: WHITE,
     fontSize: 12,
     fontWeight: '700',
@@ -412,7 +368,6 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
 
-  // ── Body ──────────────────────────────────────────────────────────────────
   body: {
     backgroundColor: BG,
     paddingHorizontal: 20,
@@ -452,7 +407,6 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
 
-  // ── Step block ────────────────────────────────────────────────────────────
   stepBlock: {
     marginBottom: 28,
   },
@@ -461,7 +415,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 
-  // ── Bullet list ───────────────────────────────────────────────────────────
   bulletList: {
     gap: 12,
     marginTop: 4,
@@ -479,9 +432,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// ─── Typography — mirrors website CSS exactly ─────────────────────────────────
 const typo = StyleSheet.create({
-  // h2 { font-size:1.5rem=24px → 32px on 768px; font-weight:700; margin-block:1rem }
   h2: {
     color: WHITE,
     fontSize: 24,
@@ -490,7 +441,6 @@ const typo = StyleSheet.create({
     marginTop: 0,
     letterSpacing: 0,
   },
-  // h3 { font-size:24px; font-weight:700 }
   h3: {
     color: WHITE,
     fontSize: 24,
@@ -498,7 +448,6 @@ const typo = StyleSheet.create({
     marginBottom: 20,
     marginTop: 0,
   },
-  // h4 (step title) { font-size:14px; font-weight:700; letter-spacing:3px; text-transform:uppercase }
   stepTitle: {
     color: WHITE,
     fontSize: 14,
@@ -506,21 +455,18 @@ const typo = StyleSheet.create({
     letterSpacing: 3,
     textTransform: 'uppercase',
   },
-  // p { font-size:16px; line-height:1.5rem=24px }
   p: {
     color: MUTED,
     fontSize: 16,
     lineHeight: 24,
     flexShrink: 1,
   },
-  // strong { font-weight:700 }
   strong: {
     color: WHITE,
     fontWeight: '700',
     fontSize: 16,
     lineHeight: 24,
   },
-  // em { font-style: italic }
   em: {
     color: MUTED,
     fontStyle: 'italic',
