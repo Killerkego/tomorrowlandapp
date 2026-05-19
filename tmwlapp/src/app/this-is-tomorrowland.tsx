@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
@@ -19,7 +18,6 @@ const BG = '#000000';
 const WHITE = '#ffffff';
 const MUTED = 'rgba(255,255,255,0.75)';
 const BORDER = 'rgba(255,255,255,0.12)';
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const CAROUSEL_IMAGES = [
   require('../../assets/images/what_is_tomorowland_1.jpg'),
@@ -341,14 +339,13 @@ const typo = StyleSheet.create({
 });
 
 const ACCENT = '#c8417a';
-const SLIDE_WIDTH = SCREEN_WIDTH - 40;
 
 const ss = StyleSheet.create({
   slideshowWrapper: {
     width: '100%',
   },
   slide: {
-    width: SLIDE_WIDTH,
+    width: '100%',
     aspectRatio: 16 / 9,
     borderRadius: 16,
     overflow: 'hidden',
