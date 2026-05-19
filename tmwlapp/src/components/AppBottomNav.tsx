@@ -11,6 +11,7 @@ export function AppBottomNav() {
   const isLineupActive = pathname === '/lineup';
   const isFavoriteActive = pathname === '/favorite';
   const isMapActive = pathname === '/map';
+  const isMenuActive = pathname === '/menu';
 
   return (
     <View style={[styles.bottomNav, { paddingBottom: Math.max(insets.bottom, 12) }]}>
@@ -26,8 +27,8 @@ export function AppBottomNav() {
       <TouchableOpacity onPress={() => router.push('/map')}>
         <Ionicons name="map-outline" size={32} color={isMapActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Ionicons name="menu-outline" size={36} color="white" />
+      <TouchableOpacity onPress={() => router.push('/menu')}>
+        <Ionicons name="menu-outline" size={36} color={isMenuActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
     </View>
   );
