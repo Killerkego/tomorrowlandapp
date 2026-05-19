@@ -334,12 +334,12 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   heroBreadcrumb: {
-    color: WHITE,
+    color: '#d4af37',
     fontSize: 12,
     fontWeight: '700',
     letterSpacing: 2,
     textTransform: 'uppercase',
-    opacity: 0.7,
+    opacity: 0.9,
   },
   heroTitle: {
     color: WHITE,

@@ -14,7 +14,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
-import { styles, typo, BG, WHITE, MUTED, GOLD, ACCENT } from './contact.styles';
+import { styles, typo, BG, WHITE, MUTED, GOLD, ACCENT, BORDER } from './contact.styles';
 
 type TabType = 'overview' | 'support' | 'partners';
 
@@ -122,7 +122,7 @@ export default function ContactScreen() {
 
           {/* HERO CONTENT */}
           <View style={styles.heroContent}>
-            <Text style={styles.heroBreadcrumb}>✦ People of Tomorrow ✦</Text>
+            <Text style={styles.heroBreadcrumb}>People of Tomorrow</Text>
             <Text style={styles.heroTitle}>Everything You{'\n'}Need to Know</Text>
             <Text style={styles.heroSubtitle}>
               Your complete guide to Tomorrowland — festival details, support channels, and the partners who make the magic happen.
@@ -223,6 +223,55 @@ export default function ContactScreen() {
                   <View style={styles.dataTextCol}>
                     <Text style={styles.dataLabel}>Music Genres</Text>
                     <Text style={styles.dataValue}>EDM, Techno, House, Trance, Hardstyle</Text>
+                  </View>
+                </View>
+              </View>
+
+              <View style={styles.sectionDivider} />
+
+              {/* Opening Hours Section */}
+              <Text style={typo.h3}>Opening Hours</Text>
+              <Text style={typo.p}>
+                Experience the magic from the first beat until the late-night finale.
+              </Text>
+
+              <View style={styles.dataCard}>
+                <View style={[styles.dataRow, { borderBottomWidth: 1, borderBottomColor: BORDER, paddingBottom: 12, marginBottom: 12 }]}>
+                  <View style={styles.dataIconCol}>
+                    <Ionicons name="time-outline" size={20} color={GOLD} />
+                  </View>
+                  <View style={styles.dataTextCol}>
+                    <Text style={[styles.dataLabel, { color: GOLD }]}>WEEK 1 & WEEK 2</Text>
+                  </View>
+                </View>
+
+                <View style={styles.dataRow}>
+                  <View style={styles.dataIconCol}>
+                    <Text style={{ color: MUTED, fontWeight: '700', fontSize: 12 }}>FRI</Text>
+                  </View>
+                  <View style={styles.dataTextCol}>
+                    <Text style={styles.dataLabel}>Friday</Text>
+                    <Text style={styles.dataValue}>12:00 – 01:00</Text>
+                  </View>
+                </View>
+
+                <View style={styles.dataRow}>
+                  <View style={styles.dataIconCol}>
+                    <Text style={{ color: MUTED, fontWeight: '700', fontSize: 12 }}>SAT</Text>
+                  </View>
+                  <View style={styles.dataTextCol}>
+                    <Text style={styles.dataLabel}>Saturday</Text>
+                    <Text style={styles.dataValue}>12:00 – 01:00</Text>
+                  </View>
+                </View>
+
+                <View style={styles.dataRow}>
+                  <View style={styles.dataIconCol}>
+                    <Text style={{ color: MUTED, fontWeight: '700', fontSize: 12 }}>SUN</Text>
+                  </View>
+                  <View style={styles.dataTextCol}>
+                    <Text style={styles.dataLabel}>Sunday</Text>
+                    <Text style={styles.dataValue}>12:00 – 00:00</Text>
                   </View>
                 </View>
               </View>

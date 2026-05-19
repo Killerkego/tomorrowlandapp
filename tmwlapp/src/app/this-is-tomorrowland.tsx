@@ -283,12 +283,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   heroBreadcrumb: {
-    color: WHITE,
+    color: '#d4af37',
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 3,
     textTransform: 'uppercase',
-    opacity: 0.8,
+    opacity: 0.9,
   },
   heroTitle: {
     color: WHITE,
