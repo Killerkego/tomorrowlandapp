@@ -37,9 +37,20 @@ const upload = multer({
 });
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Could not connect to MongoDB', err));
+console.log('Attempting to connect to MongoDB...');
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+})
+  .then(() => console.log('Connected to MongoDB successfully'))
+  .catch(err => {
+    console.error('Could not connect to MongoDB');
+    console.error('Error details:', err);
+  });
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', dbState: mongoose.connection.readyState });
+});
 
 // User Schema
 const userSchema = new mongoose.Schema({

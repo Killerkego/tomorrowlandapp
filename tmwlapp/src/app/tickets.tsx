@@ -16,7 +16,7 @@ const TICKET_TYPES = [
     label: 'Festival Only',
     price: '€355',
     description: 'Access to Tomorrowland on Friday, Saturday and Sunday (Full Weekend).',
-    image: require('../../assets/images/this-is-tmwl-festival.webp'),
+    image: require('../../assets/images/Full_madness_pass.jpg'),
     features: ['3 Days Access', 'All Stages', 'Tomorrowland Gift'],
   },
   {
@@ -25,7 +25,7 @@ const TICKET_TYPES = [
     label: 'Camping + Festival',
     price: '€435',
     description: 'Includes a Full Madness Pass and 5 days of camping at DreamVille with all its magic.',
-    image: require('../../assets/images/DreamVille_1.jpg'),
+    image: require('../../assets/images/dreamville_ticket.jpg'),
     features: ['5 Days Camping', 'The Gathering Party', 'Marketplace Access'],
   },
   {
@@ -34,7 +34,7 @@ const TICKET_TYPES = [
     label: 'Single Day',
     price: '€125',
     description: 'Experience the magic of Tomorrowland for one incredible day of your choice.',
-    image: require('../../assets/images/Brasil_1.jpg'),
+    image: require('../../assets/images/day_pass.jpg'),
     features: ['1 Day Access', 'Friday, Sat or Sun', 'Locker Available'],
   },
 ];
@@ -52,7 +52,7 @@ export default function TicketsScreen() {
         {/* HERO SECTION */}
         <View style={styles.heroContainer}>
           <Image
-            source={require('../../assets/images/this-is-tmwl-hero.webp')}
+            source={require('../../assets/images/ticket.jpg')}
             style={styles.heroBgImage}
             contentFit="cover"
           />
