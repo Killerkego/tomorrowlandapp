@@ -11,7 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
 import { useFavorites } from '@/context/FavoritesContext';
@@ -73,6 +73,28 @@ export default function LineupScreen() {
   
   const [selectedDate, setSelectedDate] = useState(week1Dates[0]);
   const [selectedStage, setSelectedStage] = useState<string>('ALL');
+
+  const { stage: mapStage } = useLocalSearchParams<{ stage?: string }>();
+
+  // A Térkép elküldi a nevet, mi pedig összepárosítjuk a JSON-ban lévő hivatalos nevekkel
+  useEffect(() => {
+    if (mapStage) {
+      const incomingStage = mapStage.toUpperCase();
+      
+      // Párosítási logika
+      if (incomingStage === 'MAINSTAGE') {
+        setSelectedStage('MAINSTAGE');
+      } else if (incomingStage === 'FREEDOM') {
+        setSelectedStage('FREEDOM BY BUD');
+      } else if (incomingStage === 'ATMOSPHERE') {
+        setSelectedStage('ATMOSPHERE');
+      } else if (incomingStage === 'CORE STAGE') {
+        setSelectedStage('CORE');
+      } else {
+        setSelectedStage(incomingStage);
+      }
+    }
+  }, [mapStage]);
 
   // Load saved filters on focus
   useFocusEffect(
