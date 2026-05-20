@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useFavorites } from '@/context/FavoritesContext';
 import {
   Image as RNImage,
   ScrollView,
@@ -56,6 +57,7 @@ type DayData = {
 
 export default function LineupScreen() {
   const insets = useSafeAreaInsets();
+  const { toggleFavorite, isFavorite } = useFavorites();
   
   // State for selectors
   const [selectedWeek, setSelectedWeek] = useState<1 | 2>(1);
@@ -243,6 +245,7 @@ export default function LineupScreen() {
               const stageConfig = getStageConfig(artist.stage);
               const artistImgUrl = (artistImages as Record<string, string>)[artist.name];
               const imageSource = artistImgUrl ? { uri: artistImgUrl } : require('../../assets/images/lineup.jpg');
+              const isFav = isFavorite(artist.name);
 
               return (
                 <View key={`${artist.name}-${index}`} style={styles.artistCard}>
@@ -264,9 +267,24 @@ export default function LineupScreen() {
                           <Text style={[styles.stageName, { color: stageConfig.color }]}>{artist.stage}</Text>
                         </View>
                       </View>
-                      <TouchableOpacity style={{ padding: 8 }}>
-                        <Ionicons name="heart-outline" size={28} color={ACCENT} />
-                      </TouchableOpacity>
+                      <TouchableOpacity 
+                style={{ padding: 8 }}
+                onPress={() => {
+                  toggleFavorite({
+                    name: artist.name,
+                    stage: artist.stage,
+                    start: artist.start,
+                    end: artist.end,
+                    date: dayData.label 
+                  });
+                }}
+              >
+                <Ionicons 
+                  name={isFav ? "heart" : "heart-outline"} 
+                  size={28} 
+                  color={ACCENT} 
+                />
+              </TouchableOpacity>
                     </View>
                   </View>
                 </View>
