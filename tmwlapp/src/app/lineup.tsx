@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   Image as RNImage,
   ScrollView,
@@ -11,7 +11,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
 import { useFavorites } from '@/context/FavoritesContext';
@@ -74,23 +74,25 @@ export default function LineupScreen() {
   const [selectedDate, setSelectedDate] = useState(week1Dates[0]);
   const [selectedStage, setSelectedStage] = useState<string>('ALL');
 
-  // Load saved filters on mount
-  useEffect(() => {
-    const loadFilters = async () => {
-      try {
-        const savedWeek = await AsyncStorage.getItem('lineup_week');
-        const savedDate = await AsyncStorage.getItem('lineup_date');
-        const savedStage = await AsyncStorage.getItem('lineup_stage');
-        
-        if (savedWeek) setSelectedWeek(parseInt(savedWeek) as 1 | 2);
-        if (savedDate) setSelectedDate(savedDate);
-        if (savedStage) setSelectedStage(savedStage);
-      } catch (e) {
-        console.error('Failed to load lineup filters', e);
-      }
-    };
-    loadFilters();
-  }, []);
+  // Load saved filters on focus
+  useFocusEffect(
+    useCallback(() => {
+      const loadFilters = async () => {
+        try {
+          const savedWeek = await AsyncStorage.getItem('lineup_week');
+          const savedDate = await AsyncStorage.getItem('lineup_date');
+          const savedStage = await AsyncStorage.getItem('lineup_stage');
+          
+          if (savedWeek) setSelectedWeek(parseInt(savedWeek) as 1 | 2);
+          if (savedDate) setSelectedDate(savedDate);
+          if (savedStage) setSelectedStage(savedStage);
+        } catch (e) {
+          console.error('Failed to load lineup filters', e);
+        }
+      };
+      loadFilters();
+    }, [])
+  );
 
   const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
 
