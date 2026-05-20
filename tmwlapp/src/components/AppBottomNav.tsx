@@ -87,6 +87,11 @@ export function AppBottomNav() {
         icon: "information-circle-outline",
         path: "/contact",
       },
+      {
+        label: "Account",
+        icon: "person-outline",
+        path: "/login",
+      },
     ],
   ];
 
@@ -172,7 +177,14 @@ export function AppBottomNav() {
               {menuGroups.map((group, groupIndex) => (
                 <View key={`group-${groupIndex}`}>
                   {group.map((item, itemIndex) => {
-                    const isActive = pathname === item.path;
+                    // Speciális kezelés az Account (Profil) oldalhoz
+                    const isAccountItem = item.label === "Account";
+                    const isActive = isAccountItem 
+                      ? (pathname === "/login" || pathname === "/user")
+                      : pathname === item.path;
+                    
+                    const destinationPath = isAccountItem && pathname === "/user" ? "/user" : item.path;
+
                     return (
                       <TouchableOpacity
                         key={item.path}
@@ -180,7 +192,7 @@ export function AppBottomNav() {
                           styles.menuItem,
                           isActive && styles.menuItemActive,
                         ]}
-                        onPress={() => handleNavigate(item.path)}
+                        onPress={() => handleNavigate(destinationPath)}
                       >
                         <Ionicons
                           name={item.icon as any}

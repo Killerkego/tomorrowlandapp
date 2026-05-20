@@ -6,7 +6,17 @@ import { router, usePathname } from 'expo-router';
 export function AppHeader() {
   const pathname = usePathname();
   const isContactActive = pathname === '/contact';
-  const isUserActive = pathname === '/user';
+  const isUserActive = pathname === '/login' || pathname === '/user';
+
+  const handleUserPress = () => {
+    // Ha már a profil oldalon vagyunk, maradjunk ott, egyébként menjünk a login/user-re
+    // (A LoginScreen-en lévő automatikus ellenőrzés majd átviszi a /user-re ha be van lépve)
+    if (pathname === '/user') {
+      router.push('/user');
+    } else {
+      router.push('/login');
+    }
+  };
 
   return (
     <View style={styles.heroHeader}>
@@ -22,7 +32,7 @@ export function AppHeader() {
         />
       </View>
 
-      <TouchableOpacity style={[styles.headerSide, styles.headerSideRight]} onPress={() => router.push('/user')}>
+      <TouchableOpacity style={[styles.headerSide, styles.headerSideRight]} onPress={handleUserPress}>
         <Ionicons name="person-circle-outline" size={36} color={isUserActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
     </View>
@@ -55,5 +65,6 @@ const styles = StyleSheet.create({
   centerLogo: {
     width: 40,
     height: 40,
+    tintColor: '#ffffff',
   },
 });

@@ -146,7 +146,7 @@ export default function LineupScreen() {
             </View>
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
-              onPress={() => router.push('/user')}
+              onPress={() => router.push('/login')}
             >
               <Ionicons
                 name="person-circle-outline"

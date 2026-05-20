@@ -21,7 +21,7 @@ type TabType = 'overview' | 'support' | 'partners';
 export default function ContactScreen() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const isUserActive = pathname === '/user';
+  const isUserActive = pathname === '/login';
 
   const [activeTab, setActiveTab] = useState<TabType>('overview');
 
@@ -110,7 +110,7 @@ export default function ContactScreen() {
             </View>
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
-              onPress={() => router.push('/user')}
+              onPress={() => router.push('/login')}
             >
               <Ionicons
                 name="person-circle-outline"
