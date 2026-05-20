@@ -1,0 +1,1288 @@
+{
+  "event": {
+    "name": "Tomorrowland Belgium 2026",
+    "location": "Boom, Belgium",
+    "dates": [
+      {
+        "start": "2026-07-17",
+        "end": "2026-07-19",
+        "full_format": "Friday July 17 - Sunday July 19, 2026"
+      },
+      {
+        "start": "2026-07-24",
+        "end": "2026-07-26",
+        "full_format": "Friday July 24 - Sunday July 26, 2026"
+      }
+    ],
+    "status": "Sold Out",
+    "note": "More names will be announced"
+  },
+  "lineup": {
+    "2026-07-17": {
+      "date": "2026-07-17",
+      "day": "Friday",
+      "label": "FRI 17 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Bassjackers", "start": "12:00", "end": "13:00" },
+            { "name": "Chainsmokers", "start": "13:00", "end": "14:00" },
+            { "name": "Disco Lines", "start": "14:00", "end": "15:00" },
+            { "name": "Henri PFR", "start": "15:00", "end": "16:00" },
+            { "name": "Marlon Hoffstadt", "start": "16:00", "end": "17:00" },
+            { "name": "Martin Garrix", "start": "17:00", "end": "18:00" },
+            { "name": "MATTN", "start": "18:00", "end": "19:00" },
+            { "name": "MC STRETCH", "start": "19:00", "end": "20:00" },
+            { "name": "NERVO", "start": "20:00", "end": "21:30" },
+            { "name": "Novah", "start": "21:30", "end": "23:00" },
+            { "name": "Sebastian Ingrosso", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "Holy Priest", "start": "13:00", "end": "15:00" },
+            { "name": "Max Styler", "start": "15:00", "end": "17:00" },
+            { "name": "Mind Against", "start": "17:00", "end": "19:00" },
+            { "name": "Miss Monique", "start": "19:00", "end": "21:00" },
+            { "name": "Rose Ringed", "start": "21:00", "end": "23:00" },
+            { "name": "Semsei", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "RAMPAGE",
+          "artists": [
+            { "name": "A Little Sound", "start": "12:00", "end": "13:00" },
+            { "name": "ÆON:MODE", "start": "13:00", "end": "14:00" },
+            { "name": "Alison Wonderland", "start": "14:00", "end": "15:00" },
+            { "name": "Anton Invicta", "start": "15:00", "end": "16:00" },
+            { "name": "Blooom b2b Sudley", "start": "16:00", "end": "17:00" },
+            { "name": "Camo & Krooked", "start": "17:00", "end": "18:00" },
+            { "name": "Kanine", "start": "18:00", "end": "19:15" },
+            { "name": "MAE.LIEN", "start": "19:15", "end": "20:30" },
+            { "name": "Murdock", "start": "20:30", "end": "22:00" },
+            { "name": "Primate", "start": "22:00", "end": "23:30" },
+            { "name": "STOOG3S", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": "FLAVASOUL",
+          "artists": [
+            { "name": "Audiowave", "start": "12:00", "end": "13:00" },
+            { "name": "Flavour Drop", "start": "13:00", "end": "14:00" },
+            { "name": "High Grade Sound", "start": "14:00", "end": "15:00" },
+            { "name": "MC RIM", "start": "15:00", "end": "16:00" },
+            { "name": "Milinguap", "start": "16:00", "end": "17:00" },
+            { "name": "Monsieur", "start": "17:00", "end": "18:00" },
+            { "name": "Nona Van Braeckel", "start": "18:00", "end": "19:15" },
+            { "name": "Rick & James 80's Party", "start": "19:15", "end": "20:30" },
+            { "name": "Soul Shakers", "start": "20:30", "end": "22:00" },
+            { "name": "Tola OG", "start": "22:00", "end": "23:30" },
+            { "name": "Unregular", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": "FOOTWORXX",
+          "artists": [
+            { "name": "DITHER", "start": "12:00", "end": "13:00" },
+            { "name": "elMefti", "start": "13:00", "end": "14:00" },
+            { "name": "GPF b2b DR DONK", "start": "14:00", "end": "15:00" },
+            { "name": "LOLALITA b2b BRENNT", "start": "15:00", "end": "16:00" },
+            { "name": "LUNAKORPZ", "start": "16:00", "end": "17:00" },
+            { "name": "MIND COMPRESSOR", "start": "17:00", "end": "18:00" },
+            { "name": "RAYZEN", "start": "18:00", "end": "19:15" },
+            { "name": "Sacha Malice", "start": "19:15", "end": "20:30" },
+            { "name": "SANDY WAREZ b2b REVENJA", "start": "20:30", "end": "22:00" },
+            { "name": "VERNEX b2b NRKi", "start": "22:00", "end": "23:30" },
+            { "name": "VON BIKRÄV", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "Ben Malone", "start": "12:00", "end": "14:30" },
+            { "name": "CVNTS", "start": "14:30", "end": "17:00" },
+            { "name": "Junkie Kid", "start": "17:00", "end": "19:30" },
+            { "name": "Nastya Dikikh", "start": "19:30", "end": "22:00" },
+            { "name": "ZUKE", "start": "22:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": "PSYGATHERING",
+          "artists": [
+            { "name": "Cyborg-18", "start": "12:00", "end": "13:00" },
+            { "name": "Fabio Fusco", "start": "13:00", "end": "14:00" },
+            { "name": "Firaga", "start": "14:00", "end": "15:00" },
+            { "name": "Hi Profile", "start": "15:00", "end": "16:00" },
+            { "name": "John OO Fleming", "start": "16:00", "end": "17:00" },
+            { "name": "Mad Maxx", "start": "17:00", "end": "18:00" },
+            { "name": "Neelix", "start": "18:00", "end": "19:15" },
+            { "name": "Omiki", "start": "19:15", "end": "20:30" },
+            { "name": "Somnia", "start": "20:30", "end": "22:00" },
+            { "name": "Trip-Tamine", "start": "22:00", "end": "23:30" },
+            { "name": "Yannick Thiry", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": null,
+          "artists": [
+            { "name": "AWEN", "start": "13:00", "end": "14:30" },
+            { "name": "Da Capo b2b Caiiro b2b Enoo Napa", "start": "14:30", "end": "16:00" },
+            { "name": "Danni Gato", "start": "16:00", "end": "17:30" },
+            { "name": "Isa Roos", "start": "17:30", "end": "19:00" },
+            { "name": "Lerato Tsotetsi", "start": "19:00", "end": "20:30" },
+            { "name": "Rosey Gold", "start": "20:30", "end": "22:00" },
+            { "name": "Thakzin", "start": "22:00", "end": "23:30" },
+            { "name": "Vanco", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": null,
+          "artists": []
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": null,
+          "artists": [
+            { "name": "Bisoux", "start": "13:00", "end": "14:30" },
+            { "name": "KUKO", "start": "14:30", "end": "16:00" },
+            { "name": "MANDY b2b NEGITIV", "start": "16:00", "end": "17:30" },
+            { "name": "Nico Moreno", "start": "17:30", "end": "19:00" },
+            { "name": "Peterblue", "start": "19:00", "end": "20:30" },
+            { "name": "ROW1", "start": "20:30", "end": "22:00" },
+            { "name": "Sara Landry", "start": "22:00", "end": "23:30" },
+            { "name": "sim0ne b2b Southstar", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Bibi Seck", "start": "13:00", "end": "15:00" },
+            { "name": "Eileen", "start": "15:00", "end": "17:00" },
+            { "name": "Kenny Montana b2b John Noseda", "start": "17:00", "end": "19:00" },
+            { "name": "Modeselektor (DJ-set)", "start": "19:00", "end": "21:00" },
+            { "name": "Sally C", "start": "21:00", "end": "23:00" },
+            { "name": "Sasha b2b Young Marco", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Eridu", "start": "13:00", "end": "17:00" },
+            { "name": "Kettama b2b Michael Bibi", "start": "17:00", "end": "21:00" },
+            { "name": "Marsolo", "start": "21:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": null,
+          "artists": [
+            { "name": "Artbat", "start": "12:00", "end": "13:00" },
+            { "name": "Da Tweekaz", "start": "13:00", "end": "14:00" },
+            { "name": "DJ Sally", "start": "14:00", "end": "15:00" },
+            { "name": "Hardwell b2b Sub Zero Project", "start": "15:00", "end": "16:00" },
+            { "name": "MagiK", "start": "16:00", "end": "17:00" },
+            { "name": "Manuals", "start": "17:00", "end": "18:00" },
+            { "name": "Mike Williams", "start": "18:00", "end": "19:00" },
+            { "name": "Nicky Romero", "start": "19:00", "end": "20:00" },
+            { "name": "Ofenbach", "start": "20:00", "end": "21:00" },
+            { "name": "R3hab", "start": "21:00", "end": "22:00" },
+            { "name": "Sam Feldt", "start": "22:00", "end": "23:00" },
+            { "name": "Tomas Grey", "start": "23:00", "end": "00:00" },
+            { "name": "Whisnu Santika", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Bosart", "start": "13:00", "end": "17:00" },
+            { "name": "Funktastix", "start": "17:00", "end": "21:00" },
+            { "name": "Rino", "start": "21:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "StadiumX", "start": "12:00", "end": "01:00" }
+          ]
+        }
+      ]
+    },
+    "2026-07-18": {
+      "date": "2026-07-18",
+      "day": "Saturday",
+      "label": "SAT 18 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Boris Brejcha", "start": "12:00", "end": "13:00" },
+            { "name": "David Guetta", "start": "13:00", "end": "14:00" },
+            { "name": "Dimitri Vegas & Like Mike", "start": "14:00", "end": "15:00" },
+            { "name": "Fisher", "start": "15:00", "end": "16:00" },
+            { "name": "HALŌ", "start": "16:00", "end": "17:00" },
+            { "name": "John Newman", "start": "17:00", "end": "18:00" },
+            { "name": "Maddix", "start": "18:00", "end": "19:00" },
+            { "name": "MC STRETCH", "start": "19:00", "end": "20:00" },
+            { "name": "Merow", "start": "20:00", "end": "21:30" },
+            { "name": "Omdat Het Kan & Average Rob", "start": "21:30", "end": "23:00" },
+            { "name": "Stephani B", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "Armin van Buuren", "start": "12:00", "end": "13:30" },
+            { "name": "Dave Lambert", "start": "13:30", "end": "15:00" },
+            { "name": "Luna & Lenthe", "start": "15:00", "end": "16:30" },
+            { "name": "Meduza", "start": "16:30", "end": "18:00" },
+            { "name": "Netsky", "start": "18:00", "end": "19:30" },
+            { "name": "Plastik Funk b2b Olympe", "start": "19:30", "end": "21:00" },
+            { "name": "Space 92", "start": "21:00", "end": "23:00" },
+            { "name": "Symphony Of Unity", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "BONZAI",
+          "artists": [
+            { "name": "Blvckprint", "start": "12:00", "end": "12:50" },
+            { "name": "Bonzai All Stars", "start": "12:50", "end": "13:40" },
+            { "name": "DJ Furax", "start": "13:40", "end": "14:30" },
+            { "name": "DJ Ghost", "start": "14:30", "end": "15:20" },
+            { "name": "Franky Kloeck", "start": "15:20", "end": "16:15" },
+            { "name": "Funkhauser", "start": "16:15", "end": "17:10" },
+            { "name": "Greg S.", "start": "17:10", "end": "18:05" },
+            { "name": "Jan Vervloet", "start": "18:05", "end": "19:00" },
+            { "name": "Jente b2b Neall", "start": "19:00", "end": "20:00" },
+            { "name": "Just-K", "start": "20:00", "end": "21:00" },
+            { "name": "MC Pyro", "start": "21:00", "end": "22:00" },
+            { "name": "Phi Phi", "start": "22:00", "end": "23:00" },
+            { "name": "Push", "start": "23:00", "end": "00:00" },
+            { "name": "X-Tof", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": "VUNZIGE DEUNTJES",
+          "artists": [
+            { "name": "Afrolosjes Soundsystem", "start": "12:00", "end": "13:00" },
+            { "name": "Ballantine & Dieux-Pére", "start": "13:00", "end": "14:00" },
+            { "name": "Encore Soundsystem", "start": "14:00", "end": "15:00" },
+            { "name": "Kurashi Soundsystem", "start": "15:00", "end": "16:00" },
+            { "name": "Lordesius & Anders", "start": "16:00", "end": "17:00" },
+            { "name": "MC Claudio", "start": "17:00", "end": "18:00" },
+            { "name": "MELVIEE", "start": "18:00", "end": "19:00" },
+            { "name": "Pretty Girls Like Trap Music Soundsystem", "start": "19:00", "end": "20:00" },
+            { "name": "Rockefellababe", "start": "20:00", "end": "21:00" },
+            { "name": "sojuju & Julian Jermain", "start": "21:00", "end": "22:00" },
+            { "name": "Steww Soundsystem", "start": "22:00", "end": "23:00" },
+            { "name": "Vunzige Deuntjes Soundsystem", "start": "23:00", "end": "00:00" },
+            { "name": "WEF", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": "ULTRA NATÉ & MONDA",
+          "artists": [
+            { "name": "A.N.I.", "start": "13:00", "end": "15:00" },
+            { "name": "Byorn", "start": "15:00", "end": "17:00" },
+            { "name": "Dexphase", "start": "17:00", "end": "19:00" },
+            { "name": "Luna Fields", "start": "19:00", "end": "21:00" },
+            { "name": "Maike Depas", "start": "21:00", "end": "23:00" },
+            { "name": "Vieze Asbak", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "Aghatixx", "start": "12:00", "end": "13:30" },
+            { "name": "Bobby & Djenko", "start": "13:30", "end": "15:00" },
+            { "name": "Brits & Boen", "start": "15:00", "end": "16:30" },
+            { "name": "Jonas van Opstal", "start": "16:30", "end": "18:00" },
+            { "name": "Los Bomberos", "start": "18:00", "end": "19:30" },
+            { "name": "Monta", "start": "19:30", "end": "21:00" },
+            { "name": "Soulcity", "start": "21:00", "end": "22:20" },
+            { "name": "The Spook", "start": "22:20", "end": "23:40" },
+            { "name": "Vitucci", "start": "23:40", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": "MONSTERCAT",
+          "artists": [
+            { "name": "Bassjackers", "start": "12:00", "end": "13:00" },
+            { "name": "Chocolate Puma", "start": "13:00", "end": "14:00" },
+            { "name": "DVBBS", "start": "14:00", "end": "15:15" },
+            { "name": "Ian Asher", "start": "15:15", "end": "16:30" },
+            { "name": "Kaaze", "start": "16:30", "end": "17:45" },
+            { "name": "Laidback Luke", "start": "17:45", "end": "19:00" },
+            { "name": "Lucas & Steve", "start": "19:00", "end": "20:30" },
+            { "name": "Marnik", "start": "20:30", "end": "22:00" },
+            { "name": "Quintino", "start": "22:00", "end": "23:30" },
+            { "name": "Steve Aoki", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": null,
+          "artists": [
+            { "name": "Arado", "start": "13:00", "end": "14:30" },
+            { "name": "Chinonegro", "start": "14:30", "end": "16:00" },
+            { "name": "Emiliano Demarco", "start": "16:00", "end": "17:30" },
+            { "name": "Hermanos Inglesos", "start": "17:30", "end": "19:00" },
+            { "name": "Idemi", "start": "19:00", "end": "20:30" },
+            { "name": "Sam Shure", "start": "20:30", "end": "22:00" },
+            { "name": "Twenty Six", "start": "22:00", "end": "23:30" },
+            { "name": "UNREAD", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": null,
+          "artists": [
+            { "name": "Block & Crown", "start": "12:00", "end": "13:30" },
+            { "name": "Diego Miranda", "start": "13:30", "end": "15:00" },
+            { "name": "Dimitri Vangelis & Wyman", "start": "15:00", "end": "16:30" },
+            { "name": "Dj Nano", "start": "16:30", "end": "18:00" },
+            { "name": "Encure b2b Honey Gee", "start": "18:00", "end": "19:30" },
+            { "name": "Joyse b2b Ryan Spicer", "start": "19:30", "end": "21:00" },
+            { "name": "Matisse & Sadko", "start": "21:00", "end": "22:20" },
+            { "name": "Will Sparks", "start": "22:20", "end": "23:40" },
+            { "name": "Yves V", "start": "23:40", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": "EXHALE",
+          "artists": [
+            { "name": "Ben Klock", "start": "13:00", "end": "14:30" },
+            { "name": "BIIA b2b Charlie Sparks", "start": "14:30", "end": "16:00" },
+            { "name": "Elli Acula", "start": "16:00", "end": "17:30" },
+            { "name": "Estella Boersma", "start": "17:30", "end": "19:00" },
+            { "name": "Indira Paganotto", "start": "19:00", "end": "20:30" },
+            { "name": "Interactive Noise", "start": "20:30", "end": "22:00" },
+            { "name": "Marhu", "start": "22:00", "end": "23:30" },
+            { "name": "Reinier Zonneveld (live)", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Antdot", "start": "12:00", "end": "13:45" },
+            { "name": "Bedouin", "start": "13:45", "end": "15:30" },
+            { "name": "Betical", "start": "15:30", "end": "17:15" },
+            { "name": "Capoon", "start": "17:15", "end": "19:00" },
+            { "name": "Curol", "start": "19:00", "end": "21:00" },
+            { "name": "Dino Lenny", "start": "21:00", "end": "23:00" },
+            { "name": "SAMM b2b Ajna", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Ben Hemsley", "start": "12:00", "end": "13:45" },
+            { "name": "Cici Daze", "start": "13:45", "end": "15:30" },
+            { "name": "DALI", "start": "15:30", "end": "17:15" },
+            { "name": "Dean Turnley", "start": "17:15", "end": "19:00" },
+            { "name": "Morten b2b Malaa", "start": "19:00", "end": "21:00" },
+            { "name": "NOSI", "start": "21:00", "end": "23:00" },
+            { "name": "Steve Angello", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": null,
+          "artists": [
+            { "name": "Agents Of Time", "start": "13:00", "end": "14:30" },
+            { "name": "Andromedik", "start": "14:30", "end": "16:00" },
+            { "name": "CIEL.", "start": "16:00", "end": "17:30" },
+            { "name": "Jazzy", "start": "17:30", "end": "19:00" },
+            { "name": "Linska", "start": "19:00", "end": "20:30" },
+            { "name": "Lost Frequencies", "start": "20:30", "end": "22:00" },
+            { "name": "Marwan Dua", "start": "22:00", "end": "23:30" },
+            { "name": "Oliver Heldens", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Funkhauser", "start": "13:00", "end": "17:00" },
+            { "name": "Jelle DK", "start": "17:00", "end": "21:00" },
+            { "name": "Jeroen Visser", "start": "21:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "Fonsi Nieto", "start": "13:00", "end": "19:00" },
+            { "name": "Mark Roma", "start": "19:00", "end": "01:00" }
+          ]
+        }
+      ]
+    },
+    "2026-07-19": {
+      "date": "2026-07-19",
+      "day": "Sunday",
+      "label": "SUN 19 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Alesso", "start": "12:00", "end": "13:30" },
+            { "name": "B Jones", "start": "13:30", "end": "15:00" },
+            { "name": "Calvin Harris", "start": "15:00", "end": "16:45" },
+            { "name": "John Summit", "start": "16:45", "end": "18:30" },
+            { "name": "Kevin de Vries", "start": "18:30", "end": "20:15" },
+            { "name": "Malugi", "start": "20:15", "end": "22:00" },
+            { "name": "MC STRETCH", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "ALOK: Rave The World", "start": "12:00", "end": "13:30" },
+            { "name": "Arielle Free", "start": "13:30", "end": "15:00" },
+            { "name": "Chase & Status (DJ set)", "start": "15:00", "end": "16:30" },
+            { "name": "DJ Licious", "start": "16:30", "end": "18:00" },
+            { "name": "I Hate Models", "start": "18:00", "end": "19:30" },
+            { "name": "Jack Shore", "start": "19:30", "end": "21:00" },
+            { "name": "Neon", "start": "21:00", "end": "22:30" },
+            { "name": "Pegassi", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "SUB ZERO PROJECTS & FRIENDS",
+          "artists": [
+            { "name": "Adrenalize", "start": "12:00", "end": "13:00" },
+            { "name": "Digital Madness", "start": "13:00", "end": "14:00" },
+            { "name": "Isaac", "start": "14:00", "end": "15:00" },
+            { "name": "Pat B", "start": "15:00", "end": "16:00" },
+            { "name": "Rebelion", "start": "16:00", "end": "17:15" },
+            { "name": "Rooler", "start": "17:15", "end": "18:30" },
+            { "name": "Sub Zero Project", "start": "18:30", "end": "19:45" },
+            { "name": "The Saints", "start": "19:45", "end": "20:45" },
+            { "name": "The Z.", "start": "20:45", "end": "21:45" },
+            { "name": "TNT", "start": "21:45", "end": "22:45" },
+            { "name": "Villain", "start": "22:45", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": "TEAM DAMP",
+          "artists": [
+            { "name": "DJ FASTA", "start": "12:00", "end": "13:00" },
+            { "name": "Favella Som Sistema", "start": "13:00", "end": "14:00" },
+            { "name": "G-Lo", "start": "14:00", "end": "15:00" },
+            { "name": "Heaven Sam", "start": "15:00", "end": "16:00" },
+            { "name": "Jeronimo", "start": "16:00", "end": "17:15" },
+            { "name": "Karyo", "start": "17:15", "end": "18:30" },
+            { "name": "Noah", "start": "18:30", "end": "19:45" },
+            { "name": "Sako Glitch", "start": "19:45", "end": "20:45" },
+            { "name": "Sleazy Stereo", "start": "20:45", "end": "21:45" },
+            { "name": "Team Damp", "start": "21:45", "end": "22:45" },
+            { "name": "Tribal Kush", "start": "22:45", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": "FACE 2 FACE",
+          "artists": [
+            { "name": "Adrián Mills F2F DJ SISU", "start": "12:00", "end": "13:45" },
+            { "name": "David Löhlein F2F Yasmin regisford", "start": "13:45", "end": "15:30" },
+            { "name": "EMILIJA F2F Frederic Selected", "start": "15:30", "end": "17:15" },
+            { "name": "FUMI F2F HUJUS", "start": "17:15", "end": "19:00" },
+            { "name": "Hurts F2F ROW 1", "start": "19:00", "end": "20:30" },
+            { "name": "Klaps F2F Miamor", "start": "20:30", "end": "22:15" },
+            { "name": "Serafina F2F Zwilling", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "Benny Plays", "start": "12:00", "end": "13:15" },
+            { "name": "Coco Bevan", "start": "13:15", "end": "14:30" },
+            { "name": "Dries Smet", "start": "14:30", "end": "15:45" },
+            { "name": "Foxed Up", "start": "15:45", "end": "17:00" },
+            { "name": "Godtripper", "start": "17:00", "end": "18:20" },
+            { "name": "Mell Tierra", "start": "18:20", "end": "19:40" },
+            { "name": "Mitched", "start": "19:40", "end": "21:00" },
+            { "name": "Nederhand", "start": "21:00", "end": "22:30" },
+            { "name": "Noaffection b2b OM3N", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": "MONSTERCAT",
+          "artists": [
+            { "name": "Arcando", "start": "12:00", "end": "13:10" },
+            { "name": "Exception", "start": "13:10", "end": "14:20" },
+            { "name": "LEVEL UP", "start": "14:20", "end": "15:30" },
+            { "name": "Liquid Stranger", "start": "15:30", "end": "16:45" },
+            { "name": "Malaa's Alter Ego", "start": "16:45", "end": "18:00" },
+            { "name": "Nostalgix", "start": "18:00", "end": "19:15" },
+            { "name": "Punctual", "start": "19:15", "end": "20:30" },
+            { "name": "SABAI", "start": "20:30", "end": "21:40" },
+            { "name": "Seven Lions", "start": "21:40", "end": "22:50" },
+            { "name": "Subtronics", "start": "22:50", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": "WITH LOVE FROM IBIZA",
+          "artists": [
+            { "name": "Christian82", "start": "12:00", "end": "13:10" },
+            { "name": "CRISTINA TOSIO", "start": "13:10", "end": "14:20" },
+            { "name": "Dave Hang", "start": "14:20", "end": "15:30" },
+            { "name": "Delafino", "start": "15:30", "end": "16:45" },
+            { "name": "DJ Gee", "start": "16:45", "end": "18:00" },
+            { "name": "Felix Da Funk", "start": "18:00", "end": "19:15" },
+            { "name": "Le Windey", "start": "19:15", "end": "20:30" },
+            { "name": "Lunnas", "start": "20:30", "end": "21:40" },
+            { "name": "Marta Loe b2b Rebeca Ark", "start": "21:40", "end": "22:50" },
+            { "name": "Tania Moon", "start": "22:50", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": null,
+          "artists": [
+            { "name": "Cyria (Hybrid)", "start": "12:00", "end": "13:45" },
+            { "name": "Fake Mood", "start": "13:45", "end": "15:30" },
+            { "name": "Helsloot", "start": "15:30", "end": "17:15" },
+            { "name": "MXGPU (Hybrid)", "start": "17:15", "end": "19:00" },
+            { "name": "Nico Morano b2b Xinobi", "start": "19:00", "end": "20:30" },
+            { "name": "Öona Dahl", "start": "20:30", "end": "22:15" },
+            { "name": "Sentin", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": "EXHALE",
+          "artists": [
+            { "name": "Amelie Lens", "start": "12:00", "end": "13:45" },
+            { "name": "Anetha", "start": "13:45", "end": "15:30" },
+            { "name": "Blondex", "start": "15:30", "end": "17:15" },
+            { "name": "Flour", "start": "17:15", "end": "19:00" },
+            { "name": "Øtta", "start": "19:00", "end": "20:30" },
+            { "name": "SHDW b2b ÜBERKIKZ", "start": "20:30", "end": "22:15" },
+            { "name": "VE/RA", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Avalon Emerson b2b Ben UFO", "start": "12:00", "end": "14:00" },
+            { "name": "Fafi Abdel Nour", "start": "14:00", "end": "16:00" },
+            { "name": "Ineffekt", "start": "16:00", "end": "18:00" },
+            { "name": "Job Jobse", "start": "18:00", "end": "20:00" },
+            { "name": "Massignan.y", "start": "20:00", "end": "22:00" },
+            { "name": "Sedef Adasï", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Camila Jun", "start": "12:00", "end": "14:00" },
+            { "name": "DJ Gigola", "start": "14:00", "end": "16:00" },
+            { "name": "DJ Tennis b2b Vintage Culture", "start": "16:00", "end": "18:00" },
+            { "name": "ELFIGO", "start": "18:00", "end": "20:00" },
+            { "name": "Oscar and the Wolf", "start": "20:00", "end": "22:00" },
+            { "name": "Wade", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": "SMASH THE HOUSE",
+          "artists": [
+            { "name": "Afrojack", "start": "12:00", "end": "13:00" },
+            { "name": "Blasterjaxx", "start": "13:00", "end": "14:00" },
+            { "name": "Diètro", "start": "14:00", "end": "15:00" },
+            { "name": "Dimitri Vegas b2b Timmy Trumpet", "start": "15:00", "end": "16:00" },
+            { "name": "Gabry Ponte", "start": "16:00", "end": "17:00" },
+            { "name": "Gryffin", "start": "17:00", "end": "18:00" },
+            { "name": "Hypaton", "start": "18:00", "end": "19:00" },
+            { "name": "James Carter", "start": "19:00", "end": "20:00" },
+            { "name": "Joel Corry", "start": "20:00", "end": "21:00" },
+            { "name": "Viktor", "start": "21:00", "end": "22:00" },
+            { "name": "Vini Vici", "start": "22:00", "end": "23:00" },
+            { "name": "Yazzmin", "start": "23:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Jerrooo", "start": "12:00", "end": "16:00" },
+            { "name": "Les Mecs Eclectics", "start": "16:00", "end": "20:00" },
+            { "name": "Tom Cosyns", "start": "20:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "Adam K", "start": "12:00", "end": "16:00" },
+            { "name": "Krevix", "start": "16:00", "end": "20:00" },
+            { "name": "Sofia Cristo", "start": "20:00", "end": "00:00" }
+          ]
+        }
+      ]
+    },
+    "2026-07-24": {
+      "date": "2026-07-24",
+      "day": "Friday",
+      "label": "FRI 24 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Alok", "start": "12:00", "end": "13:15" },
+            { "name": "Ely Oaks", "start": "13:15", "end": "14:30" },
+            { "name": "Hardwell", "start": "14:30", "end": "15:45" },
+            { "name": "Indira Paganotto", "start": "15:45", "end": "17:00" },
+            { "name": "Kölsch", "start": "17:00", "end": "18:15" },
+            { "name": "MC STRETCH", "start": "18:15", "end": "19:30" },
+            { "name": "Miss Monique", "start": "19:30", "end": "20:45" },
+            { "name": "Nicky Romero", "start": "20:45", "end": "22:00" },
+            { "name": "Steve Angello", "start": "22:00", "end": "23:30" },
+            { "name": "Yves V", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "Aaron Hibell", "start": "12:00", "end": "13:45" },
+            { "name": "Alesso", "start": "13:45", "end": "15:30" },
+            { "name": "Amber Broos b2b Juliet Fox", "start": "15:30", "end": "17:15" },
+            { "name": "Esin Boz", "start": "17:15", "end": "19:00" },
+            { "name": "Fisher", "start": "19:00", "end": "21:00" },
+            { "name": "James Hype", "start": "21:00", "end": "23:00" },
+            { "name": "JOA", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "BASSRUSH",
+          "artists": [
+            { "name": "ALLEYCVT", "start": "12:00", "end": "13:30" },
+            { "name": "Basstripper", "start": "13:30", "end": "15:00" },
+            { "name": "Borgore", "start": "15:00", "end": "16:45" },
+            { "name": "BOU + B LIVE 247", "start": "16:45", "end": "18:30" },
+            { "name": "Ghengar", "start": "18:30", "end": "20:00" },
+            { "name": "Jessica Audiffred", "start": "20:00", "end": "21:30" },
+            { "name": "Riot Ten", "start": "21:30", "end": "23:15" },
+            { "name": "Sullivan King", "start": "23:15", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": "LEMONADE",
+          "artists": [
+            { "name": "$hirak", "start": "12:00", "end": "13:10" },
+            { "name": "Brooke Bailey b2b Taliyah Ayana", "start": "13:10", "end": "14:20" },
+            { "name": "Cham b2b Uneak", "start": "14:20", "end": "15:30" },
+            { "name": "Dany Neville", "start": "15:30", "end": "16:40" },
+            { "name": "Flash", "start": "16:40", "end": "17:50" },
+            { "name": "Iris Rooth", "start": "17:50", "end": "19:00" },
+            { "name": "Irwan", "start": "19:00", "end": "20:15" },
+            { "name": "Miro", "start": "20:15", "end": "21:30" },
+            { "name": "Nems", "start": "21:30", "end": "22:45" },
+            { "name": "Rosh", "start": "22:45", "end": "00:00" },
+            { "name": "Valentino Ignoto", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": "PSYGATHERING",
+          "artists": [
+            { "name": "Avalon", "start": "12:00", "end": "13:00" },
+            { "name": "Beat Controllers", "start": "13:00", "end": "14:00" },
+            { "name": "Blastoyz", "start": "14:00", "end": "15:00" },
+            { "name": "Blazy", "start": "15:00", "end": "16:00" },
+            { "name": "Domi Re", "start": "16:00", "end": "17:00" },
+            { "name": "Electric Universe", "start": "17:00", "end": "18:15" },
+            { "name": "Firaga", "start": "18:15", "end": "19:30" },
+            { "name": "Locus", "start": "19:30", "end": "20:45" },
+            { "name": "Phaxe", "start": "20:45", "end": "22:00" },
+            { "name": "Somnia", "start": "22:00", "end": "23:00" },
+            { "name": "Vegas", "start": "23:00", "end": "00:00" },
+            { "name": "Vitor Falabella", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "Lou8", "start": "12:00", "end": "15:15" },
+            { "name": "Mairee", "start": "15:15", "end": "18:30" },
+            { "name": "Mr. Joy", "start": "18:30", "end": "21:45" },
+            { "name": "Xijaro & Pitch", "start": "21:45", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": null,
+          "artists": [
+            { "name": "AAT", "start": "12:00", "end": "14:00" },
+            { "name": "Belters Only", "start": "14:00", "end": "16:00" },
+            { "name": "Gissa", "start": "16:00", "end": "18:15" },
+            { "name": "Mr. Belt & Wezol", "start": "18:15", "end": "20:30" },
+            { "name": "Ruze b2b Ranger Trucco", "start": "20:30", "end": "22:45" },
+            { "name": "Saar Kuus", "start": "22:45", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": "DISCO ZONDERDAG",
+          "artists": [
+            { "name": "Jeroen Delodder", "start": "12:00", "end": "14:30" },
+            { "name": "John Noseda", "start": "14:30", "end": "17:00" },
+            { "name": "Joulie", "start": "17:00", "end": "19:30" },
+            { "name": "Planet Groove DJ's", "start": "19:30", "end": "22:00" },
+            { "name": "SPIES", "start": "22:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": "FOOTWORXX",
+          "artists": [
+            { "name": "BAZZY", "start": "12:00", "end": "13:10" },
+            { "name": "DJ FURAX", "start": "13:10", "end": "14:20" },
+            { "name": "DRS b2b SANDY WAREZ", "start": "14:20", "end": "15:30" },
+            { "name": "IMHAPPY", "start": "15:30", "end": "16:40" },
+            { "name": "LEKKERFACES", "start": "16:40", "end": "17:50" },
+            { "name": "NATTE VISSTICK", "start": "17:50", "end": "19:00" },
+            { "name": "PARTYRAISER b2b BULLETPROOF", "start": "19:00", "end": "20:15" },
+            { "name": "TERRORCLOWN", "start": "20:15", "end": "21:30" },
+            { "name": "TODIEFOR", "start": "21:30", "end": "22:45" },
+            { "name": "TOXIC TWINS", "start": "22:45", "end": "00:00" },
+            { "name": "YOSHIKO", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Capoon", "start": "12:00", "end": "13:30" },
+            { "name": "Deco", "start": "13:30", "end": "15:00" },
+            { "name": "Hugel", "start": "15:00", "end": "16:45" },
+            { "name": "Joezi", "start": "16:45", "end": "18:30" },
+            { "name": "Kitty Amor b2b Curol", "start": "18:30", "end": "20:00" },
+            { "name": "Mahmut Orhan", "start": "20:00", "end": "21:30" },
+            { "name": "Malive", "start": "21:30", "end": "23:15" },
+            { "name": "Shimza", "start": "23:15", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Bibi Seck b2b Faisal", "start": "12:00", "end": "13:45" },
+            { "name": "Bullet Tooth", "start": "13:45", "end": "15:30" },
+            { "name": "Fais Le Beau b2b Sixsixsixties", "start": "15:30", "end": "17:15" },
+            { "name": "Kamma", "start": "17:15", "end": "19:00" },
+            { "name": "Mall Grab", "start": "19:00", "end": "21:00" },
+            { "name": "Ogazón", "start": "21:00", "end": "23:00" },
+            { "name": "Oscar and the Wolf", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Jo Cox", "start": "12:00", "end": "16:00" },
+            { "name": "Prosit", "start": "16:00", "end": "20:30" },
+            { "name": "The Bobmeister", "start": "20:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": null,
+          "artists": [
+            { "name": "Azyr", "start": "12:00", "end": "13:30" },
+            { "name": "BOY&GIRL", "start": "13:30", "end": "15:00" },
+            { "name": "BYORN", "start": "15:00", "end": "16:30" },
+            { "name": "Callush", "start": "16:30", "end": "18:00" },
+            { "name": "Dyen b2b Maddix", "start": "18:00", "end": "19:15" },
+            { "name": "Holy Priest", "start": "19:15", "end": "20:30" },
+            { "name": "Mha Iri", "start": "20:30", "end": "22:00" },
+            { "name": "Onlynumbers", "start": "22:00", "end": "23:30" },
+            { "name": "Skeletor Yogi", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "Alan Alvarez & CRAZY SIR-G", "start": "12:00", "end": "16:00" },
+            { "name": "Martin Trevy", "start": "16:00", "end": "20:30" },
+            { "name": "Vinne", "start": "20:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": null,
+          "artists": [
+            { "name": "5NAPBACK", "start": "12:00", "end": "13:10" },
+            { "name": "Alan Walker", "start": "13:10", "end": "14:20" },
+            { "name": "B Jones", "start": "14:20", "end": "15:30" },
+            { "name": "HALŌ", "start": "15:30", "end": "16:40" },
+            { "name": "Illenium", "start": "16:40", "end": "17:50" },
+            { "name": "Kaskade", "start": "17:50", "end": "19:00" },
+            { "name": "MANDY", "start": "19:00", "end": "20:15" },
+            { "name": "Meaghan", "start": "20:15", "end": "21:30" },
+            { "name": "Merow", "start": "21:30", "end": "22:45" },
+            { "name": "NOME.", "start": "22:45", "end": "00:00" },
+            { "name": "Omdat Het Kan & Average Rob", "start": "00:00", "end": "01:00" }
+          ]
+        }
+      ]
+    },
+    "2026-07-25": {
+      "date": "2026-07-25",
+      "day": "Saturday",
+      "label": "SAT 25 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Agents of Time", "start": "12:00", "end": "13:15" },
+            { "name": "Angemi", "start": "13:15", "end": "14:30" },
+            { "name": "Armin van Buuren", "start": "14:30", "end": "15:45" },
+            { "name": "Calvin Harris", "start": "15:45", "end": "17:00" },
+            { "name": "D.O.D", "start": "17:00", "end": "18:15" },
+            { "name": "Dimitri Vegas & Like Mike", "start": "18:15", "end": "19:30" },
+            { "name": "MC STRETCH", "start": "19:30", "end": "20:45" },
+            { "name": "Mike Williams", "start": "20:45", "end": "22:00" },
+            { "name": "Morten", "start": "22:00", "end": "23:30" },
+            { "name": "Sub Zero Project", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "Andromedik", "start": "12:00", "end": "13:45" },
+            { "name": "Argy", "start": "13:45", "end": "15:30" },
+            { "name": "Massano", "start": "15:30", "end": "17:15" },
+            { "name": "Mosimann b2b ELFIGO", "start": "17:15", "end": "19:00" },
+            { "name": "Sebastian Ingrosso", "start": "19:00", "end": "21:00" },
+            { "name": "Symphony Of Unity", "start": "21:00", "end": "23:00" },
+            { "name": "Timmy Trumpet", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "TRIBUTE TO BELGIUM: CHERRY MOON",
+          "artists": [
+            { "name": "BountyHunter", "start": "12:00", "end": "13:15" },
+            { "name": "Cherry Moon Legends (& Friends)", "start": "13:15", "end": "14:30" },
+            { "name": "Danny Corten", "start": "14:30", "end": "15:45" },
+            { "name": "Dimitri Cooman", "start": "15:45", "end": "17:00" },
+            { "name": "DJ Ghost", "start": "17:00", "end": "18:15" },
+            { "name": "Franky Kloeck", "start": "18:15", "end": "19:30" },
+            { "name": "Jamie Dill", "start": "19:30", "end": "20:45" },
+            { "name": "Maite Dedecker", "start": "20:45", "end": "22:00" },
+            { "name": "Quincy", "start": "22:00", "end": "23:30" },
+            { "name": "Youri Parker", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": null,
+          "artists": [
+            { "name": "Annabel Stop It", "start": "12:00", "end": "13:30" },
+            { "name": "DJ ART", "start": "13:30", "end": "15:00" },
+            { "name": "Eimco", "start": "15:00", "end": "16:45" },
+            { "name": "Knox Kind", "start": "16:45", "end": "18:30" },
+            { "name": "Nina Black", "start": "18:30", "end": "20:00" },
+            { "name": "RUBY XX", "start": "20:00", "end": "21:30" },
+            { "name": "Sandersville", "start": "21:30", "end": "23:15" },
+            { "name": "SHOARMA SOUNDSYSTEM", "start": "23:15", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": null,
+          "artists": [
+            { "name": "Alicia Hahn", "start": "12:00", "end": "13:45" },
+            { "name": "Colyn b2b Sainte Vie", "start": "13:45", "end": "15:30" },
+            { "name": "Dyzen", "start": "15:30", "end": "17:15" },
+            { "name": "NA:TUS", "start": "17:15", "end": "19:00" },
+            { "name": "Tim Bliss", "start": "19:00", "end": "21:00" },
+            { "name": "Yet More", "start": "21:00", "end": "23:00" },
+            { "name": "Yulia Niko", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": "RAVE ALERT",
+          "artists": [
+            { "name": "IOSIO", "start": "12:00", "end": "13:30" },
+            { "name": "Macon", "start": "13:30", "end": "15:00" },
+            { "name": "Mero b2b Daire", "start": "15:00", "end": "16:30" },
+            { "name": "Mondello", "start": "16:30", "end": "18:00" },
+            { "name": "Niotech", "start": "18:00", "end": "19:15" },
+            { "name": "Rune Evens", "start": "19:15", "end": "20:30" },
+            { "name": "Stanne", "start": "20:30", "end": "22:00" },
+            { "name": "Uberjak'd feat Ella Young", "start": "22:00", "end": "23:30" },
+            { "name": "X&Trick", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": "GEHEIMZINNIG",
+          "artists": [
+            { "name": "Emilia De La Paz", "start": "12:00", "end": "13:45" },
+            { "name": "Geheimzinnig Soundsystem", "start": "13:45", "end": "15:30" },
+            { "name": "Larry Masmero", "start": "15:30", "end": "17:15" },
+            { "name": "Mooris", "start": "17:15", "end": "19:00" },
+            { "name": "Sam Girling", "start": "19:00", "end": "21:00" },
+            { "name": "Séa", "start": "21:00", "end": "23:00" },
+            { "name": "Soulastico b2b Tohma", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "Flowchief", "start": "12:00", "end": "14:30" },
+            { "name": "Jorn Pricez", "start": "14:30", "end": "17:00" },
+            { "name": "Justin Wilkes", "start": "17:00", "end": "19:30" },
+            { "name": "Netherworld", "start": "19:30", "end": "22:00" },
+            { "name": "Roma", "start": "22:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Dino Lenny b2b Radioslave", "start": "12:00", "end": "16:00" },
+            { "name": "HAAi b2b The Blessed Madonna", "start": "16:00", "end": "20:30" },
+            { "name": "SHEE", "start": "20:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": null,
+          "artists": [
+            { "name": "2hot2play", "start": "12:00", "end": "13:45" },
+            { "name": "EMILIJA b2b Fenrick", "start": "13:45", "end": "15:30" },
+            { "name": "I Hate Models", "start": "15:30", "end": "17:15" },
+            { "name": "Kneiz", "start": "17:15", "end": "19:00" },
+            { "name": "Noise Mafia", "start": "19:00", "end": "21:00" },
+            { "name": "Novah", "start": "21:00", "end": "23:00" },
+            { "name": "Pegassi", "start": "23:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Ayybo b2b Odd Mob", "start": "12:00", "end": "13:30" },
+            { "name": "GUZ", "start": "13:30", "end": "15:00" },
+            { "name": "HI-LO b2b Layton Giordani", "start": "15:00", "end": "16:45" },
+            { "name": "John Summit", "start": "16:45", "end": "18:30" },
+            { "name": "LP Giobbi", "start": "18:30", "end": "20:00" },
+            { "name": "Max Styler", "start": "20:00", "end": "21:30" },
+            { "name": "Naomi Cazier", "start": "21:30", "end": "23:15" },
+            { "name": "Roddy Lima", "start": "23:15", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": "2010 - 2012",
+          "artists": [
+            { "name": "Bingo Players with Iceman", "start": "12:00", "end": "13:15" },
+            { "name": "Chocolate Puma", "start": "13:15", "end": "14:30" },
+            { "name": "Dada Life", "start": "14:30", "end": "15:45" },
+            { "name": "Dannic b2b Dyro", "start": "15:45", "end": "17:00" },
+            { "name": "Gregor Salto", "start": "17:00", "end": "18:15" },
+            { "name": "LNY TNZ: Jump Never Dies (Take-Over)", "start": "18:15", "end": "19:30" },
+            { "name": "Odssey", "start": "19:30", "end": "20:45" },
+            { "name": "Sander van doorn", "start": "20:45", "end": "22:00" },
+            { "name": "Swanky Tunes", "start": "22:00", "end": "23:30" },
+            { "name": "Yamo", "start": "23:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": null,
+          "artists": [
+            { "name": "Chris Lorenzo", "start": "12:00", "end": "13:10" },
+            { "name": "Gorgon City", "start": "13:10", "end": "14:20" },
+            { "name": "Henri PFR", "start": "14:20", "end": "15:30" },
+            { "name": "Lost Frequencies", "start": "15:30", "end": "16:40" },
+            { "name": "me n ü", "start": "16:40", "end": "17:50" },
+            { "name": "Mesto", "start": "17:50", "end": "19:00" },
+            { "name": "Netsky", "start": "19:00", "end": "20:15" },
+            { "name": "Radio Cargo", "start": "20:15", "end": "21:30" },
+            { "name": "Sonny Fodera", "start": "21:30", "end": "22:45" },
+            { "name": "Wilkinson", "start": "22:45", "end": "00:00" },
+            { "name": "ZHU", "start": "00:00", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Kurt Verheyen", "start": "12:00", "end": "16:00" },
+            { "name": "Mobius One", "start": "16:00", "end": "20:30" },
+            { "name": "Mr E.", "start": "20:30", "end": "01:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "Carly Wilford", "start": "12:00", "end": "16:00" },
+            { "name": "Mosimann", "start": "16:00", "end": "20:30" },
+            { "name": "Yaz.", "start": "20:30", "end": "01:00" }
+          ]
+        }
+      ]
+    },
+    "2026-07-26": {
+      "date": "2026-07-26",
+      "day": "Sunday",
+      "label": "SUN 26 JUL",
+      "stages": [
+        {
+          "name": "MAINSTAGE",
+          "host": null,
+          "artists": [
+            { "name": "Afrojack b2b R3hab", "start": "12:00", "end": "13:10" },
+            { "name": "Chase & Status (DJ set)", "start": "13:10", "end": "14:20" },
+            { "name": "Cyril", "start": "14:20", "end": "15:30" },
+            { "name": "Lost Frequencies", "start": "15:30", "end": "16:40" },
+            { "name": "Lucas & Steve", "start": "16:40", "end": "17:50" },
+            { "name": "Martin Garrix", "start": "17:50", "end": "19:00" },
+            { "name": "MC STRETCH", "start": "19:00", "end": "20:15" },
+            { "name": "Odd Mob", "start": "20:15", "end": "21:30" },
+            { "name": "Sara Landry", "start": "21:30", "end": "22:45" },
+            { "name": "Steve Aoki", "start": "22:45", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "FREEDOM BY BUD",
+          "host": null,
+          "artists": [
+            { "name": "Amelie Lens presents Aura", "start": "12:00", "end": "14:00" },
+            { "name": "Artbat", "start": "14:00", "end": "16:00" },
+            { "name": "Axel Haube", "start": "16:00", "end": "18:00" },
+            { "name": "Fideles", "start": "18:00", "end": "20:00" },
+            { "name": "Korolova", "start": "20:00", "end": "22:00" },
+            { "name": "Push only", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE ROSE GARDEN",
+          "host": "TWEEKAMANIA",
+          "artists": [
+            { "name": "BassBrain", "start": "12:00", "end": "13:00" },
+            { "name": "Coone", "start": "13:00", "end": "14:00" },
+            { "name": "D-Charged b2b Serzo", "start": "14:00", "end": "15:00" },
+            { "name": "Da Tweekaz", "start": "15:00", "end": "16:00" },
+            { "name": "Hard Driver", "start": "16:00", "end": "17:00" },
+            { "name": "Lost Identity", "start": "17:00", "end": "18:00" },
+            { "name": "Mark With A K & MC Chucky", "start": "18:00", "end": "19:00" },
+            { "name": "Sound Rush", "start": "19:00", "end": "20:00" },
+            { "name": "The Purge", "start": "20:00", "end": "21:00" },
+            { "name": "The Straikerz", "start": "21:00", "end": "22:30" },
+            { "name": "Villain", "start": "22:30", "end": "23:15" },
+            { "name": "Warface", "start": "23:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "ELIXIR",
+          "host": "TEAM AMANI",
+          "artists": [
+            { "name": "Dino", "start": "12:00", "end": "13:15" },
+            { "name": "Jaël Ost & MagiK", "start": "13:15", "end": "14:30" },
+            { "name": "Karakals", "start": "14:30", "end": "15:45" },
+            { "name": "Kav Verhouzer & de Hofnar presents: Eurodance", "start": "15:45", "end": "17:00" },
+            { "name": "Lennert Wolfs", "start": "17:00", "end": "18:15" },
+            { "name": "Michael Amani", "start": "18:15", "end": "19:30" },
+            { "name": "Michael Amani & Friends", "start": "19:30", "end": "21:00" },
+            { "name": "Reeze", "start": "21:00", "end": "22:30" },
+            { "name": "Vikkstar", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CAGE",
+          "host": null,
+          "artists": [
+            { "name": "Amalie", "start": "12:00", "end": "14:00" },
+            { "name": "Amotik", "start": "14:00", "end": "16:00" },
+            { "name": "Blasha & Allatt", "start": "16:00", "end": "18:00" },
+            { "name": "Freddy K", "start": "18:00", "end": "20:00" },
+            { "name": "Netty Hugo", "start": "20:00", "end": "22:00" },
+            { "name": "Quelza", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE RAVE CAVE",
+          "host": null,
+          "artists": [
+            { "name": "D. Guaetta b2b Neon", "start": "12:00", "end": "13:45" },
+            { "name": "EME", "start": "13:45", "end": "15:30" },
+            { "name": "Hyalyte", "start": "15:30", "end": "17:15" },
+            { "name": "Kriss Reeve", "start": "17:15", "end": "19:00" },
+            { "name": "Mr. Rewind", "start": "19:00", "end": "20:30" },
+            { "name": "Muze", "start": "20:30", "end": "22:15" },
+            { "name": "YERUN", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "MELODIA BY CORONA",
+          "host": "WITH LOVE FROM IBIZA",
+          "artists": [
+            { "name": "Alex Kennon", "start": "12:00", "end": "13:15" },
+            { "name": "Bobbi Antonni", "start": "13:15", "end": "14:30" },
+            { "name": "Cristiano Da Silva", "start": "14:30", "end": "15:45" },
+            { "name": "Delafino & Luna Fino", "start": "15:45", "end": "17:00" },
+            { "name": "Dominico", "start": "17:00", "end": "18:15" },
+            { "name": "Eli Rojas", "start": "18:15", "end": "19:30" },
+            { "name": "Oriol Calvo", "start": "19:30", "end": "21:00" },
+            { "name": "Rayco Santos", "start": "21:00", "end": "22:30" },
+            { "name": "Valentín Huedo", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CELESTIA by Kucoin",
+          "host": null,
+          "artists": [
+            { "name": "Bella Claxton b2b Paige Tomlinson", "start": "12:00", "end": "13:45" },
+            { "name": "HU", "start": "13:45", "end": "15:30" },
+            { "name": "Kyle Starkey", "start": "15:30", "end": "17:15" },
+            { "name": "Lisa Korver", "start": "17:15", "end": "19:00" },
+            { "name": "Mendosa", "start": "19:00", "end": "20:30" },
+            { "name": "Morgan Seatree", "start": "20:30", "end": "22:15" },
+            { "name": "Newtone", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "PLANAXIS",
+          "host": "2010 - 2012 PRESENTS SUPER YOU & ME",
+          "artists": [
+            { "name": "Chuckie", "start": "12:00", "end": "13:15" },
+            { "name": "Deorro", "start": "13:15", "end": "14:30" },
+            { "name": "Laidback Luke", "start": "14:30", "end": "15:45" },
+            { "name": "Okayval", "start": "15:45", "end": "17:00" },
+            { "name": "Quintino", "start": "17:00", "end": "18:15" },
+            { "name": "Sick individuals", "start": "18:15", "end": "19:30" },
+            { "name": "Superheroes", "start": "19:30", "end": "21:00" },
+            { "name": "Thomas Gold", "start": "21:00", "end": "22:30" },
+            { "name": "Yves V b2b StadiumX", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "ATMOSPHERE",
+          "host": null,
+          "artists": [
+            { "name": "Adrián Mills", "start": "12:00", "end": "13:30" },
+            { "name": "Alycia Bezgo b2b Biianco", "start": "13:30", "end": "15:00" },
+            { "name": "Kobosil", "start": "15:00", "end": "16:30" },
+            { "name": "Mirage", "start": "16:30", "end": "18:00" },
+            { "name": "Nikolina", "start": "18:00", "end": "19:30" },
+            { "name": "Portex", "start": "19:30", "end": "21:00" },
+            { "name": "Riana Holley", "start": "21:00", "end": "22:30" },
+            { "name": "Trym", "start": "22:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "MOOSE BAR",
+          "host": null,
+          "artists": [
+            { "name": "Brian", "start": "12:00", "end": "16:00" },
+            { "name": "Jan V", "start": "16:00", "end": "20:00" },
+            { "name": "Mr E.", "start": "20:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CORE",
+          "host": null,
+          "artists": [
+            { "name": "Benwal b2b Labat", "start": "12:00", "end": "13:45" },
+            { "name": "Catalina", "start": "13:45", "end": "15:30" },
+            { "name": "Helena Lauwaert", "start": "15:30", "end": "17:15" },
+            { "name": "Kellar", "start": "17:15", "end": "19:00" },
+            { "name": "Lammer", "start": "19:00", "end": "20:30" },
+            { "name": "Malugi", "start": "20:30", "end": "22:15" },
+            { "name": "Saidah", "start": "22:15", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "CRYSTAL GARDEN",
+          "host": null,
+          "artists": [
+            { "name": "Bhaskar", "start": "12:00", "end": "14:00" },
+            { "name": "Brina Knauss", "start": "14:00", "end": "16:00" },
+            { "name": "Franc Fala b2b Benja", "start": "16:00", "end": "18:00" },
+            { "name": "Kevin de Vries b2b Meduza", "start": "18:00", "end": "20:00" },
+            { "name": "Like Mike", "start": "20:00", "end": "22:00" },
+            { "name": "Mind Against", "start": "22:00", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "HOUSE OF FORTUNE BY JBL",
+          "host": null,
+          "artists": [
+            { "name": "Bassjackers", "start": "12:00", "end": "14:30" },
+            { "name": "DJ Lex", "start": "14:30", "end": "16:45" },
+            { "name": "The Criminal Sounds", "start": "16:45", "end": "19:15" },
+            { "name": "The Rocketman", "start": "19:15", "end": "21:30" },
+            { "name": "TIGERLILY", "start": "21:30", "end": "00:00" }
+          ]
+        },
+        {
+          "name": "THE GREAT LIBRARY",
+          "host": "SMASH THE HOUSE",
+          "artists": [
+            { "name": "Bassjackers", "start": "12:00", "end": "13:10" },
+            { "name": "Brennan Heart", "start": "13:10", "end": "14:20" },
+            { "name": "Darren Styles", "start": "14:20", "end": "15:30" },
+            { "name": "Diego Miranda b2b Jerry Davila", "start": "15:30", "end": "16:40" },
+            { "name": "Kaaze", "start": "16:40", "end": "17:50" },
+            { "name": "Lucca van Damme", "start": "17:50", "end": "19:00" },
+            { "name": "MATTN", "start": "19:00", "end": "20:15" },
+            { "name": "NERVO", "start": "20:15", "end": "21:30" },
+            { "name": "Nico Moreno", "start": "21:30", "end": "22:45" },
+            { "name": "Paris Hilton", "start": "22:45", "end": "00:00" }
+          ]
+        }
+      ]
+    }
+  }
+}
