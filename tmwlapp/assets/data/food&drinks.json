@@ -1,0 +1,177 @@
+{
+    "festival": "Tomorrowland",
+    "currency_info": {
+        "name": "Pearl",
+        "exchange_rate_eur": 1.82,
+        "note": "1 Pearl is approx. 1.82 EUR. At the on-site food courts, you must pay with Pearls, while exclusive seated restaurants must be booked in advance in euros during the Add-On Sale."
+    },
+    "food_options": {
+        "Food": [
+            {
+                "name": "French fries (small)",
+                "price_pearl": 3.5,
+                "price_eur": 6.4,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "French fries (large)",
+                "price_pearl": 4.75,
+                "price_eur": 8.6,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Loaded Fries (with cheese, meat)",
+                "price_pearl": 7.5,
+                "price_eur": 13.6,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Belgian Beef Stew",
+                "price_pearl": 8.75,
+                "price_eur": 15.9,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Plain hamburger / Cheeseburger",
+                "price_pearl": 6.75,
+                "price_eur": 12.3,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Double cheeseburger / Angus burger",
+                "price_pearl": 8.5,
+                "price_eur": 15.5,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Pizza slice / small whole pizza",
+                "price_pearl": 5.5,
+                "price_eur": 10.0,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Pita (chicken, pork, kebab)",
+                "price_pearl": 7.5,
+                "price_eur": 13.6,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Nachos platters (cheese, meat)",
+                "price_pearl": 6.75,
+                "price_eur": 12.3,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Indian Curry with rice (butter chicken)",
+                "price_pearl": 8.0,
+                "price_eur": 14.5,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Pad Thai / Wok noodles",
+                "price_pearl": 8.0,
+                "price_eur": 14.5,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Falafel bowl with hummus",
+                "price_pearl": 7.8,
+                "price_eur": 14.2,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Sushi roll (salmon or vegan)",
+                "price_pearl": 6.1,
+                "price_eur": 11.1,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Brasa (Grill experience)",
+                "price_pearl": null,
+                "price_eur": 47.5,
+                "payment_method": "Online presale (EUR)",
+                "description": "Outdoor wood-fired grill terrace with a hearty BBQ meat, fish, or vegetarian menu and a welcome drink."
+            },
+            {
+                "name": "Mesa (Communal feast)",
+                "price_pearl": null,
+                "price_eur": 47.5,
+                "payment_method": "Online presale (EUR)",
+                "description": "Sharing concept with fusion dishes from around the world and a glass of drink."
+            },
+            {
+                "name": "Mainstage Restaurant (Apero / Small package)",
+                "price_pearl": null,
+                "price_eur": 47.5,
+                "payment_method": "Online presale (EUR)",
+                "description": "Light finger food platters and refreshments on an elevated terrace with a direct view of the main stage."
+            },
+            {
+                "name": "Mainstage Restaurant (Premium dinner)",
+                "price_pearl": null,
+                "price_eur": 92.0,
+                "payment_method": "Online presale (EUR)",
+                "description": "Multi-course premium dinner and exclusive service on a VIP terrace overlooking the main stage."
+            },
+            {
+                "name": "Papillon / Secret restaurants",
+                "price_pearl": null,
+                "price_eur": 172.5,
+                "payment_method": "Online presale (EUR)",
+                "description": "Private fine dining experience and tasting menu from world-renowned Michelin-starred chefs, with wine pairing."
+            }
+        ],
+        "Drinks": [
+            {
+                "name": "Refreshing water",
+                "price_pearl": 2.0,
+                "price_eur": 3.6,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Beer (small, ~0.33l)",
+                "price_pearl": 2.25,
+                "price_eur": 4.1,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Beer (large, ~0.5l)",
+                "price_pearl": 3.75,
+                "price_eur": 6.8,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Soft drinks / Energy drinks",
+                "price_pearl": 2.5,
+                "price_eur": 4.5,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Cocktails / Spirits",
+                "price_pearl": 8.0,
+                "price_eur": 14.5,
+                "payment_method": "Pearl wristband"
+            }
+        ],
+        "Desserts": [
+            {
+                "name": "Belgian waffle (plain)",
+                "price_pearl": 3.5,
+                "price_eur": 6.4,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Waffle with toppings (Nutella, ice cream)",
+                "price_pearl": 5.25,
+                "price_eur": 9.5,
+                "payment_method": "Pearl wristband"
+            },
+            {
+                "name": "Fresh fruit salad / melon",
+                "price_pearl": 4.0,
+                "price_eur": 7.3,
+                "payment_method": "Pearl wristband"
+            }
+        ]
+    }
+}
