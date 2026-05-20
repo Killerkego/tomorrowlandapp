@@ -60,10 +60,29 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, default: '' },
   phoneNumber: { type: String, default: '' },
   profilePicture: { type: String, default: null },
-  favorites: [{ name: String }]
+  favorites: [{ name: String }],
+  schedule: [{ 
+    artistName: String, 
+    date: String, 
+    start: String, 
+    end: String, 
+    stage: String 
+  }]
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Sync Schedule Endpoint
+app.post('/api/user/schedule', async (req, res) => {
+  try {
+    const { userId, schedule } = req.body;
+    const user = await User.findByIdAndUpdate(userId, { schedule }, { new: true });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'Schedule synced', schedule: user.schedule });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 // Sync Favorites Endpoint
 app.post('/api/user/favorites', async (req, res) => {
@@ -72,6 +91,31 @@ app.post('/api/user/favorites', async (req, res) => {
     const user = await User.findByIdAndUpdate(userId, { favorites }, { new: true });
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json({ message: 'Favorites synced', favorites: user.favorites });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Get User Profile Endpoint
+app.get('/api/user/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    res.json({
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+        favorites: user.favorites,
+        schedule: user.schedule
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -98,7 +142,8 @@ app.put('/api/user/update', async (req, res) => {
         fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
-        favorites: user.favorites
+        favorites: user.favorites,
+        schedule: user.schedule
       }
     });
   } catch (error) {
@@ -159,7 +204,8 @@ app.post('/api/upload-profile-picture', upload.single('image'), async (req, res)
         fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
-        favorites: user.favorites
+        favorites: user.favorites,
+        schedule: user.schedule
       } 
     });
   } catch (error) {
@@ -222,7 +268,8 @@ app.post('/api/login', async (req, res) => {
         fullName: user.fullName,
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
-        favorites: user.favorites
+        favorites: user.favorites,
+        schedule: user.schedule
       }
     });
   } catch (error) {

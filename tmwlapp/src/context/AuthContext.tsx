@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '@/services/apiConfig';
 
 type User = {
   id?: string;
@@ -10,6 +11,7 @@ type User = {
   phoneNumber?: string;
   profilePicture?: string;
   favorites?: { name: string }[];
+  schedule?: { artistName: string; date: string; start: string; end: string; stage: string }[];
 };
 
 type AuthContextType = {
@@ -34,7 +36,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const savedUser = await AsyncStorage.getItem('user');
       if (savedUser) {
-        setUser(JSON.parse(savedUser));
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        
+        // Fetch latest data from server silently to sync cross-device changes
+        const userId = parsedUser.id || parsedUser._id;
+        if (userId) {
+          fetch(`${API_BASE_URL}/user/${userId}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.user) {
+                setUser(data.user);
+                AsyncStorage.setItem('user', JSON.stringify(data.user));
+              }
+            })
+            .catch(err => console.error('Silent sync failed:', err));
+        }
       }
     } catch (e) {
       console.error('Failed to load user', e);
