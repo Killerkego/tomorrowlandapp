@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import React, { useRef, useState, useMemo } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MapView, { Marker } from 'react-native-maps';
 import { useRouter } from 'expo-router';
@@ -8,11 +8,18 @@ import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles } from './index.styles';
 
+import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
+
 const { width } = Dimensions.get('window');
-const CARD_WIDTH = width * 0.90;
+const CARD_WIDTH = width * 0.92;
+
+const GOLD = '#d4af37';
+const ACCENT = '#c8417a';
+const MUTED = 'rgba(255,255,255,0.65)';
+const WHITE = '#ffffff';
 
 type Stage = {
-  id: string; // Most az ID egyben a hivatalos név is lesz a könnyebb szűrésért
+  id: string;
   title: string;
   description: string;
   image: any;
@@ -21,163 +28,195 @@ type Stage = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
+// Nap rövidítések a badge-ekhez
+const DAY_LABELS: Record<string, string> = {
+  '2026-07-17': 'FRI 17',
+  '2026-07-18': 'SAT 18',
+  '2026-07-19': 'SUN 19',
+  '2026-07-24': 'FRI 24',
+  '2026-07-25': 'SAT 25',
+  '2026-07-26': 'SUN 26',
+};
+
+const WEEK_LABEL: Record<string, string> = {
+  '2026-07-17': 'W1',
+  '2026-07-18': 'W1',
+  '2026-07-19': 'W1',
+  '2026-07-24': 'W2',
+  '2026-07-25': 'W2',
+  '2026-07-26': 'W2',
+};
+
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
   const router = useRouter();
-
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null);
 
+  // De Schorre, Boom, Belgium — Tomorrowland középpont
   const TOMORROWLAND_REGION = {
-    latitude: 51.0910,
-    longitude: 4.3835,
-    latitudeDelta: 0.012,
-    longitudeDelta: 0.012,
+    latitude: 51.0913,
+    longitude: 4.3843,
+    latitudeDelta: 0.010,
+    longitudeDelta: 0.010,
   };
 
-  // MIND A 15 SZÍNPAD BEILLESZTVE A LINEUP ALAPJÁN
   const STAGES: Stage[] = [
     {
       id: 'MAINSTAGE',
       title: 'Mainstage',
-      description: 'The monumental heart of Tomorrowland.',
-      image: require('../../assets/images/lineup.jpg'), // Using lineup.jpg as fallback if specific image doesn't exist
-      coords: { latitude: 51.0918, longitude: 4.3840 }, 
+      description: 'The monumental heart of Tomorrowland. The iconic stage that started it all.',
+      image: require('../../assets/images/mainstage.jpg'),
+      coords: { latitude: 51.0913, longitude: 4.3843 },
       color: '#FACC15',
-      icon: 'star', 
+      icon: 'star',
     },
     {
       id: 'FREEDOM BY BUD',
-      title: 'Freedom', 
-      description: 'Indoor technical masterpiece.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0935, longitude: 4.3855 }, 
+      title: 'Freedom by Bud',
+      description: 'Indoor technical masterpiece. Pushing boundaries of sound and production.',
+      image: require('../../assets/images/freedom.jpg'),
+      coords: { latitude: 51.0932, longitude: 4.3862 },
       color: '#60A5FA',
       icon: 'shield-checkmark',
     },
     {
       id: 'ATMOSPHERE',
       title: 'Atmosphere',
-      description: 'Massive techno tent.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0880, longitude: 4.3840 }, 
+      description: 'Massive techno tent with raw industrial sound design.',
+      image: require('../../assets/images/atmosphere.jpg'),
+      coords: { latitude: 51.0897, longitude: 4.3831 },
       color: '#38BDF8',
       icon: 'cloudy',
     },
     {
       id: 'CORE',
       title: 'Core Stage',
-      description: 'Deep sounds in the forest.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0895, longitude: 4.3821 }, 
+      description: 'Deep sounds in the forested area of the park.',
+      image: require('../../assets/images/core.jpg'),
+      coords: { latitude: 51.0905, longitude: 4.3818 },
       color: '#4ADE80',
       icon: 'leaf',
     },
     {
       id: 'THE ROSE GARDEN',
       title: 'The Rose Garden',
-      description: 'Watch out for the dragon.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0905, longitude: 4.3810 }, 
+      description: 'Watch out for the dragon. A magical floral experience.',
+      image: require('../../assets/images/rose.jpg'),
+      coords: { latitude: 51.0921, longitude: 4.3820 },
       color: '#FB7185',
       icon: 'flower',
     },
     {
       id: 'ELIXIR',
       title: 'Elixir',
-      description: 'Magical vibes on the water.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0912, longitude: 4.3825 }, 
+      description: 'Magical vibes near the water. Alchemical sound journeys.',
+      image: require('../../assets/images/elixir.jpg'),
+      coords: { latitude: 51.0908, longitude: 4.3858 },
       color: '#C084FC',
       icon: 'beaker',
     },
     {
       id: 'CAGE',
       title: 'Cage',
-      description: 'Dark, intense, unyielding.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0945, longitude: 4.3860 }, 
+      description: 'Dark, intense, unyielding. Hardcore energy unleashed.',
+      image: require('../../assets/images/cage.jpg'),
+      coords: { latitude: 51.0940, longitude: 4.3870 },
       color: '#94A3B8',
       icon: 'grid',
     },
     {
       id: 'THE RAVE CAVE',
       title: 'The Rave Cave',
-      description: 'Intimate tunnel vibes.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0925, longitude: 4.3805 }, 
+      description: 'Intimate underground tunnel vibes.',
+      image: require('../../assets/images/ravecave.jpg'),
+      coords: { latitude: 51.0926, longitude: 4.3808 },
       color: '#CBD5E1',
       icon: 'flashlight',
     },
     {
       id: 'PLANAXIS',
       title: 'Planaxis',
-      description: 'An underwater world.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0900, longitude: 4.3875 }, 
+      description: 'An underwater world of progressive sounds.',
+      image: require('../../assets/images/planaxis.jpg'),
+      coords: { latitude: 51.0900, longitude: 4.3872 },
       color: '#22D3EE',
       icon: 'water',
     },
     {
       id: 'MELODIA BY CORONA',
-      title: 'Melodia',
-      description: 'Sunset and chill vibes.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0890, longitude: 4.3865 }, 
+      title: 'Melodia by Corona',
+      description: 'Sunset and chill vibes by the riverside.',
+      image: require('../../assets/images/melodia.jpg'),
+      coords: { latitude: 51.0888, longitude: 4.3862 },
       color: '#FB923C',
       icon: 'sunny',
     },
     {
       id: 'CELESTIA by Kucoin',
-      title: 'Celestia',
-      description: 'Journey to the stars.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0955, longitude: 4.3830 }, 
+      title: 'Celestia by Kucoin',
+      description: 'Journey to the stars. Euphoric, galactic soundscapes.',
+      image: require('../../assets/images/celestia.jpg'),
+      coords: { latitude: 51.0948, longitude: 4.3838 },
       color: '#818CF8',
       icon: 'sparkles',
     },
     {
       id: 'CRYSTAL GARDEN',
       title: 'Crystal Garden',
-      description: 'Floating on the water.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0930, longitude: 4.3885 }, 
+      description: 'Floating on the water. Crystal clear melodic sets.',
+      image: require('../../assets/images/crystal.jpg'),
+      coords: { latitude: 51.0929, longitude: 4.3880 },
       color: '#2DD4BF',
       icon: 'prism',
     },
     {
       id: 'THE GREAT LIBRARY',
       title: 'The Great Library',
-      description: 'Stories come alive.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0875, longitude: 4.3855 }, 
+      description: 'Stories come alive with eclectic sounds.',
+      image: require('../../assets/images/library.jpg'),
+      coords: { latitude: 51.0878, longitude: 4.3848 },
       color: '#FBBF24',
       icon: 'book',
     },
     {
       id: 'MOOSE BAR',
       title: 'Moose Bar',
-      description: 'Apres-ski madness in summer.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0940, longitude: 4.3815 }, 
+      description: 'Après-ski madness in summer. Party all day long!',
+      image: require('../../assets/images/moose.jpg'),
+      coords: { latitude: 51.0937, longitude: 4.3815 },
       color: '#A3E635',
       icon: 'paw',
     },
     {
       id: 'HOUSE OF FORTUNE BY JBL',
-      title: 'House of Fortune',
-      description: 'Discover your destiny.',
-      image: require('../../assets/images/lineup.jpg'),
-      coords: { latitude: 51.0885, longitude: 4.3815 }, 
+      title: 'House of Fortune by JBL',
+      description: 'Discover your destiny in this immersive stage experience.',
+      image: require('../../assets/images/house.jpg'),
+      coords: { latitude: 51.0884, longitude: 4.3820 },
       color: '#F472B6',
       icon: 'musical-notes',
-    }
+    },
   ];
+
+  // Felépítjük a stage→napok mappinget a lineupból
+  const stageDays = useMemo(() => {
+    const map: Record<string, string[]> = {};
+    Object.entries((lineupData as any).lineup).forEach(([dateStr, dayData]: [string, any]) => {
+      dayData.stages.forEach((stage: any) => {
+        if (stage.artists && stage.artists.length > 0) {
+          if (!map[stage.name]) map[stage.name] = [];
+          map[stage.name].push(dateStr);
+        }
+      });
+    });
+    return map;
+  }, []);
 
   const onStagePress = (stage: Stage) => {
     setSelectedStageId(stage.id);
     mapRef.current?.animateToRegion({
       ...stage.coords,
-      latitudeDelta: 0.003, // Picit jobban ráközelít, mert már sok ikon van
+      latitudeDelta: 0.003,
       longitudeDelta: 0.003,
     }, 800);
   };
@@ -185,58 +224,56 @@ export default function MapScreen() {
   const handleLineupNavigation = (stageId: string) => {
     router.push({
       pathname: '/lineup',
-      // Mivel az ID-t pontosan a Lineup nevéhez igazítottuk, egyenesen ezt küldjük át!
-      params: { stage: stageId } 
+      params: { stage: stageId },
     });
   };
 
   const selectedStage = STAGES.find(s => s.id === selectedStageId);
+  const activeDays = selectedStage ? (stageDays[selectedStage.id] || []) : [];
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.screen}>
-        {/* Felső menüsor */}
         <AppHeader />
 
-        {/* Fő tartalom */}
         <View style={{ flex: 1, backgroundColor: '#000000' }}>
           <MapView
             ref={mapRef}
             style={StyleSheet.absoluteFillObject}
             initialRegion={TOMORROWLAND_REGION}
             mapType="satellite"
-            onPress={() => setSelectedStageId(null)} 
+            onPress={() => setSelectedStageId(null)}
           >
             {STAGES.map((stage) => {
               const isSelected = selectedStageId === stage.id;
-              
               return (
                 <Marker
                   key={stage.id}
                   coordinate={stage.coords}
+                  calloutEnabled={false}
                   onPress={(e) => {
-                    e.stopPropagation(); 
-                    onStagePress(stage); 
+                    e.stopPropagation();
+                    onStagePress(stage);
                   }}
                 >
                   <View style={localStyles.customMarkerContainer}>
                     <View style={[
-                      localStyles.markerIconBox, 
-                      { 
+                      localStyles.markerIconBox,
+                      {
                         borderColor: stage.color,
                         backgroundColor: isSelected ? stage.color : '#1e293b',
-                        transform: [{ scale: isSelected ? 1.1 : 1 }] 
-                      }
+                        transform: [{ scale: isSelected ? 1.18 : 1 }],
+                      },
                     ]}>
-                      <Ionicons 
-                        name={stage.icon} 
-                        size={16} 
-                        color={isSelected ? '#fff' : stage.color} 
+                      <Ionicons
+                        name={stage.icon}
+                        size={16}
+                        color={isSelected ? '#fff' : stage.color}
                       />
                     </View>
                     <View style={[
-                      localStyles.markerArrow, 
-                      { borderTopColor: isSelected ? stage.color : '#1e293b' }
+                      localStyles.markerArrow,
+                      { borderTopColor: isSelected ? stage.color : '#1e293b' },
                     ]} />
                   </View>
                 </Marker>
@@ -244,34 +281,83 @@ export default function MapScreen() {
             })}
           </MapView>
 
+          {/* STAGE KÁRTYA */}
           {selectedStage && (
-            <View style={localStyles.singleCardContainer}>
-              <View style={localStyles.card}>
-                <TouchableOpacity 
-                  activeOpacity={1}
-                  style={localStyles.cardTouchArea}
-                >
+            <View style={localStyles.cardWrapper}>
+              <View style={[localStyles.card, { borderColor: selectedStage.color }]}>
+
+                {/* FELSŐ SOR: kép + infó */}
+                <View style={localStyles.cardTop}>
                   <Image source={selectedStage.image} style={localStyles.cardImage} />
                   <View style={localStyles.cardInfo}>
-                    <Text numberOfLines={1} style={localStyles.cardTitle}>{selectedStage.title}</Text>
-                    <Text numberOfLines={2} style={localStyles.cardDesc}>{selectedStage.description}</Text>
-                  </View>
-                </TouchableOpacity>
+                    {/* Stage neve + ikon */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                      <View style={[localStyles.iconBadge, { backgroundColor: selectedStage.color + '22', borderColor: selectedStage.color }]}>
+                        <Ionicons name={selectedStage.icon} size={14} color={selectedStage.color} />
+                      </View>
+                      <Text style={localStyles.cardTitle} numberOfLines={2}>{selectedStage.title}</Text>
+                    </View>
 
-                <View style={localStyles.buttonContainer}>
-                  <TouchableOpacity 
+                    {/* Leírás */}
+                    <Text style={localStyles.cardDesc} numberOfLines={3}>{selectedStage.description}</Text>
+                  </View>
+                </View>
+
+                {/* DIVIDER */}
+                <View style={[localStyles.divider, { backgroundColor: selectedStage.color + '33' }]} />
+
+                {/* NAPOK + LINEUP GOMB */}
+                <View style={localStyles.cardBottom}>
+                  {/* Active Days */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 8 }}>
+                    <Ionicons name="calendar-outline" size={12} color={MUTED} />
+                    <Text style={localStyles.daysLabel}>
+                      {activeDays.length > 0 ? 'Active Days' : 'Coming Soon'}
+                    </Text>
+                  </View>
+                  {activeDays.length > 0 ? (
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
+                      <View style={{ flexDirection: 'row', gap: 5 }}>
+                        {activeDays.map(dateStr => (
+                          <View
+                            key={dateStr}
+                            style={[
+                              localStyles.dayBadge,
+                              {
+                                backgroundColor: selectedStage.color + '20',
+                                borderColor: selectedStage.color + '80',
+                              },
+                            ]}
+                          >
+                            <Text style={[localStyles.dayBadgeWeek, { color: selectedStage.color }]}>
+                              {WEEK_LABEL[dateStr]}
+                            </Text>
+                            <Text style={[localStyles.dayBadgeText, { color: WHITE }]}>
+                              {DAY_LABELS[dateStr]}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </ScrollView>
+                  ) : (
+                    <Text style={{ color: MUTED, fontSize: 12, marginBottom: 12 }}>—</Text>
+                  )}
+
+                  {/* LINEUP gomb — teljes szélességű */}
+                  <TouchableOpacity
                     style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
-                    onPress={() => handleLineupNavigation(selectedStage.title)}
+                    onPress={() => handleLineupNavigation(selectedStage.id)}
                   >
-                    <Text style={localStyles.lineupButtonText}>Lineup 🎵</Text>
+                    <Ionicons name="musical-notes" size={15} color="#fff" />
+                    <Text style={localStyles.lineupButtonText}>View Lineup</Text>
                   </TouchableOpacity>
                 </View>
+
               </View>
             </View>
           )}
         </View>
 
-        {/* Alsó menüsáv */}
         <AppBottomNav />
       </View>
     </SafeAreaView>
@@ -284,17 +370,17 @@ const localStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   markerIconBox: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 4,
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
+    elevation: 5,
   },
   markerArrow: {
     width: 0,
@@ -303,71 +389,129 @@ const localStyles = StyleSheet.create({
     borderStyle: 'solid',
     borderLeftWidth: 6,
     borderRightWidth: 6,
-    borderTopWidth: 6,
+    borderTopWidth: 7,
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     marginTop: -1,
   },
-  singleCardContainer: {
+
+  // Kártya wrapper
+  cardWrapper: {
     position: 'absolute',
     bottom: 20,
     left: 0,
     right: 0,
     alignItems: 'center',
+    paddingHorizontal: 10,
   },
   card: {
-    backgroundColor: '#1e293b',
+    backgroundColor: '#0d1117',
     width: CARD_WIDTH,
-    height: 100,
-    borderRadius: 16,
-    flexDirection: 'row',
+    borderRadius: 20,
+    borderWidth: 1.5,
     overflow: 'hidden',
-    elevation: 8,
+    elevation: 12,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.65,
+    shadowRadius: 10,
   },
-  cardTouchArea: {
-    flex: 1,
+
+  // Felső rész: kép + szöveg
+  cardTop: {
     flexDirection: 'row',
-    alignItems: 'center',
+    minHeight: 110,
   },
   cardImage: {
-    width: 80,
-    height: 100,
+    width: 100,
+    height: 130,
+    resizeMode: 'cover',
   },
   cardInfo: {
     flex: 1,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
+    paddingTop: 14,
+    paddingBottom: 10,
+    justifyContent: 'flex-start',
+  },
+  iconBadge: {
+    width: 26,
+    height: 26,
+    borderRadius: 8,
+    borderWidth: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   cardTitle: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: WHITE,
+    fontSize: 15,
+    fontWeight: '800',
+    flex: 1,
+    lineHeight: 20,
   },
   cardDesc: {
-    color: '#94a3b8',
-    fontSize: 12,
-    marginTop: 4,
+    color: MUTED,
+    fontSize: 12.5,
+    lineHeight: 18,
   },
-  buttonContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingRight: 12,
-    paddingLeft: 4,
+
+  // Divider
+  divider: {
+    height: 1,
+    marginHorizontal: 0,
   },
-  lineupButton: {
-    paddingVertical: 10,
+
+  // Alsó rész: napok + gomb
+  cardBottom: {
+    flexDirection: 'column',
     paddingHorizontal: 14,
+    paddingTop: 12,
+    paddingBottom: 14,
+    gap: 0,
+  },
+  daysLabel: {
+    color: MUTED,
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+  },
+  dayBadge: {
+    paddingHorizontal: 9,
+    paddingVertical: 5,
+    borderRadius: 8,
+    borderWidth: 1,
+    alignItems: 'center',
+    minWidth: 52,
+  },
+  dayBadgeWeek: {
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+    opacity: 0.8,
+  },
+  dayBadgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    marginTop: 1,
+  },
+
+  // Lineup gomb
+  lineupButton: {
+    paddingVertical: 13,
+    paddingHorizontal: 16,
     borderRadius: 12,
     alignItems: 'center',
-    elevation: 2,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 6,
+    width: '100%',
   },
   lineupButtonText: {
     color: '#fff',
     fontSize: 13,
-    fontWeight: 'bold',
+    fontWeight: '800',
+    letterSpacing: 0.5,
   },
 });

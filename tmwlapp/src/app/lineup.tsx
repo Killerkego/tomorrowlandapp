@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Image as RNImage,
   ScrollView,
@@ -76,27 +76,7 @@ export default function LineupScreen() {
 
   const { stage: mapStage } = useLocalSearchParams<{ stage?: string }>();
 
-  // A Térkép elküldi a nevet, mi pedig összepárosítjuk a JSON-ban lévő hivatalos nevekkel
-  useEffect(() => {
-    if (mapStage) {
-      const incomingStage = mapStage.toUpperCase();
-      
-      // Párosítási logika
-      if (incomingStage === 'MAINSTAGE') {
-        setSelectedStage('MAINSTAGE');
-      } else if (incomingStage === 'FREEDOM') {
-        setSelectedStage('FREEDOM BY BUD');
-      } else if (incomingStage === 'ATMOSPHERE') {
-        setSelectedStage('ATMOSPHERE');
-      } else if (incomingStage === 'CORE STAGE') {
-        setSelectedStage('CORE');
-      } else {
-        setSelectedStage(incomingStage);
-      }
-    }
-  }, [mapStage]);
-
-  // Load saved filters on focus
+  // Load saved filters on focus, but let mapStage override if present
   useFocusEffect(
     useCallback(() => {
       const loadFilters = async () => {
@@ -104,16 +84,22 @@ export default function LineupScreen() {
           const savedWeek = await AsyncStorage.getItem('lineup_week');
           const savedDate = await AsyncStorage.getItem('lineup_date');
           const savedStage = await AsyncStorage.getItem('lineup_stage');
-          
+
           if (savedWeek) setSelectedWeek(parseInt(savedWeek) as 1 | 2);
           if (savedDate) setSelectedDate(savedDate);
-          if (savedStage) setSelectedStage(savedStage);
+
+          // Ha a térképről jött stage param, azt használjuk — ne az AsyncStorage-t
+          if (mapStage) {
+            setSelectedStage(mapStage.toUpperCase());
+          } else if (savedStage) {
+            setSelectedStage(savedStage);
+          }
         } catch (e) {
           console.error('Failed to load lineup filters', e);
         }
       };
       loadFilters();
-    }, [])
+    }, [mapStage])
   );
 
   const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
