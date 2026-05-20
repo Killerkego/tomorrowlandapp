@@ -6,7 +6,10 @@ type User = {
   _id?: string;
   username: string;
   email: string;
+  fullName?: string;
+  phoneNumber?: string;
   profilePicture?: string;
+  favorites?: { name: string }[];
 };
 
 type AuthContextType = {

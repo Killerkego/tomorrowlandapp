@@ -57,10 +57,59 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  profilePicture: { type: String, default: null }
+  fullName: { type: String, default: '' },
+  phoneNumber: { type: String, default: '' },
+  profilePicture: { type: String, default: null },
+  favorites: [{ name: String }]
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Sync Favorites Endpoint
+app.post('/api/user/favorites', async (req, res) => {
+  try {
+    const { userId, favorites } = req.body;
+    const user = await User.findByIdAndUpdate(userId, { favorites }, { new: true });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ message: 'Favorites synced', favorites: user.favorites });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Profile Update Endpoint
+app.put('/api/user/update', async (req, res) => {
+  try {
+    const { userId, username, email, password, fullName, phoneNumber } = req.body;
+    
+    const updateData = { username, email, fullName, phoneNumber };
+    
+    if (password) {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+    
+    const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+        favorites: user.favorites
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
 // Profile Picture Upload Endpoint
 app.post('/api/upload-profile-picture', upload.single('image'), async (req, res) => {
@@ -81,7 +130,19 @@ app.post('/api/upload-profile-picture', upload.single('image'), async (req, res)
     }
 
     console.log('Upload successful:', imageUrl);
-    res.json({ message: 'Profile picture updated', profilePicture: imageUrl, user });
+    res.json({ 
+      message: 'Profile picture updated', 
+      profilePicture: imageUrl, 
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+        favorites: user.favorites
+      } 
+    });
   } catch (error) {
     console.error('Upload error details:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -139,7 +200,10 @@ app.post('/api/login', async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
-        profilePicture: user.profilePicture
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber,
+        profilePicture: user.profilePicture,
+        favorites: user.favorites
       }
     });
   } catch (error) {

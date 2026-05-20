@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Image as RNImage,
   ScrollView,
@@ -17,6 +17,7 @@ import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useAuth } from '@/context/AuthContext';
 import { Modal } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import lineup data
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
@@ -69,10 +70,29 @@ export default function LineupScreen() {
   // Available dates based on week
   const week1Dates = ['2026-07-17', '2026-07-18', '2026-07-19'];
   const week2Dates = ['2026-07-24', '2026-07-25', '2026-07-26'];
-  const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
   
-  const [selectedDate, setSelectedDate] = useState(currentWeekDates[0]);
+  const [selectedDate, setSelectedDate] = useState(week1Dates[0]);
   const [selectedStage, setSelectedStage] = useState<string>('ALL');
+
+  // Load saved filters on mount
+  useEffect(() => {
+    const loadFilters = async () => {
+      try {
+        const savedWeek = await AsyncStorage.getItem('lineup_week');
+        const savedDate = await AsyncStorage.getItem('lineup_date');
+        const savedStage = await AsyncStorage.getItem('lineup_stage');
+        
+        if (savedWeek) setSelectedWeek(parseInt(savedWeek) as 1 | 2);
+        if (savedDate) setSelectedDate(savedDate);
+        if (savedStage) setSelectedStage(savedStage);
+      } catch (e) {
+        console.error('Failed to load lineup filters', e);
+      }
+    };
+    loadFilters();
+  }, []);
+
+  const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
 
   const handleFavoritePress = (artistName: string) => {
     if (!isLoggedIn) {
@@ -82,17 +102,42 @@ export default function LineupScreen() {
     }
   };
 
-  // When week changes, reset date and stage
-  const handleWeekChange = (week: 1 | 2) => {
+  // When week changes, reset date and stage and save to storage
+  const handleWeekChange = async (week: 1 | 2) => {
     setSelectedWeek(week);
     const newDates = week === 1 ? week1Dates : week2Dates;
     setSelectedDate(newDates[0]);
     setSelectedStage('ALL');
+    
+    try {
+      await AsyncStorage.setItem('lineup_week', week.toString());
+      await AsyncStorage.setItem('lineup_date', newDates[0]);
+      await AsyncStorage.setItem('lineup_stage', 'ALL');
+    } catch (e) {
+      console.error('Failed to save week filter', e);
+    }
   };
 
-  const handleDateChange = (date: string) => {
+  const handleDateChange = async (date: string) => {
     setSelectedDate(date);
     setSelectedStage('ALL');
+    
+    try {
+      await AsyncStorage.setItem('lineup_date', date);
+      await AsyncStorage.setItem('lineup_stage', 'ALL');
+    } catch (e) {
+      console.error('Failed to save date filter', e);
+    }
+  };
+
+  const handleStageChange = async (stage: string) => {
+    setSelectedStage(stage);
+    
+    try {
+      await AsyncStorage.setItem('lineup_stage', stage);
+    } catch (e) {
+      console.error('Failed to save stage filter', e);
+    }
   };
 
   // Get data for the selected day

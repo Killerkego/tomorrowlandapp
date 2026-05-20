@@ -23,7 +23,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
-  const { user, signIn, signOut } = useAuth();
+  const { user, signIn, signOut, isLoggedIn } = useAuth();
   
   // States
   const [email, setEmail] = useState('');
@@ -32,6 +32,13 @@ export default function LoginScreen() {
   const [focusedField, setFocusedField] = useState<'email' | 'password' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/user');
+    }
+  }, [isLoggedIn]);
 
   const handleSignIn = () => {
     Keyboard.dismiss();

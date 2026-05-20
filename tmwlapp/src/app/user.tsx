@@ -6,68 +6,65 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
+  TextInput,
+  Modal,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles } from './user.styles';
-import { GOLD, MUTED, ACCENT, BG } from './login.styles';
+import { GOLD, MUTED, ACCENT, BG, WHITE } from './login.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { API_BASE_URL, SERVER_URL } from '@/services/apiConfig';
+import { useAuth } from '@/context/AuthContext';
+import { useFavorites } from '@/context/FavoritesContext';
 
-// Mocked user storage (in a real app, use Context or State Management)
 export default function UserScreen() {
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams();
+  const { user, signIn, signOut, isLoggedIn } = useAuth();
+  const { favorites } = useFavorites();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace('/login');
+    }
+  }, [isLoggedIn]);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   
-  // Try to get user data from params (passed from login) or fallback
-  const [userData, setUserData] = useState({
-    id: (params.id as string) || '',
-    username: (params.username as string) || 'Tomorrowland Citizen',
-    email: (params.email as string) || 'citizen@tomorrowland.com',
-    profilePicture: (params.profilePicture as string) || null,
-    memberSince: '2026.05.20',
+  // Edit form states
+  const [editData, setEditData] = useState({
+    username: '',
+    email: '',
+    fullName: '',
+    phoneNumber: '',
+    password: '',
   });
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [editError, setEditError] = useState('');
 
   useEffect(() => {
-    // Ha nincsenek paraméterek (pl. frissítés után), próbáljuk meg betölteni tárolóból
-    if (!params.username || !params.email) {
-      loadUserData();
+    if (user) {
+      setEditData({
+        username: user.username || '',
+        email: user.email || '',
+        fullName: user.fullName || '',
+        phoneNumber: user.phoneNumber || '',
+        password: '',
+      });
     }
-  }, []);
-
-  const loadUserData = async () => {
-    try {
-      console.log('User page: Loading user data from storage...');
-      const savedUser = await AsyncStorage.getItem('user');
-      console.log('User page: Raw data:', savedUser);
-
-      if (savedUser) {
-        const parsedUser = JSON.parse(savedUser);
-        setUserData({
-          ...userData,
-          id: parsedUser.id || parsedUser._id || '',
-          username: parsedUser.username || 'Tomorrowland Citizen',
-          email: parsedUser.email || 'citizen@tomorrowland.com',
-          profilePicture: parsedUser.profilePicture || null
-        });
-      } else {
-        console.warn('User page: No saved user found in storage');
-      }
-    } catch (e) {
-      console.error('User page: Error loading user data', e);
-    }
-  };
+  }, [user, isEditModalVisible]);
 
   const pickImage = async () => {
-    // Permission check
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Sajnos szükségünk van a galéria hozzáférésre a kép feltöltéséhez!');
@@ -81,7 +78,7 @@ export default function UserScreen() {
       quality: 0.5,
     });
 
-    if (!result.canceled) {
+    if (!result.canceled && user?.id) {
       uploadImage(result.assets[0].uri);
     }
   };
@@ -96,56 +93,75 @@ export default function UserScreen() {
         type: 'image/jpeg',
         name: 'profile.jpg',
       });
-      formData.append('userId', userData.id);
+      formData.append('userId', user?.id || user?._id);
 
       const response = await fetch(`${API_BASE_URL}/upload-profile-picture`, {
         method: 'POST',
         body: formData,
-        // NE állítsuk be kézzel a Content-Type-ot FormData esetén!
       });
 
       const data = await response.json();
       if (response.ok) {
-        setUserData({ ...userData, profilePicture: data.profilePicture });
-        // Update stored user
-        const savedUser = await AsyncStorage.getItem('user');
-        if (savedUser) {
-          const parsedUser = JSON.parse(savedUser);
-          parsedUser.profilePicture = data.profilePicture;
-          await AsyncStorage.setItem('user', JSON.stringify(parsedUser));
-        }
+        await signIn(data.user);
       } else {
-        console.error('Server response error:', data);
         alert(data.message || 'Hiba történt a feltöltés során');
       }
     } catch (error: any) {
-      console.error('Upload error details:', error);
       alert(`Hálózati hiba: ${error.message || 'Ismeretlen hiba'}`);
     } finally {
       setIsUploading(false);
     }
   };
 
-  const handleSignOut = async () => {
-    setIsLoading(true);
+  const handleUpdateProfile = async () => {
+    setEditError('');
+    setIsUpdating(true);
     try {
-      // Töröljük a mentett adatokat
-      await AsyncStorage.removeItem('user');
-      await AsyncStorage.removeItem('token');
-      
-      setTimeout(() => {
-        setIsLoading(false);
-        router.replace('/login');
-      }, 1000);
-    } catch (e) {
-      setIsLoading(false);
-      console.error('Failed to sign out', e);
+      const response = await fetch(`${API_BASE_URL}/user/update`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user?.id || user?._id,
+          ...editData,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        await signIn(data.user);
+        setIsEditModalVisible(false);
+      } else {
+        setEditError(data.message || 'Failed to update profile');
+      }
+    } catch (error: any) {
+      setEditError('Connection error. Please try again.');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
-  const profilePicUrl = userData.profilePicture 
-    ? { uri: `${SERVER_URL}${userData.profilePicture}` } 
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    await signOut();
+    setTimeout(() => {
+      setIsLoading(false);
+      router.replace('/login');
+    }, 500);
+  };
+
+  const profilePicUrl = user?.profilePicture 
+    ? { uri: `${SERVER_URL}${user.profilePicture}` } 
     : null;
+
+  if (!user) {
+    return (
+      <View style={[styles.safeArea, { justifyContent: 'center', alignItems: 'center' }]}>
+        <ActivityIndicator color={GOLD} size="large" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.safeArea}>
@@ -189,7 +205,8 @@ export default function UserScreen() {
                 <Ionicons name="camera" size={18} color={BG} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.heroTitle}>{userData.username}</Text>
+            <Text style={styles.heroTitle}>{user.fullName || user.username}</Text>
+            {user.fullName && <Text style={{ color: MUTED, fontSize: 14 }}>@{user.username}</Text>}
           </View>
         </View>
 
@@ -204,17 +221,27 @@ export default function UserScreen() {
               </View>
               <View>
                 <Text style={styles.infoLabel}>Email Address</Text>
-                <Text style={styles.infoValue}>{userData.email}</Text>
+                <Text style={styles.infoValue}>{user.email}</Text>
               </View>
             </View>
 
             <View style={styles.infoItem}>
               <View style={styles.infoIconContainer}>
-                <Ionicons name="calendar-outline" size={20} color={GOLD} />
+                <Ionicons name="call-outline" size={20} color={GOLD} />
               </View>
               <View>
-                <Text style={styles.infoLabel}>Member Since</Text>
-                <Text style={styles.infoValue}>{userData.memberSince}</Text>
+                <Text style={styles.infoLabel}>Phone Number</Text>
+                <Text style={styles.infoValue}>{user.phoneNumber || 'Not set'}</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoItem}>
+              <View style={styles.infoIconContainer}>
+                <Ionicons name="heart-outline" size={20} color={ACCENT} />
+              </View>
+              <View>
+                <Text style={styles.infoLabel}>Favorite Artists</Text>
+                <Text style={styles.infoValue}>{favorites.length} Artists Saved</Text>
               </View>
             </View>
 
@@ -232,8 +259,11 @@ export default function UserScreen() {
 
         {/* ACTIONS */}
         <View style={styles.actionContainer}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Ionicons name="settings-outline" size={22} color={MUTED} />
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => setIsEditModalVisible(true)}
+          >
+            <Ionicons name="create-outline" size={22} color={MUTED} />
             <Text style={styles.actionButtonText}>Edit Profile</Text>
           </TouchableOpacity>
 
@@ -254,6 +284,109 @@ export default function UserScreen() {
         </View>
 
       </ScrollView>
+
+      {/* EDIT PROFILE MODAL */}
+      <Modal
+        visible={isEditModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsEditModalVisible(false)}
+      >
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.9)' }}
+        >
+          <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 60 }}>
+            <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, borderWidth: 1, borderColor: GOLD }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                <Text style={{ color: WHITE, fontSize: 24, fontWeight: '700' }}>Edit Profile</Text>
+                <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+                  <Ionicons name="close" size={28} color={MUTED} />
+                </TouchableOpacity>
+              </View>
+
+              <View style={{ gap: 16 }}>
+                <View>
+                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>FULL NAME</Text>
+                  <TextInput
+                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                    value={editData.fullName}
+                    onChangeText={(text) => setEditData({...editData, fullName: text})}
+                    placeholder="Enter full name"
+                    placeholderTextColor={MUTED}
+                  />
+                </View>
+
+                <View>
+                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>USERNAME</Text>
+                  <TextInput
+                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                    value={editData.username}
+                    onChangeText={(text) => setEditData({...editData, username: text})}
+                  />
+                </View>
+
+                <View>
+                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>EMAIL ADDRESS</Text>
+                  <TextInput
+                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                    value={editData.email}
+                    onChangeText={(text) => setEditData({...editData, email: text})}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                  />
+                </View>
+
+                <View>
+                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>PHONE NUMBER</Text>
+                  <TextInput
+                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                    value={editData.phoneNumber}
+                    onChangeText={(text) => setEditData({...editData, phoneNumber: text})}
+                    keyboardType="phone-pad"
+                    placeholder="e.g. +36 30 123 4567"
+                    placeholderTextColor={MUTED}
+                  />
+                </View>
+
+                <View>
+                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>NEW PASSWORD (OPTIONAL)</Text>
+                  <TextInput
+                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                    value={editData.password}
+                    onChangeText={(text) => setEditData({...editData, password: text})}
+                    secureTextEntry
+                    placeholder="Leave blank to keep current"
+                    placeholderTextColor={MUTED}
+                  />
+                </View>
+              </View>
+
+              {editError ? <Text style={{ color: ACCENT, marginTop: 16, textAlign: 'center' }}>{editError}</Text> : null}
+
+              <TouchableOpacity 
+                style={{ 
+                  backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                  marginTop: 32, 
+                  padding: 16, 
+                  borderRadius: 12, 
+                  alignItems: 'center',
+                  borderWidth: 1.5,
+                  borderColor: ACCENT,
+                }}
+                onPress={handleUpdateProfile}
+                disabled={isUpdating}
+              >
+                {isUpdating ? (
+                  <ActivityIndicator color={ACCENT} />
+                ) : (
+                  <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Save Changes</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
 
       <AppBottomNav />
     </View>

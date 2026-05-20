@@ -9,13 +9,7 @@ export function AppHeader() {
   const isUserActive = pathname === '/login' || pathname === '/user';
 
   const handleUserPress = () => {
-    // Ha már a profil oldalon vagyunk, maradjunk ott, egyébként menjünk a login/user-re
-    // (A LoginScreen-en lévő automatikus ellenőrzés majd átviszi a /user-re ha be van lépve)
-    if (pathname === '/user') {
-      router.push('/user');
-    } else {
-      router.push('/login');
-    }
+    router.push('/user');
   };
 
   return (
