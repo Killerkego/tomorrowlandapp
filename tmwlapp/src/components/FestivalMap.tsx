@@ -1,18 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Image } from 'expo-image';
 import MapView, { Marker } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { AppHeader } from '@/components/AppHeader';
-import { AppBottomNav } from '@/components/AppBottomNav';
-import { styles } from './index.styles';
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.90;
 
 type Stage = {
-  id: string; // Most az ID egyben a hivatalos név is lesz a könnyebb szűrésért
+  id: string;
   title: string;
   description: string;
   image: any;
@@ -21,7 +18,7 @@ type Stage = {
   icon: keyof typeof Ionicons.glyphMap;
 };
 
-export default function MapScreen() {
+export function FestivalMap() {
   const mapRef = useRef<MapView>(null);
   const router = useRouter();
 
@@ -34,13 +31,12 @@ export default function MapScreen() {
     longitudeDelta: 0.012,
   };
 
-  // MIND A 15 SZÍNPAD BEILLESZTVE A LINEUP ALAPJÁN
   const STAGES: Stage[] = [
     {
       id: 'MAINSTAGE',
       title: 'Mainstage',
       description: 'The monumental heart of Tomorrowland.',
-      image: require('../../assets/images/lineup.jpg'), // Using lineup.jpg as fallback if specific image doesn't exist
+      image: require('../../assets/images/lineup.jpg'),
       coords: { latitude: 51.0918, longitude: 4.3840 }, 
       color: '#FACC15',
       icon: 'star', 
@@ -177,7 +173,7 @@ export default function MapScreen() {
     setSelectedStageId(stage.id);
     mapRef.current?.animateToRegion({
       ...stage.coords,
-      latitudeDelta: 0.003, // Picit jobban ráközelít, mert már sok ikon van
+      latitudeDelta: 0.003,
       longitudeDelta: 0.003,
     }, 800);
   };
@@ -185,7 +181,6 @@ export default function MapScreen() {
   const handleLineupNavigation = (stageId: string) => {
     router.push({
       pathname: '/lineup',
-      // Mivel az ID-t pontosan a Lineup nevéhez igazítottuk, egyenesen ezt küldjük át!
       params: { stage: stageId } 
     });
   };
@@ -193,88 +188,77 @@ export default function MapScreen() {
   const selectedStage = STAGES.find(s => s.id === selectedStageId);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.screen}>
-        {/* Felső menüsor */}
-        <AppHeader />
-
-        {/* Fő tartalom */}
-        <View style={{ flex: 1, backgroundColor: '#000000' }}>
-          <MapView
-            ref={mapRef}
-            style={StyleSheet.absoluteFillObject}
-            initialRegion={TOMORROWLAND_REGION}
-            mapType="satellite"
-            onPress={() => setSelectedStageId(null)} 
-          >
-            {STAGES.map((stage) => {
-              const isSelected = selectedStageId === stage.id;
-              
-              return (
-                <Marker
-                  key={stage.id}
-                  coordinate={stage.coords}
-                  onPress={(e) => {
-                    e.stopPropagation(); 
-                    onStagePress(stage); 
-                  }}
-                >
-                  <View style={localStyles.customMarkerContainer}>
-                    <View style={[
-                      localStyles.markerIconBox, 
-                      { 
-                        borderColor: stage.color,
-                        backgroundColor: isSelected ? stage.color : '#1e293b',
-                        transform: [{ scale: isSelected ? 1.1 : 1 }] 
-                      }
-                    ]}>
-                      <Ionicons 
-                        name={stage.icon} 
-                        size={16} 
-                        color={isSelected ? '#fff' : stage.color} 
-                      />
-                    </View>
-                    <View style={[
-                      localStyles.markerArrow, 
-                      { borderTopColor: isSelected ? stage.color : '#1e293b' }
-                    ]} />
-                  </View>
-                </Marker>
-              );
-            })}
-          </MapView>
-
-          {selectedStage && (
-            <View style={localStyles.singleCardContainer}>
-              <View style={localStyles.card}>
-                <TouchableOpacity 
-                  activeOpacity={1}
-                  style={localStyles.cardTouchArea}
-                >
-                  <Image source={selectedStage.image} style={localStyles.cardImage} />
-                  <View style={localStyles.cardInfo}>
-                    <Text numberOfLines={1} style={localStyles.cardTitle}>{selectedStage.title}</Text>
-                    <Text numberOfLines={2} style={localStyles.cardDesc}>{selectedStage.description}</Text>
-                  </View>
-                </TouchableOpacity>
-
-                <View style={localStyles.buttonContainer}>
-                  <TouchableOpacity 
-                    style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
-                    onPress={() => handleLineupNavigation(selectedStage.title)}
-                  >
-                    <Text style={localStyles.lineupButtonText}>Lineup 🎵</Text>
-                  </TouchableOpacity>
+    <View style={{ flex: 1, backgroundColor: '#000000' }}>
+      <MapView
+        ref={mapRef}
+        style={StyleSheet.absoluteFillObject}
+        initialRegion={TOMORROWLAND_REGION}
+        mapType="satellite"
+        onPress={() => setSelectedStageId(null)} 
+      >
+        {STAGES.map((stage) => {
+          const isSelected = selectedStageId === stage.id;
+          
+          return (
+            <Marker
+              key={stage.id}
+              coordinate={stage.coords}
+              onPress={(e) => {
+                e.stopPropagation(); 
+                onStagePress(stage); 
+              }}
+            >
+              <View style={localStyles.customMarkerContainer}>
+                <View style={[
+                  localStyles.markerIconBox, 
+                  { 
+                    borderColor: stage.color,
+                    backgroundColor: isSelected ? stage.color : '#1e293b',
+                    transform: [{ scale: isSelected ? 1.1 : 1 }] 
+                  }
+                ]}>
+                  <Ionicons 
+                    name={stage.icon} 
+                    size={16} 
+                    color={isSelected ? '#fff' : stage.color} 
+                  />
                 </View>
+                <View style={[
+                  localStyles.markerArrow, 
+                  { borderTopColor: isSelected ? stage.color : '#1e293b' }
+                ]} />
               </View>
-            </View>
-          )}
-        </View>
+            </Marker>
+          );
+        })}
+      </MapView>
 
-        {/* Alsó menüsáv */}
-        <AppBottomNav />
-      </View>
-    </SafeAreaView>
+      {selectedStage && (
+        <View style={localStyles.singleCardContainer}>
+          <View style={localStyles.card}>
+            <TouchableOpacity 
+              activeOpacity={1}
+              style={localStyles.cardTouchArea}
+            >
+              <Image source={selectedStage.image} style={localStyles.cardImage} contentFit="cover" />
+              <View style={localStyles.cardInfo}>
+                <Text numberOfLines={1} style={localStyles.cardTitle}>{selectedStage.title}</Text>
+                <Text numberOfLines={2} style={localStyles.cardDesc}>{selectedStage.description}</Text>
+              </View>
+            </TouchableOpacity>
+
+            <View style={localStyles.buttonContainer}>
+              <TouchableOpacity 
+                style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
+                onPress={() => handleLineupNavigation(selectedStage.title)}
+              >
+                <Text style={localStyles.lineupButtonText}>Lineup 🎵</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
+    </View>
   );
 }
 

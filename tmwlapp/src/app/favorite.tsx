@@ -105,7 +105,12 @@ export default function FavoriteScreen() {
               const performanceDates = getArtistDates(artist.name);
 
               return (
-                <View key={`${artist.name}-${index}`} style={styles.artistCard}>
+                <TouchableOpacity 
+                  key={`${artist.name}-${index}`} 
+                  style={styles.artistCard}
+                  activeOpacity={0.8}
+                  onPress={() => router.push(`/artist/${encodeURIComponent(artist.name)}`)}
+                >
                   <Image 
                     source={imageSource}
                     style={styles.artistImage}
@@ -128,7 +133,7 @@ export default function FavoriteScreen() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })
           ) : (

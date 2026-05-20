@@ -293,7 +293,7 @@ export default function LineupScreen() {
           >
             <TouchableOpacity 
               style={[styles.stageButton, selectedStage === 'ALL' && styles.stageButtonActive]}
-              onPress={() => setSelectedStage('ALL')}
+              onPress={() => handleStageChange('ALL')}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                 <Ionicons name="apps-outline" size={16} color={selectedStage === 'ALL' ? GOLD : MUTED} />
@@ -307,7 +307,7 @@ export default function LineupScreen() {
                 <TouchableOpacity 
                   key={stage}
                   style={[styles.stageButton, isActive && { borderColor: config.color, backgroundColor: `${config.color}20` }]}
-                  onPress={() => setSelectedStage(stage)}
+                  onPress={() => handleStageChange(stage)}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                     <Ionicons name={config.icon} size={16} color={isActive ? config.color : MUTED} />
@@ -328,7 +328,12 @@ export default function LineupScreen() {
               const imageSource = artistImgUrl ? { uri: artistImgUrl } : require('../../assets/images/lineup.jpg');
 
               return (
-                <View key={`${artist.name}-${index}`} style={styles.artistCard}>
+                <TouchableOpacity 
+                  key={`${artist.name}-${index}`} 
+                  style={styles.artistCard}
+                  activeOpacity={0.8}
+                  onPress={() => router.push(`/artist/${encodeURIComponent(artist.name)}`)}
+                >
                   <Image 
                     source={imageSource}
                     style={styles.artistImage}
@@ -359,7 +364,7 @@ export default function LineupScreen() {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })
           ) : (

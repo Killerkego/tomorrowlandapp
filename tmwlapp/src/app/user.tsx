@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
+  Image as RNImage,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
@@ -9,13 +10,14 @@ import {
   TextInput,
   Modal,
   KeyboardAvoidingView,
+  StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { router, Redirect } from 'expo-router';
-import { AppHeader } from '@/components/AppHeader';
+import { router } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles } from './user.styles';
 import { GOLD, MUTED, ACCENT, BG, WHITE } from './login.styles';
@@ -220,26 +222,47 @@ export default function UserScreen() {
   }
 
   return (
-    <View style={styles.safeArea}>
+    <SafeAreaView style={styles.safeArea} edges={[]}>
       <ScrollView 
         style={styles.scroll} 
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* HERO SECTION */}
-        <View style={styles.heroContainer}>
+        <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
           <Image
             source={require('../../assets/images/User.jpg')}
             style={styles.heroBgImage}
             contentFit="cover"
           />
           <LinearGradient
-            colors={['rgba(0,0,0,0.2)', 'rgba(0,0,0,0.5)', '#000000']}
-            style={styles.gradientOverlay}
+            colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.5)', 'rgba(0,0,0,0.7)', '#000000']}
+            locations={[0, 0.3, 0.5, 0.7, 1.0]}
+            style={StyleSheet.absoluteFillObject}
           />
 
-          <View style={{ position: 'absolute', top: insets.top, left: 0, right: 0, zIndex: 10 }}>
-            <AppHeader />
+          {/* HEADER OVERLAY */}
+          <View style={[styles.overlayHeader, { top: insets.top }]}>
+            <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
+              <Ionicons name="information-circle-outline" size={36} color={WHITE} />
+            </TouchableOpacity>
+            <View style={styles.headerCenter} pointerEvents="none">
+              <RNImage
+                source={require('../../assets/images/tmwl_logo.png')}
+                style={styles.centerLogo}
+                resizeMode="contain"
+              />
+            </View>
+            <TouchableOpacity
+              style={[styles.headerSide, styles.headerSideRight]}
+              onPress={() => router.push('/user')}
+            >
+              <Ionicons
+                name="person-circle-outline"
+                size={36}
+                color={GOLD}
+              />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.heroContent}>
@@ -452,7 +475,7 @@ export default function UserScreen() {
               <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, borderWidth: 1, borderColor: GOLD }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                   <TouchableOpacity onPress={() => setModalView('edit')}>
-                    <Ionicons name="arrow-back" size={28} color={MUTED} />
+                    <Ionicons name="chevron-back" size={28} color={MUTED} />
                   </TouchableOpacity>
                   <Text style={{ color: WHITE, fontSize: 20, fontWeight: '700' }}>Change Password</Text>
                   <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
@@ -527,6 +550,6 @@ export default function UserScreen() {
       </Modal>
 
       <AppBottomNav />
-    </View>
+    </SafeAreaView>
   );
 }

@@ -18,19 +18,43 @@ export const styles = StyleSheet.create({
   
   // Hero Section
   heroContainer: {
-    height: 300,
+    minHeight: 440,
     backgroundColor: BG,
-    position: 'relative',
     overflow: 'hidden',
+    flexDirection: 'column',
     justifyContent: 'flex-end',
   },
   heroBgImage: {
     ...StyleSheet.absoluteFillObject,
-    opacity: 0.6,
+    opacity: 0.8,
   },
   gradientOverlay: {
     ...StyleSheet.absoluteFillObject,
   },
+  overlayHeader: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 56,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    zIndex: 10,
+  },
+  headerSide: {
+    width: 44,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  headerSideRight: { alignItems: 'flex-end' },
+  headerCenter: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'none',
+  },
+  centerLogo: { width: 40, height: 40, tintColor: '#ffffff' },
   heroContent: {
     paddingHorizontal: 24,
     paddingBottom: 30,

@@ -5,10 +5,13 @@ import {
   Text,
   View,
   useWindowDimensions,
+  TouchableOpacity,
+  Image as RNImage,
 } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 import { FestivalCountdown } from '@/components/FestivalCountdown';
 import { NewsCard } from '@/components/NewsCard';
@@ -53,7 +56,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.screen}>
         <ScrollView
           style={styles.scroll}
@@ -66,8 +69,41 @@ export default function HomeScreen() {
             <VideoBackground source={require('../../assets/videos/tmwl_video.mp4')} />
             <View style={styles.heroOverlay} />
 
-            <View style={[styles.heroMain, { minHeight: heroHeight }]}>
-              <AppHeader />
+            <View style={[styles.heroMain, { minHeight: heroHeight, paddingTop: insets.top }]}>
+              {/* HEADER OVERLAY */}
+              <View style={{
+                position: 'absolute',
+                top: insets.top,
+                left: 0,
+                right: 0,
+                height: 56,
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingHorizontal: 20,
+                zIndex: 10,
+              }}>
+                <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
+                  <Ionicons name="information-circle-outline" size={36} color="#ffffff" />
+                </TouchableOpacity>
+                <View style={styles.headerCenter} pointerEvents="none">
+                  <RNImage
+                    source={require('../../assets/images/tmwl_logo.png')}
+                    style={styles.centerLogo}
+                    resizeMode="contain"
+                  />
+                </View>
+                <TouchableOpacity
+                  style={[styles.headerSide, styles.headerSideRight]}
+                  onPress={() => router.push('/user')}
+                >
+                  <Ionicons
+                    name="person-circle-outline"
+                    size={36}
+                    color="#ffffff"
+                  />
+                </TouchableOpacity>
+              </View>
 
               <View style={styles.heroContent}>
                 <Text style={[styles.mainTitle, { fontSize: titleSize }]}>Tomorrowland Belgium</Text>
