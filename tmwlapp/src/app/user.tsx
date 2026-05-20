@@ -14,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, Redirect } from 'expo-router';
 import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles } from './user.styles';
@@ -29,17 +29,11 @@ export default function UserScreen() {
   const insets = useSafeAreaInsets();
   const { user, signIn, signOut, isLoggedIn } = useAuth();
   const { favorites } = useFavorites();
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace('/login');
-    }
-  }, [isLoggedIn]);
   
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [modalView, setModalView] = useState<'edit' | 'password'>('edit');
   
   // Edit form states
   const [editData, setEditData] = useState({
@@ -47,22 +41,45 @@ export default function UserScreen() {
     email: '',
     fullName: '',
     phoneNumber: '',
-    password: '',
   });
+
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  
   const [isUpdating, setIsUpdating] = useState(false);
   const [editError, setEditError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Safe redirect if not authenticated
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // Delay navigation slightly to ensure the router is fully mounted
+      const timer = setTimeout(() => {
+        router.replace('/login');
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
-    if (user) {
+    if (user && modalView === 'edit') {
       setEditData({
         username: user.username || '',
         email: user.email || '',
         fullName: user.fullName || '',
         phoneNumber: user.phoneNumber || '',
-        password: '',
       });
+      setEditError('');
+      setSuccessMessage('');
+    } else if (modalView === 'password') {
+      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      setEditError('');
+      setSuccessMessage('');
     }
-  }, [user, isEditModalVisible]);
+  }, [user, isEditModalVisible, modalView]);
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -134,6 +151,45 @@ export default function UserScreen() {
         setIsEditModalVisible(false);
       } else {
         setEditError(data.message || 'Failed to update profile');
+      }
+    } catch (error: any) {
+      setEditError('Connection error. Please try again.');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handlePasswordChange = async () => {
+    setEditError('');
+    setSuccessMessage('');
+    
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+      setEditError('Please fill in all password fields.');
+      return;
+    }
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setEditError('New passwords do not match.');
+      return;
+    }
+    
+    setIsUpdating(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/change-password`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user?.id || user?._id,
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setSuccessMessage('Password changed successfully!');
+        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+      } else {
+        setEditError(data.message || 'Failed to change password');
       }
     } catch (error: any) {
       setEditError('Connection error. Please try again.');
@@ -297,93 +353,175 @@ export default function UserScreen() {
           style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.9)' }}
         >
           <ScrollView contentContainerStyle={{ padding: 20, paddingTop: 60 }}>
-            <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, borderWidth: 1, borderColor: GOLD }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-                <Text style={{ color: WHITE, fontSize: 24, fontWeight: '700' }}>Edit Profile</Text>
-                <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
-                  <Ionicons name="close" size={28} color={MUTED} />
+            {modalView === 'edit' ? (
+              <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, borderWidth: 1, borderColor: GOLD }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                  <Text style={{ color: WHITE, fontSize: 24, fontWeight: '700' }}>Edit Profile</Text>
+                  <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+                    <Ionicons name="close" size={28} color={MUTED} />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ gap: 16 }}>
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>FULL NAME</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={editData.fullName}
+                      onChangeText={(text) => setEditData({...editData, fullName: text})}
+                      placeholder="Enter full name"
+                      placeholderTextColor={MUTED}
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>USERNAME</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={editData.username}
+                      onChangeText={(text) => setEditData({...editData, username: text})}
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>EMAIL ADDRESS</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={editData.email}
+                      onChangeText={(text) => setEditData({...editData, email: text})}
+                      keyboardType="email-address"
+                      autoCapitalize="none"
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>PHONE NUMBER</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={editData.phoneNumber}
+                      onChangeText={(text) => setEditData({...editData, phoneNumber: text})}
+                      keyboardType="phone-pad"
+                      placeholder="e.g. +36 30 123 4567"
+                      placeholderTextColor={MUTED}
+                    />
+                  </View>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                      marginTop: 16, 
+                      padding: 16, 
+                      borderRadius: 12, 
+                      borderWidth: 1.5,
+                      borderColor: ACCENT,
+                      gap: 8
+                    }}
+                    onPress={() => setModalView('password')}
+                  >
+                    <Ionicons name="lock-closed-outline" size={20} color={ACCENT} />
+                    <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Change Password</Text>
+                  </TouchableOpacity>
+                </View>
+
+                {editError ? <Text style={{ color: ACCENT, marginTop: 16, textAlign: 'center' }}>{editError}</Text> : null}
+
+                <TouchableOpacity 
+                  style={{ 
+                    backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                    marginTop: 32, 
+                    padding: 16, 
+                    borderRadius: 12, 
+                    alignItems: 'center',
+                    borderWidth: 1.5,
+                    borderColor: ACCENT,
+                  }}
+                  onPress={handleUpdateProfile}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? (
+                    <ActivityIndicator color={ACCENT} />
+                  ) : (
+                    <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Save Changes</Text>
+                  )}
                 </TouchableOpacity>
               </View>
-
-              <View style={{ gap: 16 }}>
-                <View>
-                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>FULL NAME</Text>
-                  <TextInput
-                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
-                    value={editData.fullName}
-                    onChangeText={(text) => setEditData({...editData, fullName: text})}
-                    placeholder="Enter full name"
-                    placeholderTextColor={MUTED}
-                  />
+            ) : (
+              <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, borderWidth: 1, borderColor: GOLD }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+                  <TouchableOpacity onPress={() => setModalView('edit')}>
+                    <Ionicons name="arrow-back" size={28} color={MUTED} />
+                  </TouchableOpacity>
+                  <Text style={{ color: WHITE, fontSize: 20, fontWeight: '700' }}>Change Password</Text>
+                  <TouchableOpacity onPress={() => setIsEditModalVisible(false)}>
+                    <Ionicons name="close" size={28} color={MUTED} />
+                  </TouchableOpacity>
                 </View>
 
-                <View>
-                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>USERNAME</Text>
-                  <TextInput
-                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
-                    value={editData.username}
-                    onChangeText={(text) => setEditData({...editData, username: text})}
-                  />
+                <View style={{ gap: 16 }}>
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>CURRENT PASSWORD</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={passwordData.currentPassword}
+                      onChangeText={(text) => setPasswordData({...passwordData, currentPassword: text})}
+                      secureTextEntry
+                      placeholder="Enter current password"
+                      placeholderTextColor={MUTED}
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>NEW PASSWORD</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={passwordData.newPassword}
+                      onChangeText={(text) => setPasswordData({...passwordData, newPassword: text})}
+                      secureTextEntry
+                      placeholder="Enter new password"
+                      placeholderTextColor={MUTED}
+                    />
+                  </View>
+
+                  <View>
+                    <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>CONFIRM NEW PASSWORD</Text>
+                    <TextInput
+                      style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
+                      value={passwordData.confirmPassword}
+                      onChangeText={(text) => setPasswordData({...passwordData, confirmPassword: text})}
+                      secureTextEntry
+                      placeholder="Confirm new password"
+                      placeholderTextColor={MUTED}
+                    />
+                  </View>
                 </View>
 
-                <View>
-                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>EMAIL ADDRESS</Text>
-                  <TextInput
-                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
-                    value={editData.email}
-                    onChangeText={(text) => setEditData({...editData, email: text})}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                  />
-                </View>
+                {editError ? <Text style={{ color: ACCENT, marginTop: 16, textAlign: 'center' }}>{editError}</Text> : null}
+                {successMessage ? <Text style={{ color: '#4ADE80', marginTop: 16, textAlign: 'center' }}>{successMessage}</Text> : null}
 
-                <View>
-                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>PHONE NUMBER</Text>
-                  <TextInput
-                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
-                    value={editData.phoneNumber}
-                    onChangeText={(text) => setEditData({...editData, phoneNumber: text})}
-                    keyboardType="phone-pad"
-                    placeholder="e.g. +36 30 123 4567"
-                    placeholderTextColor={MUTED}
-                  />
-                </View>
-
-                <View>
-                  <Text style={{ color: GOLD, fontSize: 12, marginBottom: 8, fontWeight: '600' }}>NEW PASSWORD (OPTIONAL)</Text>
-                  <TextInput
-                    style={{ backgroundColor: '#000', color: WHITE, padding: 12, borderRadius: 8, borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}
-                    value={editData.password}
-                    onChangeText={(text) => setEditData({...editData, password: text})}
-                    secureTextEntry
-                    placeholder="Leave blank to keep current"
-                    placeholderTextColor={MUTED}
-                  />
-                </View>
+                <TouchableOpacity 
+                  style={{ 
+                    backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                    marginTop: 32, 
+                    padding: 16, 
+                    borderRadius: 12, 
+                    alignItems: 'center',
+                    borderWidth: 1.5,
+                    borderColor: ACCENT,
+                  }}
+                  onPress={handlePasswordChange}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? (
+                    <ActivityIndicator color={ACCENT} />
+                  ) : (
+                    <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Update Password</Text>
+                  )}
+                </TouchableOpacity>
               </View>
-
-              {editError ? <Text style={{ color: ACCENT, marginTop: 16, textAlign: 'center' }}>{editError}</Text> : null}
-
-              <TouchableOpacity 
-                style={{ 
-                  backgroundColor: 'rgba(200, 65, 122, 0.15)', 
-                  marginTop: 32, 
-                  padding: 16, 
-                  borderRadius: 12, 
-                  alignItems: 'center',
-                  borderWidth: 1.5,
-                  borderColor: ACCENT,
-                }}
-                onPress={handleUpdateProfile}
-                disabled={isUpdating}
-              >
-                {isUpdating ? (
-                  <ActivityIndicator color={ACCENT} />
-                ) : (
-                  <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Save Changes</Text>
-                )}
-              </TouchableOpacity>
-            </View>
+            )}
           </ScrollView>
         </KeyboardAvoidingView>
       </Modal>

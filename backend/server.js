@@ -80,14 +80,9 @@ app.post('/api/user/favorites', async (req, res) => {
 // Profile Update Endpoint
 app.put('/api/user/update', async (req, res) => {
   try {
-    const { userId, username, email, password, fullName, phoneNumber } = req.body;
+    const { userId, username, email, fullName, phoneNumber } = req.body;
     
     const updateData = { username, email, fullName, phoneNumber };
-    
-    if (password) {
-      updateData.password = await bcrypt.hash(password, 10);
-    }
-    
     const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
     
     if (!user) {
@@ -106,6 +101,30 @@ app.put('/api/user/update', async (req, res) => {
         favorites: user.favorites
       }
     });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Change Password Endpoint
+app.put('/api/user/change-password', async (req, res) => {
+  try {
+    const { userId, currentPassword, newPassword } = req.body;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Incorrect current password' });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+
+    res.json({ message: 'Password changed successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

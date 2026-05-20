@@ -92,6 +92,9 @@ export default function FavoriteScreen() {
             <Text style={styles.heroBreadcrumb}>Personal</Text>
             <Text style={styles.heroTitle}>Your{'\n'}Favorites</Text>
           </View>
+
+          {/* Spacer to match Lineup layout */}
+          <View style={[styles.selectorContainer, { height: 120 }]} />
         </View>
 
         <View style={styles.body}>
