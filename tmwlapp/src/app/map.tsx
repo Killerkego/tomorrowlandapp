@@ -30,8 +30,8 @@ export default function MapScreen() {
   const TOMORROWLAND_REGION = {
     latitude: 51.0910,
     longitude: 4.3835,
-    latitudeDelta: 0.012,
-    longitudeDelta: 0.012,
+    latitudeDelta: 0.008,
+    longitudeDelta: 0.008,
   };
 
   // MIND A 15 SZÍNPAD BEILLESZTVE A LINEUP ALAPJÁN
