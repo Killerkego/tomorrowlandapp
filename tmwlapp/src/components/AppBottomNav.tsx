@@ -88,6 +88,11 @@ export function AppBottomNav() {
         path: "/contact",
       },
       {
+        label: "Solo Crew",
+        icon: "people-outline",
+        path: "/solo",
+      },
+      {
         label: "Account",
         icon: "person-outline",
         path: "/login",

@@ -12,6 +12,8 @@ type User = {
   profilePicture?: string;
   favorites?: { name: string }[];
   schedule?: { artistName: string; date: string; start: string; end: string; stage: string }[];
+  attendingAlone?: boolean;
+  location?: { latitude: number; longitude: number };
 };
 
 type AuthContextType = {

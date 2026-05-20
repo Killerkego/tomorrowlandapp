@@ -11,6 +11,7 @@ import {
   Modal,
   KeyboardAvoidingView,
   StyleSheet,
+  Switch,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -43,6 +44,7 @@ export default function UserScreen() {
     email: '',
     fullName: '',
     phoneNumber: '',
+    attendingAlone: false,
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -73,6 +75,7 @@ export default function UserScreen() {
         email: user.email || '',
         fullName: user.fullName || '',
         phoneNumber: user.phoneNumber || '',
+        attendingAlone: user.attendingAlone || false,
       });
       setEditError('');
       setSuccessMessage('');
@@ -285,7 +288,7 @@ export default function UserScreen() {
               </TouchableOpacity>
             </View>
             <Text style={styles.heroTitle}>{user.fullName || user.username}</Text>
-            {user.fullName && <Text style={{ color: MUTED, fontSize: 14 }}>@{user.username}</Text>}
+            {user.fullName ? <Text style={{ color: MUTED, fontSize: 14 }}>@{user.username}</Text> : null}
           </View>
         </View>
 
@@ -311,6 +314,16 @@ export default function UserScreen() {
               <View>
                 <Text style={styles.infoLabel}>Phone Number</Text>
                 <Text style={styles.infoValue}>{user.phoneNumber || 'Not set'}</Text>
+              </View>
+            </View>
+
+            <View style={styles.infoItem}>
+              <View style={styles.infoIconContainer}>
+                <Ionicons name="people-outline" size={20} color={GOLD} />
+              </View>
+              <View>
+                <Text style={styles.infoLabel}>Festival Crew</Text>
+                <Text style={styles.infoValue}>{user.attendingAlone ? 'Attending Solo' : 'With a Group'}</Text>
               </View>
             </View>
 
@@ -426,6 +439,19 @@ export default function UserScreen() {
                       keyboardType="phone-pad"
                       placeholder="e.g. +36 30 123 4567"
                       placeholderTextColor={MUTED}
+                    />
+                  </View>
+
+                  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={{ color: GOLD, fontSize: 12, fontWeight: '600', marginBottom: 4 }}>ATTENDING SOLO?</Text>
+                      <Text style={{ color: MUTED, fontSize: 12 }}>Let others know you are flying solo.</Text>
+                    </View>
+                    <Switch
+                      value={editData.attendingAlone}
+                      onValueChange={(val) => setEditData({...editData, attendingAlone: val})}
+                      trackColor={{ false: '#333', true: GOLD }}
+                      thumbColor={WHITE}
                     />
                   </View>
                   

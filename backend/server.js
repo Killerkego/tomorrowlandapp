@@ -52,6 +52,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', dbState: mongoose.connection.readyState });
 });
 
+// Helper to generate random Tomorrowland coordinates
+const getRandomTmlLocation = () => {
+  const minLat = 51.0870;
+  const maxLat = 51.0960;
+  const minLng = 4.3800;
+  const maxLng = 4.3890;
+  return {
+    latitude: minLat + Math.random() * (maxLat - minLat),
+    longitude: minLng + Math.random() * (maxLng - minLng)
+  };
+};
+
 // User Schema
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
@@ -67,7 +79,12 @@ const userSchema = new mongoose.Schema({
     start: String, 
     end: String, 
     stage: String 
-  }]
+  }],
+  attendingAlone: { type: Boolean, default: false },
+  location: { 
+    latitude: { type: Number },
+    longitude: { type: Number }
+  }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -113,9 +130,23 @@ app.get('/api/user/:id', async (req, res) => {
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
         favorites: user.favorites,
-        schedule: user.schedule
+        schedule: user.schedule,
+        attendingAlone: user.attendingAlone,
+        location: user.location
       }
     });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Get Users Attending Solo
+app.get('/api/users/solo', async (req, res) => {
+  try {
+    const soloUsers = await User.find({ attendingAlone: true }, 'username fullName profilePicture favorites schedule')
+      .limit(50); // limit to avoid huge payload, adjust as needed
+      
+    res.json({ users: soloUsers });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
@@ -124,9 +155,9 @@ app.get('/api/user/:id', async (req, res) => {
 // Profile Update Endpoint
 app.put('/api/user/update', async (req, res) => {
   try {
-    const { userId, username, email, fullName, phoneNumber } = req.body;
+    const { userId, username, email, fullName, phoneNumber, attendingAlone } = req.body;
     
-    const updateData = { username, email, fullName, phoneNumber };
+    const updateData = { username, email, fullName, phoneNumber, attendingAlone };
     const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
     
     if (!user) {
@@ -143,7 +174,9 @@ app.put('/api/user/update', async (req, res) => {
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
         favorites: user.favorites,
-        schedule: user.schedule
+        schedule: user.schedule,
+        attendingAlone: user.attendingAlone,
+        location: user.location
       }
     });
   } catch (error) {
@@ -205,7 +238,9 @@ app.post('/api/upload-profile-picture', upload.single('image'), async (req, res)
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
         favorites: user.favorites,
-        schedule: user.schedule
+        schedule: user.schedule,
+        attendingAlone: user.attendingAlone,
+        location: user.location
       } 
     });
   } catch (error) {
@@ -231,7 +266,8 @@ app.post('/api/register', async (req, res) => {
     const newUser = new User({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      location: getRandomTmlLocation()
     });
 
     await newUser.save();
@@ -269,7 +305,9 @@ app.post('/api/login', async (req, res) => {
         phoneNumber: user.phoneNumber,
         profilePicture: user.profilePicture,
         favorites: user.favorites,
-        schedule: user.schedule
+        schedule: user.schedule,
+        attendingAlone: user.attendingAlone,
+        location: user.location
       }
     });
   } catch (error) {
