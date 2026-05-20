@@ -19,10 +19,11 @@ import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT } from './login.styles';
 import { API_BASE_URL } from '@/services/apiConfig';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginScreen() {
   const insets = useSafeAreaInsets();
+  const { user, signIn, signOut } = useAuth();
   
   // States
   const [email, setEmail] = useState('');
@@ -31,49 +32,6 @@ export default function LoginScreen() {
   const [focusedField, setFocusedField] = useState<'email' | 'password' | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [user, setUser] = useState<{username: string, email: string} | null>(null);
-
-  useEffect(() => {
-    checkExistingSession();
-  }, []);
-
-  const checkExistingSession = async () => {
-    try {
-      console.log('Checking for existing session...');
-      if (!AsyncStorage) {
-        console.warn('AsyncStorage is null, skipping session check.');
-        return;
-      }
-      const savedUser = await AsyncStorage.getItem('user');
-      console.log('Saved user from storage:', savedUser);
-      
-      if (savedUser) {
-        let parsedUser;
-        try {
-          parsedUser = JSON.parse(savedUser);
-        } catch (parseError) {
-          console.error('Error parsing saved user JSON:', parseError);
-          await AsyncStorage.removeItem('user');
-          return;
-        }
-
-        if (parsedUser && (parsedUser.email || parsedUser.username)) {
-          setUser(parsedUser);
-          router.replace({
-            pathname: '/user',
-            params: { 
-              id: parsedUser.id || parsedUser._id,
-              username: parsedUser.username,
-              email: parsedUser.email,
-              profilePicture: parsedUser.profilePicture || ''
-            }
-          });
-        }
-      }
-    } catch (e) {
-      console.error('AsyncStorage check failed:', e);
-    }
-  };
 
   const handleSignIn = () => {
     Keyboard.dismiss();
@@ -92,7 +50,7 @@ export default function LoginScreen() {
     setIsLoading(true);
     
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 másodperc timeout
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     fetch(`${API_BASE_URL}/login`, {
       method: 'POST',
@@ -115,15 +73,8 @@ export default function LoginScreen() {
       })
       .then(async (data) => {
         setIsLoading(false);
-        setUser(data.user);
-        
-        // Mentsük el a munkamenetet (most már a profilePicture-t is tartalmazza)
-        await AsyncStorage.setItem('user', JSON.stringify(data.user));
-        if (data.token) {
-          await AsyncStorage.setItem('token', data.token);
-        }
+        await signIn(data.user, data.token);
 
-        // Felhasználói adatok átadása az oldalnak
         router.replace({
           pathname: '/user',
           params: { 
@@ -144,8 +95,8 @@ export default function LoginScreen() {
       });
   };
 
-  const handleSignOut = () => {
-    setUser(null);
+  const handleSignOut = async () => {
+    await signOut();
     setEmail('');
     setPassword('');
   };

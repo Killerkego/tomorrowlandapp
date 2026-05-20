@@ -13,7 +13,10 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
-import { styles, WHITE, GOLD, MUTED, ACCENT } from './lineup.styles';
+import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
+import { useFavorites } from '@/context/FavoritesContext';
+import { useAuth } from '@/context/AuthContext';
+import { Modal } from 'react-native';
 
 // Import lineup data
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
@@ -56,9 +59,12 @@ type DayData = {
 
 export default function LineupScreen() {
   const insets = useSafeAreaInsets();
+  const { toggleFavorite, isFavorite } = useFavorites();
+  const { isLoggedIn } = useAuth();
   
   // State for selectors
   const [selectedWeek, setSelectedWeek] = useState<1 | 2>(1);
+  const [showLoginNotice, setShowLoginNotice] = useState(false);
   
   // Available dates based on week
   const week1Dates = ['2026-07-17', '2026-07-18', '2026-07-19'];
@@ -67,6 +73,14 @@ export default function LineupScreen() {
   
   const [selectedDate, setSelectedDate] = useState(currentWeekDates[0]);
   const [selectedStage, setSelectedStage] = useState<string>('ALL');
+
+  const handleFavoritePress = (artistName: string) => {
+    if (!isLoggedIn) {
+      setShowLoginNotice(true);
+    } else {
+      toggleFavorite({ name: artistName });
+    }
+  };
 
   // When week changes, reset date and stage
   const handleWeekChange = (week: 1 | 2) => {
@@ -264,8 +278,15 @@ export default function LineupScreen() {
                           <Text style={[styles.stageName, { color: stageConfig.color }]}>{artist.stage}</Text>
                         </View>
                       </View>
-                      <TouchableOpacity style={{ padding: 8 }}>
-                        <Ionicons name="heart-outline" size={28} color={ACCENT} />
+                      <TouchableOpacity 
+                        style={{ padding: 8 }}
+                        onPress={() => handleFavoritePress(artist.name)}
+                      >
+                        <Ionicons 
+                          name={isFavorite(artist.name) ? "heart" : "heart-outline"} 
+                          size={28} 
+                          color={ACCENT} 
+                        />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -281,6 +302,65 @@ export default function LineupScreen() {
 
         <View style={{ height: 80 }} />
       </ScrollView>
+
+      {/* LOGIN NOTICE MODAL */}
+      <Modal
+        visible={showLoginNotice}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowLoginNotice(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 32, width: '100%', maxWidth: 400, borderWidth: 1, borderColor: GOLD, alignItems: 'center' }}>
+            <TouchableOpacity 
+              style={{ position: 'absolute', top: 16, right: 16, padding: 4 }}
+              onPress={() => setShowLoginNotice(false)}
+            >
+              <Ionicons name="close" size={28} color={MUTED} />
+            </TouchableOpacity>
+            
+            <Ionicons name="heart-half-outline" size={64} color={ACCENT} style={{ marginBottom: 20 }} />
+            
+            <Text style={{ color: WHITE, fontSize: 24, fontWeight: '700', textAlign: 'center', marginBottom: 12 }}>
+              Save Your Magic
+            </Text>
+            
+            <Text style={{ color: MUTED, fontSize: 16, textAlign: 'center', lineHeight: 24, marginBottom: 32 }}>
+              Please sign in to your Tomorrowland Account to save your favorite artists.
+            </Text>
+            
+            <TouchableOpacity 
+              style={{ 
+                backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                paddingVertical: 16, 
+                paddingHorizontal: 32, 
+                borderRadius: 12, 
+                width: '100%', 
+                alignItems: 'center',
+                borderWidth: 1.5,
+                borderColor: ACCENT,
+                shadowColor: ACCENT,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.2,
+                shadowRadius: 10
+              }}
+              onPress={() => {
+                setShowLoginNotice(false);
+                router.push('/login');
+              }}
+            >
+              <Text style={{ color: WHITE, fontSize: 16, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Sign In Now</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={{ marginTop: 20, padding: 8 }}
+              onPress={() => setShowLoginNotice(false)}
+            >
+              <Text style={{ color: MUTED, fontSize: 14, fontWeight: '500' }}>Maybe Later</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       <AppBottomNav />
     </SafeAreaView>
