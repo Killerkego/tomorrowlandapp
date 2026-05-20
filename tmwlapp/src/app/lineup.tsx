@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   Image as RNImage,
   ScrollView,
@@ -11,13 +11,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT } from './lineup.styles';
 
 // Import lineup data
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
 import artistImages from '../../assets/data/artist_images.json';
+
 
 const STAGE_CONFIG: Record<string, { color: string; icon: any }> = {
   'MAINSTAGE': { color: '#FACC15', icon: 'star' },
@@ -59,6 +60,29 @@ export default function LineupScreen() {
   
   // State for selectors
   const [selectedWeek, setSelectedWeek] = useState<1 | 2>(1);
+
+  const { stage: mapStage } = useLocalSearchParams<{ stage?: string }>();
+
+  // A Térkép elküldi a nevet, mi pedig összepárosítjuk a JSON-ban lévő hivatalos nevekkel
+  useEffect(() => {
+    if (mapStage) {
+      const incomingStage = mapStage.toUpperCase();
+      
+      // Párosítási logika (Mivel a Térképen rövidebbek a nevek, mint a JSON-ben)
+      if (incomingStage === 'MAINSTAGE') {
+        setSelectedStage('MAINSTAGE');
+      } else if (incomingStage === 'FREEDOM') {
+        setSelectedStage('FREEDOM BY BUD');
+      } else if (incomingStage === 'ATMOSPHERE') {
+        setSelectedStage('ATMOSPHERE');
+      } else if (incomingStage === 'CORE STAGE') {
+        setSelectedStage('CORE');
+      } else {
+        // Ha valami más jönne, simán beállítja
+        setSelectedStage(incomingStage);
+      }
+    }
+  }, [mapStage]);
   
   // Available dates based on week
   const week1Dates = ['2026-07-17', '2026-07-18', '2026-07-19'];
