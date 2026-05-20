@@ -169,9 +169,6 @@ export default function ScheduleScreen() {
 
         {/* SCHEDULE LIST */}
         <View style={styles.body}>
-          <Text style={{ color: WHITE, fontSize: 18, fontWeight: '700', marginBottom: 16, paddingHorizontal: 4 }}>
-            {dailySchedule.length} Sets Scheduled
-          </Text>
 
           {dailySchedule.length > 0 ? (
             dailySchedule.map((gig, index) => {
