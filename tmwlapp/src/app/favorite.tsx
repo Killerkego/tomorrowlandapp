@@ -141,7 +141,7 @@ export default function FavoriteScreen() {
                       </View>
                       <Text style={styles.artistName}>{artist.name}</Text>
                     </View>
-                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 8, gap: 4 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingLeft: 8, gap: 12 }}>
                       <TouchableOpacity
                         style={{ padding: 4 }}
                         onPress={(e) => {
@@ -152,7 +152,7 @@ export default function FavoriteScreen() {
                       >
                         <Ionicons
                           name={getArtistGigs(artist.name).some(g => isScheduled(g.artistName, g.date, g.start)) ? 'calendar' : 'calendar-outline'}
-                          size={24}
+                          size={28}
                           color={GOLD}
                         />
                       </TouchableOpacity>
@@ -160,7 +160,7 @@ export default function FavoriteScreen() {
                         style={{ padding: 4 }}
                         onPress={(e) => { e.stopPropagation(); toggleFavorite(artist); }}
                       >
-                        <Ionicons name="heart" size={24} color={ACCENT} />
+                        <Ionicons name="heart" size={28} color={ACCENT} />
                       </TouchableOpacity>
                     </View>
                   </View>

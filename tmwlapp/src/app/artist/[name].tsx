@@ -23,6 +23,7 @@ import artistImages from '../../../assets/data/artist_images.json';
 import { styles, GOLD, MUTED, ACCENT, WHITE, BG, BORDER } from '../lineup.styles';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { useFavorites } from '@/context/FavoritesContext';
+import { useSchedule } from '@/context/ScheduleContext';
 import { useAuth } from '@/context/AuthContext';
 
 export default function ArtistDetailScreen() {
@@ -31,6 +32,7 @@ export default function ArtistDetailScreen() {
   const decodedName = name ? decodeURIComponent(name) : 'Unknown Artist';
 
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { toggleSchedule, isScheduled } = useSchedule();
   const { isLoggedIn } = useAuth();
   const [showLoginNotice, setShowLoginNotice] = useState(false);
 
@@ -102,12 +104,13 @@ export default function ArtistDetailScreen() {
 
   // Parse Gigs
   const gigs = useMemo(() => {
-    const foundGigs: Array<{ date: string; dayLabel: string; stage: string; start: string; end: string }> = [];
+    const foundGigs: Array<{ artistName: string; date: string; dayLabel: string; stage: string; start: string; end: string }> = [];
     Object.entries(lineupData.lineup).forEach(([dateStr, dayData]: [string, any]) => {
       dayData.stages.forEach((stage: any) => {
         stage.artists.forEach((artist: any) => {
           if (artist.name === decodedName) {
             foundGigs.push({
+              artistName: decodedName,
               date: dateStr,
               dayLabel: dayData.label,
               stage: stage.name,
@@ -120,6 +123,8 @@ export default function ArtistDetailScreen() {
     });
     return foundGigs.sort((a, b) => a.date.localeCompare(b.date));
   }, [decodedName]);
+
+  const isSched = gigs.some(gig => isScheduled(gig.artistName, gig.date, gig.start));
 
   const artistImgUrl = (artistImages as Record<string, string>)[decodedName];
   const imageSource = artistImgUrl ? { uri: artistImgUrl } : require('../../../assets/images/lineup.jpg');
@@ -251,31 +256,56 @@ export default function ArtistDetailScreen() {
           <View style={styles.heroContent}>
             <Text style={styles.heroBreadcrumb}>Tomorrowland 2026</Text>
             <Text style={styles.heroTitle}>{decodedName}</Text>
-            <TouchableOpacity 
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: isFav ? 'rgba(200, 65, 122, 0.15)' : 'rgba(0,0,0,0.5)',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                borderRadius: 24,
-                borderWidth: 1.2,
-                borderColor: isFav ? ACCENT : 'rgba(255,255,255,0.3)',
-                marginTop: 12,
-                gap: 8,
-              }}
-              onPress={handleFavoritePress}
-              activeOpacity={0.7}
-            >
-              <Ionicons 
-                name={isFav ? "heart" : "heart-outline"} 
-                size={18} 
-                color={isFav ? ACCENT : WHITE} 
-              />
-              <Text style={{ color: WHITE, fontSize: 13, fontWeight: '700', letterSpacing: 1, textTransform: 'uppercase' }}>
-                {isFav ? 'FAVORITE' : 'ADD TO FAVORITES'}
-              </Text>
-            </TouchableOpacity>
+            
+            <View style={{ flexDirection: 'row', gap: 16, marginTop: 12 }}>
+              <TouchableOpacity 
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: isSched ? 'rgba(212, 175, 55, 0.15)' : 'rgba(0,0,0,0.5)',
+                  borderWidth: 1.2,
+                  borderColor: isSched ? GOLD : 'rgba(255,255,255,0.3)',
+                }}
+                onPress={() => {
+                  if (!isLoggedIn) {
+                    setShowLoginNotice(true);
+                  } else {
+                    gigs.forEach(gig => toggleSchedule(gig));
+                  }
+                }}
+                activeOpacity={0.7}
+              >
+                <Ionicons 
+                  name={isSched ? "calendar" : "calendar-outline"} 
+                  size={24} 
+                  color={isSched ? GOLD : WHITE} 
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: isFav ? 'rgba(200, 65, 122, 0.15)' : 'rgba(0,0,0,0.5)',
+                  borderWidth: 1.2,
+                  borderColor: isFav ? ACCENT : 'rgba(255,255,255,0.3)',
+                }}
+                onPress={handleFavoritePress}
+                activeOpacity={0.7}
+              >
+                <Ionicons 
+                  name={isFav ? "heart" : "heart-outline"} 
+                  size={24} 
+                  color={isFav ? ACCENT : WHITE} 
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
 
