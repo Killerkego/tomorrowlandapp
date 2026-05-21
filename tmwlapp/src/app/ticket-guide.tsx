@@ -22,7 +22,7 @@ const BORDER = 'rgba(255,255,255,0.12)';
 export default function TicketGuideScreen() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const isUserActive = pathname === '/user';
+  const isUserActive = pathname === '/login';
 
   return (
     <SafeAreaView style={styles.safeArea} edges={[]}>
@@ -64,7 +64,7 @@ export default function TicketGuideScreen() {
 
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
-              onPress={() => router.push('/user')}
+              onPress={() => router.push('/login')}
             >
               <Ionicons
                 name="person-circle-outline"
@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
   centerLogo: {
     width: 40,
     height: 40,
+    tintColor: '#ffffff',
   },
   scroll: { flex: 1 },
   scrollContent: { flexGrow: 1 },

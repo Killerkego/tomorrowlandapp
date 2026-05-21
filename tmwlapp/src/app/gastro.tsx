@@ -1,148 +1,252 @@
-import React, { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  FlatList, 
-  TouchableOpacity 
+import React, { useState, useMemo } from 'react';
+import {
+  Image as RNImage,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppHeader } from '@/components/AppHeader';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Image } from 'expo-image';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
-import { styles, MUTED } from './gastro.styles';
-import foodData from '@/assets/data/food&drinks.json';
+import { styles, WHITE, GOLD, MUTED, ACCENT } from './gastro.styles';
 
-// Árkategória számoló euró alapján
-const getPriceLevel = (priceEur: number) => {
-  if (priceEur < 8) return '$';
-  if (priceEur < 15) return '$$';
-  return '$$$';
+// Import menu data
+import menuData from '../../assets/data/menu.json';
+
+// Category config: icon + color for each category
+const CATEGORY_CONFIG: Record<string, { color: string; icon: any }> = {
+  'ALL':          { color: GOLD,       icon: 'apps-outline' },
+  'Main Courses': { color: '#fb923c',  icon: 'restaurant-outline' },
+  'Drinks':       { color: '#60a5fa',  icon: 'beer-outline' },
+  'Desserts':     { color: '#f472b6',  icon: 'ice-cream-outline' },
 };
 
-// JSON adatok előkészítése a listához az új struktúra alapján
-const getFlattenedData = () => {
-  const flattened: any[] = [];
-  const options = foodData.food_options;
-  
-  Object.keys(options).forEach((categoryKey) => {
-    options[categoryKey].forEach((item: any, index: number) => {
-      // Mivel a JSON kulcsai pontosan 'Food', 'Drinks' és 'Desserts',
-      // a tag értéke közvetlenül a categoryKey lesz.
-      flattened.push({
-        id: `${categoryKey}-${index}`,
-        name: item.name,
-        // Ha online elővételes, akkor VIP helyszín, egyébként sima Food Court
-        location: item.payment_method.includes('Online') ? 'Mainstage VIP' : 'Food Court A',
-        priceEur: item.price_eur,
-        priceLevel: getPriceLevel(item.price_eur),
-        tag: categoryKey, // 'Food', 'Drinks' vagy 'Desserts'
-      });
-    });
-  });
-  return flattened;
+const getCategoryConfig = (name: string) =>
+  CATEGORY_CONFIG[name] || { color: WHITE, icon: 'fast-food-outline' };
+
+type MenuItem = {
+  id: string;
+  name: string;
+  price: number;
+  restaurant: {
+    name: string;
+    opening_hours: string;
+  };
+  ingredients: string;
+  image: string;
+  categoryName?: string;
 };
 
-const FLATTENED_DATA = getFlattenedData();
+// Persist selected category across navigation (module-level variable)
+let persistedCategory = 'ALL';
 
 export default function GastroScreen() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activePrice, setActivePrice] = useState<string | null>(null);
+  const insets = useSafeAreaInsets();
+  const [selectedCategory, setSelectedCategory] = useState<string>(persistedCategory);
 
-  // Szűrési logika
-  const filteredData = FLATTENED_DATA.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory ? item.tag === activeCategory : true;
-    const matchesPrice = activePrice ? item.priceLevel === activePrice : true;
-    return matchesSearch && matchesCategory && matchesPrice;
-  });
+  const handleCategoryChange = (category: string) => {
+    persistedCategory = category;
+    setSelectedCategory(category);
+  };
 
-  const renderItem = ({ item }: { item: any }) => (
-    <View style={styles.card}>
-      {/* Sötét kép placeholder kategória-specifikus emojival */}
-      <View style={styles.imagePlaceholder}>
-        <Text style={styles.imageIcon}>
-          {item.tag === 'Food' ? '🍔' : item.tag === 'Drinks' ? '🍹' : '🍰'}
-        </Text>
-      </View>
-      
-      {/* Kártya információk */}
-      <View style={styles.cardInfo}>
-        <Text style={styles.cardTitle} numberOfLines={2}>{item.name}</Text>
-        <Text style={styles.cardSubtitle}>{item.location}</Text>
-        
-        <View style={styles.priceRow}>
-          <Text style={styles.priceText}>{item.priceLevel}</Text>
-          <Text style={[styles.cardSubtitle, { fontSize: 10, marginTop: 0 }]}>
-            • {item.priceEur} EUR
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
+  // Flatten all items from all categories
+  const allCategories = menuData.festival_menu.categories;
+
+  const allItems: MenuItem[] = useMemo(() => {
+    const items: MenuItem[] = [];
+    allCategories.forEach(cat => {
+      cat.items.forEach(item => {
+        items.push({ ...item, categoryName: cat.name });
+      });
+    });
+    return items;
+  }, []);
+
+  const filteredItems = useMemo(() => {
+    if (selectedCategory === 'ALL') return allItems;
+    const cat = allCategories.find(c => c.name === selectedCategory);
+    if (!cat) return [];
+    return cat.items.map(item => ({ ...item, categoryName: cat.name }));
+  }, [selectedCategory, allItems, allCategories]);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <View style={styles.screen}>
-        <AppHeader />
-
-        <View style={styles.content}>
-          {/* Keresőmező */}
-          <View style={styles.searchContainer}>
-             <Text style={styles.searchIcon}>🔍</Text>
-             <TextInput
-               style={styles.searchInput}
-               placeholder="Mit ennél, innál?"
-               placeholderTextColor={MUTED}
-               value={searchQuery}
-               onChangeText={setSearchQuery}
-             />
-          </View>
-
-          {/* Kategória szűrők (Food, Drinks, Desserts) */}
-          <View style={styles.filterRow}>
-            {['Food', 'Drinks', 'Desserts'].map(category => (
-              <TouchableOpacity 
-                key={category} 
-                style={[styles.filterPill, activeCategory === category && styles.activePill]}
-                onPress={() => setActiveCategory(activeCategory === category ? null : category)}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.filterText, activeCategory === category && styles.filterTextActive]}>
-                  {category}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {/* Ár szűrők */}
-          <View style={styles.filterRow}>
-            {['$', '$$', '$$$'].map(price => (
-              <TouchableOpacity 
-                key={price} 
-                style={[styles.filterPill, activePrice === price && styles.activePill]}
-                onPress={() => setActivePrice(activePrice === price ? null : price)}
-                activeOpacity={0.7}
-              >
-                <Text style={[styles.filterText, activePrice === price && styles.filterTextActive]}>
-                  {price}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {/* Találatok listája */}
-          <FlatList
-            data={filteredData}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItem}
-            contentContainerStyle={styles.listContainer}
-            showsVerticalScrollIndicator={false}
+    <SafeAreaView style={styles.safeArea} edges={[]}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* HERO BANNER */}
+        <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
+          <Image
+            source={require('../../assets/images/menu.jpg')}
+            style={styles.heroBgImage}
+            contentFit="cover"
           />
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.55)', 'rgba(0,0,0,0.75)', '#000000']}
+            locations={[0, 0.3, 0.5, 0.75, 1.0]}
+            style={StyleSheet.absoluteFillObject}
+          />
+
+          {/* HEADER OVERLAY */}
+          <View style={[styles.overlayHeader, { top: insets.top }]}>
+            <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
+              <Ionicons name="information-circle-outline" size={36} color={WHITE} />
+            </TouchableOpacity>
+            <View style={styles.headerCenter} pointerEvents="none">
+              <RNImage
+                source={require('../../assets/images/tmwl_logo.png')}
+                style={styles.centerLogo}
+                resizeMode="contain"
+              />
+            </View>
+            <TouchableOpacity
+              style={[styles.headerSide, styles.headerSideRight]}
+              onPress={() => router.push('/login')}
+            >
+              <Ionicons name="person-circle-outline" size={36} color={WHITE} />
+            </TouchableOpacity>
+          </View>
+
+          {/* HERO CONTENT */}
+          <View style={styles.heroContent}>
+            <Text style={styles.heroBreadcrumb}>Food &amp; Drinks</Text>
+            <Text style={styles.heroTitle}>Festival{'\n'}Flavours</Text>
+          </View>
         </View>
 
-        <AppBottomNav />
-      </View>
+        {/* CATEGORY SELECTOR (Horizontal) */}
+        <View style={{ backgroundColor: '#000' }}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categorySelector}
+          >
+            {/* ALL button */}
+            <TouchableOpacity
+              style={[
+                styles.categoryButton,
+                selectedCategory === 'ALL' && styles.categoryButtonActive,
+              ]}
+              onPress={() => handleCategoryChange('ALL')}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <Ionicons
+                  name="apps-outline"
+                  size={16}
+                  color={selectedCategory === 'ALL' ? GOLD : MUTED}
+                />
+                <Text
+                  style={[
+                    styles.categoryButtonText,
+                    selectedCategory === 'ALL' && styles.categoryButtonTextActive,
+                  ]}
+                >
+                  ALL
+                </Text>
+              </View>
+            </TouchableOpacity>
+
+            {/* Category buttons */}
+            {allCategories.map(cat => {
+              const config = getCategoryConfig(cat.name);
+              const isActive = selectedCategory === cat.name;
+              return (
+                <TouchableOpacity
+                  key={cat.id}
+                  style={[
+                    styles.categoryButton,
+                    isActive && {
+                      borderColor: config.color,
+                      backgroundColor: `${config.color}20`,
+                    },
+                  ]}
+                  onPress={() => handleCategoryChange(cat.name)}
+                >
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                    <Ionicons
+                      name={config.icon}
+                      size={16}
+                      color={isActive ? config.color : MUTED}
+                    />
+                    <Text
+                      style={[
+                        styles.categoryButtonText,
+                        isActive && { color: config.color, fontWeight: '700' },
+                      ]}
+                    >
+                      {cat.name.toUpperCase()}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {/* MENU ITEM LIST */}
+        <View style={styles.body}>
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item, index) => {
+              const catConfig = getCategoryConfig(item.categoryName ?? '');
+              return (
+                <View key={`${item.id}-${index}`} style={styles.itemCard}>
+                  {/* Food image */}
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.itemImage}
+                    contentFit="cover"
+                  />
+
+                  {/* Info section */}
+                  <View style={styles.itemInfo}>
+                    {/* Name */}
+                    <Text style={styles.itemName} numberOfLines={2}>
+                      {item.name}
+                    </Text>
+
+                    {/* Price */}
+                    <Text style={styles.priceTag}>€{item.price.toFixed(2)}</Text>
+
+                    {/* Restaurant */}
+                    <View style={styles.restaurantRow}>
+                      <Ionicons name="storefront-outline" size={12} color={catConfig.color} />
+                      <Text style={styles.restaurantText} numberOfLines={1}>
+                        {item.restaurant.name}
+                      </Text>
+                    </View>
+
+                    {/* Opening hours */}
+                    <View style={styles.hoursRow}>
+                      <Ionicons name="time-outline" size={12} color={GOLD} />
+                      <Text style={styles.hoursText}>{item.restaurant.opening_hours}</Text>
+                    </View>
+                  </View>
+
+                  {/* Location icon on the right */}
+                  <TouchableOpacity style={{ padding: 8, justifyContent: 'center', alignItems: 'center' }}>
+                    <Ionicons name="location-outline" size={24} color={WHITE} />
+                  </TouchableOpacity>
+                </View>
+              );
+            })
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No items found for this category.</Text>
+            </View>
+          )}
+        </View>
+
+        <View style={{ height: 80 }} />
+      </ScrollView>
+
+      <AppBottomNav />
     </SafeAreaView>
   );
 }

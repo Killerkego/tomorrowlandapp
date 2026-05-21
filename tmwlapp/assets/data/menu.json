@@ -1,0 +1,332 @@
+{
+  "festival_menu": {
+    "categories": [
+      {
+        "id": "c1",
+        "name": "Main Courses",
+        "items": [
+          {
+            "id": "m1",
+            "name": "Classic Festival Burger",
+            "price": 9.00,
+            "restaurant": {
+              "name": "Burger Master",
+              "opening_hours": "11:00 - 02:00"
+            },
+            "ingredients": "100% beef patty, iceberg lettuce, tomato, pickles, homemade burger sauce, toasted bun",
+            "image": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m2",
+            "name": "Double Bacon Cheeseburger",
+            "price": 11.00,
+            "restaurant": {
+              "name": "Burger Master",
+              "opening_hours": "11:00 - 02:00"
+            },
+            "ingredients": "Double beef patty, double cheddar cheese, crispy bacon, caramelized onions, BBQ sauce, toasted bun",
+            "image": "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m3",
+            "name": "Spicy Jalapeno Burger",
+            "price": 9.50,
+            "restaurant": {
+              "name": "Burger Master",
+              "opening_hours": "11:00 - 02:00"
+            },
+            "ingredients": "Beef patty, pepper jack cheese, jalapeno slices, spicy mayo, red onion, toasted bun",
+            "image": "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m4",
+            "name": "Juicy Pulled Pork Sandwich",
+            "price": 9.50,
+            "restaurant": {
+              "name": "Juicy BBQ",
+              "opening_hours": "12:00 - 00:00"
+            },
+            "ingredients": "Slow-cooked pulled pork shoulder, American coleslaw, smoky BBQ sauce, butter brioche",
+            "image": "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m5",
+            "name": "Smoked BBQ Pork Ribs",
+            "price": 11.50,
+            "restaurant": {
+              "name": "Juicy BBQ",
+              "opening_hours": "12:00 - 00:00"
+            },
+            "ingredients": "Hickory smoked pork ribs, sticky BBQ glaze, served with fries and pickles",
+            "image": "https://images.unsplash.com/photo-1544025162-d76538592a5f?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m6",
+            "name": "Texas Beef Brisket Plate",
+            "price": 13.00,
+            "restaurant": {
+              "name": "Juicy BBQ",
+              "opening_hours": "12:00 - 00:00"
+            },
+            "ingredients": "12-hour smoked beef brisket, mac and cheese, cornbread, jalapeno",
+            "image": "https://images.unsplash.com/photo-1558030006-450675393462?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m7",
+            "name": "Traditional Cheese and Sour Cream Langos",
+            "price": 5.50,
+            "restaurant": {
+              "name": "Langos Manufactory",
+              "opening_hours": "10:00 - 04:00"
+            },
+            "ingredients": "Freshly fried langos dough, garlic spread, thick sour cream, grated trappista cheese",
+            "image": "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m8",
+            "name": "Bacon and Red Onion Langos",
+            "price": 6.50,
+            "restaurant": {
+              "name": "Langos Manufactory",
+              "opening_hours": "10:00 - 04:00"
+            },
+            "ingredients": "Fried langos dough, sour cream, roasted bacon bits, sliced red onion, cheese",
+            "image": "https://images.unsplash.com/photo-1606755456206-b25206cde27e?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m9",
+            "name": "Spicy Chicken Burrito",
+            "price": 8.50,
+            "restaurant": {
+              "name": "Mexican Fiesta",
+              "opening_hours": "12:00 - 01:00"
+            },
+            "ingredients": "Grilled chicken breast, Mexican rice, black beans, pico de gallo, guacamole, sour cream, wrapped in a tortilla",
+            "image": "https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m10",
+            "name": "Crunchy Beef Tacos (3pcs)",
+            "price": 8.00,
+            "restaurant": {
+              "name": "Mexican Fiesta",
+              "opening_hours": "12:00 - 01:00"
+            },
+            "ingredients": "Ground beef, hard corn shells, shredded lettuce, cheddar cheese, mild salsa",
+            "image": "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m11",
+            "name": "Loaded Nachos",
+            "price": 7.00,
+            "restaurant": {
+              "name": "Mexican Fiesta",
+              "opening_hours": "12:00 - 01:00"
+            },
+            "ingredients": "Corn tortilla chips, hot cheddar cheese sauce, jalapenos, sour cream, fresh cilantro",
+            "image": "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m12",
+            "name": "Pepperoni Pizza Slice",
+            "price": 4.00,
+            "restaurant": {
+              "name": "Pizza Slicer",
+              "opening_hours": "11:00 - 03:00"
+            },
+            "ingredients": "Thin pizza dough, San Marzano tomato sauce, mozzarella, spicy Italian pepperoni",
+            "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m13",
+            "name": "Margherita Pizza Slice",
+            "price": 3.50,
+            "restaurant": {
+              "name": "Pizza Slicer",
+              "opening_hours": "11:00 - 03:00"
+            },
+            "ingredients": "Thin pizza dough, San Marzano tomato sauce, fresh mozzarella, basil, olive oil",
+            "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m14",
+            "name": "Vegan Falafel Wrap",
+            "price": 7.50,
+            "restaurant": {
+              "name": "Vegan Bites",
+              "opening_hours": "10:00 - 23:00"
+            },
+            "ingredients": "Crispy falafel, hummus, fresh cucumber, tomatoes, tahini sauce, tortilla",
+            "image": "https://images.unsplash.com/photo-1547592180-85f173990554?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "m15",
+            "name": "Classic Spaghetti Carbonara",
+            "price": 10.00,
+            "restaurant": {
+              "name": "Pasta Station",
+              "opening_hours": "12:00 - 22:00"
+            },
+            "ingredients": "Spaghetti, guanciale, pecorino romano, egg yolks, black pepper",
+            "image": "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&h=400&fit=crop"
+          }
+        ]
+      },
+      {
+        "id": "c2",
+        "name": "Drinks",
+        "items": [
+          {
+            "id": "d1",
+            "name": "Craft IPA Beer (0.5l)",
+            "price": 4.50,
+            "restaurant": {
+              "name": "Craft Beer Tent",
+              "opening_hours": "10:00 - 04:00"
+            },
+            "ingredients": "Unfiltered, top-fermented pale ale with citrusy hop aromas",
+            "image": "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d2",
+            "name": "Pilsner Lager (0.5l)",
+            "price": 4.00,
+            "restaurant": {
+              "name": "Craft Beer Tent",
+              "opening_hours": "10:00 - 04:00"
+            },
+            "ingredients": "Classic light lager, crisp and refreshing with a malty backbone",
+            "image": "https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d3",
+            "name": "Giant Mango Lemonade (0.5l)",
+            "price": 4.00,
+            "restaurant": {
+              "name": "Lemonade Bar",
+              "opening_hours": "10:00 - 22:00"
+            },
+            "ingredients": "Fresh lemon juice, lime, mango puree, simple syrup, soda water, ice, mint leaves",
+            "image": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d4",
+            "name": "Aperol Spritz",
+            "price": 6.50,
+            "restaurant": {
+              "name": "Cocktail Island",
+              "opening_hours": "14:00 - 04:00"
+            },
+            "ingredients": "Aperol, Prosecco, soda water, orange slice, ice",
+            "image": "https://images.unsplash.com/photo-1587223962930-cb7f31384c19?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d5",
+            "name": "Classic Mojito",
+            "price": 6.00,
+            "restaurant": {
+              "name": "Cocktail Island",
+              "opening_hours": "14:00 - 04:00"
+            },
+            "ingredients": "White rum, fresh lime juice, mint leaves, cane sugar, soda water, crushed ice",
+            "image": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d6",
+            "name": "Caramel Iced Coffee",
+            "price": 4.50,
+            "restaurant": {
+              "name": "Coffee & Chill",
+              "opening_hours": "08:00 - 20:00"
+            },
+            "ingredients": "Double espresso, cold milk, ice cubes, caramel syrup, whipped cream",
+            "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d7",
+            "name": "Villány Rosé Glass (0.15l)",
+            "price": 3.00,
+            "restaurant": {
+              "name": "Wine Grove",
+              "opening_hours": "12:00 - 02:00"
+            },
+            "ingredients": "Dry rosé wine with fresh, strawberry and raspberry notes",
+            "image": "https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d8",
+            "name": "Classic Big Spritzer (0.3l)",
+            "price": 3.50,
+            "restaurant": {
+              "name": "Spritzer Terrace",
+              "opening_hours": "12:00 - 03:00"
+            },
+            "ingredients": "2 dl Olaszrizling white wine, 1 dl soda water, ice (optional)",
+            "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "d9",
+            "name": "Festival Boost (0.25l)",
+            "price": 3.00,
+            "restaurant": {
+              "name": "Energy Zone",
+              "opening_hours": "00:00 - 24:00"
+            },
+            "ingredients": "Carbonated energy drink, taurine, caffeine, B-vitamins",
+            "image": "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?w=600&h=400&fit=crop"
+          }
+        ]
+      },
+      {
+        "id": "c3",
+        "name": "Desserts",
+        "items": [
+          {
+            "id": "s1",
+            "name": "Cinnamon Chimney Cake",
+            "price": 6.00,
+            "restaurant": {
+              "name": "Chimney Cake Cabin",
+              "opening_hours": "10:00 - 00:00"
+            },
+            "ingredients": "Sweet yeast dough baked over coals, crispy sugar glaze, coated in ground cinnamon",
+            "image": "https://images.unsplash.com/photo-1605544108826-1cc4e636e9b8?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "s2",
+            "name": "Walnut Vanilla Chimney Cake",
+            "price": 6.50,
+            "restaurant": {
+              "name": "Chimney Cake Cabin",
+              "opening_hours": "10:00 - 00:00"
+            },
+            "ingredients": "Sweet yeast dough baked over coals, vanilla sugar glaze, ground walnuts",
+            "image": "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "s3",
+            "name": "Nutella Banana Giant Pancake",
+            "price": 5.00,
+            "restaurant": {
+              "name": "Pancake Bar",
+              "opening_hours": "10:00 - 02:00"
+            },
+            "ingredients": "Freshly baked thin crepe dough, generous Nutella spread, fresh banana slices",
+            "image": "https://images.unsplash.com/photo-1565299543923-37dd37887442?w=600&h=400&fit=crop"
+          },
+          {
+            "id": "s4",
+            "name": "Strawberry Chocolate Pancake",
+            "price": 5.50,
+            "restaurant": {
+              "name": "Pancake Bar",
+              "opening_hours": "10:00 - 02:00"
+            },
+            "ingredients": "Freshly baked thin crepe dough, dark chocolate sauce, fresh strawberry slices, whipped cream",
+            "image": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=600&h=400&fit=crop"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -59,6 +59,7 @@ export const styles = StyleSheet.create({
   centerLogo: {
     width: 40,
     height: 40,
+    tintColor: '#ffffff',
   },
   heroContent: {
     flex: 1,

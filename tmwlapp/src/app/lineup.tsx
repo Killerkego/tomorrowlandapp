@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import { useFavorites } from '@/context/FavoritesContext';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   Image as RNImage,
   ScrollView,
@@ -12,9 +11,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Image } from 'expo-image';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
-import { styles, WHITE, GOLD, MUTED, ACCENT } from './lineup.styles';
+import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
+import { useFavorites } from '@/context/FavoritesContext';
+import { useSchedule } from '@/context/ScheduleContext';
+import { useAuth } from '@/context/AuthContext';
+import { Modal, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Import lineup data
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
@@ -58,29 +62,117 @@ type DayData = {
 export default function LineupScreen() {
   const insets = useSafeAreaInsets();
   const { toggleFavorite, isFavorite } = useFavorites();
+  const { toggleSchedule, isScheduled } = useSchedule();
+  const { isLoggedIn } = useAuth();
   
   // State for selectors
   const [selectedWeek, setSelectedWeek] = useState<1 | 2>(1);
+  const [showLoginNotice, setShowLoginNotice] = useState(false);
+  const [conflictError, setConflictError] = useState<string | null>(null);
   
   // Available dates based on week
   const week1Dates = ['2026-07-17', '2026-07-18', '2026-07-19'];
   const week2Dates = ['2026-07-24', '2026-07-25', '2026-07-26'];
-  const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
   
-  const [selectedDate, setSelectedDate] = useState(currentWeekDates[0]);
+  const [selectedDate, setSelectedDate] = useState(week1Dates[0]);
   const [selectedStage, setSelectedStage] = useState<string>('ALL');
 
-  // When week changes, reset date and stage
-  const handleWeekChange = (week: 1 | 2) => {
+  const { stage: mapStage } = useLocalSearchParams<{ stage?: string }>();
+
+  // Load saved filters on focus, but let mapStage override if present
+  useFocusEffect(
+    useCallback(() => {
+      const loadFilters = async () => {
+        try {
+          const savedWeek = await AsyncStorage.getItem('lineup_week');
+          const savedDate = await AsyncStorage.getItem('lineup_date');
+          const savedStage = await AsyncStorage.getItem('lineup_stage');
+
+          if (savedWeek) setSelectedWeek(parseInt(savedWeek) as 1 | 2);
+          if (savedDate) setSelectedDate(savedDate);
+
+          // Ha a térképről jött stage param, azt használjuk — ne az AsyncStorage-t
+          if (mapStage) {
+            setSelectedStage(mapStage.toUpperCase());
+          } else if (savedStage) {
+            setSelectedStage(savedStage);
+          }
+        } catch (e) {
+          console.error('Failed to load lineup filters', e);
+        }
+      };
+      loadFilters();
+    }, [mapStage])
+  );
+
+  const currentWeekDates = selectedWeek === 1 ? week1Dates : week2Dates;
+
+  const handleFavoritePress = (artistName: string) => {
+    if (!isLoggedIn) {
+      setShowLoginNotice(true);
+    } else {
+      toggleFavorite({ name: artistName });
+    }
+  };
+
+  const handleSchedulePress = (artist: any) => {
+    if (!isLoggedIn) {
+      setShowLoginNotice(true);
+    } else {
+      const result = toggleSchedule({
+        artistName: artist.name,
+        date: selectedDate,
+        start: artist.start,
+        end: artist.end,
+        stage: artist.stage
+      });
+      
+      if (result && !result.success && result.error) {
+        // Complete overlap: Show error modal
+        setConflictError(result.error);
+      } else if (result && result.success && result.warning) {
+        // Partial overlap: Show warning modal but allow adding
+        setConflictError(result.warning);
+      }
+    }
+  };
+
+  // When week changes, reset date and stage and save to storage
+  const handleWeekChange = async (week: 1 | 2) => {
     setSelectedWeek(week);
     const newDates = week === 1 ? week1Dates : week2Dates;
     setSelectedDate(newDates[0]);
     setSelectedStage('ALL');
+    
+    try {
+      await AsyncStorage.setItem('lineup_week', week.toString());
+      await AsyncStorage.setItem('lineup_date', newDates[0]);
+      await AsyncStorage.setItem('lineup_stage', 'ALL');
+    } catch (e) {
+      console.error('Failed to save week filter', e);
+    }
   };
 
-  const handleDateChange = (date: string) => {
+  const handleDateChange = async (date: string) => {
     setSelectedDate(date);
     setSelectedStage('ALL');
+    
+    try {
+      await AsyncStorage.setItem('lineup_date', date);
+      await AsyncStorage.setItem('lineup_stage', 'ALL');
+    } catch (e) {
+      console.error('Failed to save date filter', e);
+    }
+  };
+
+  const handleStageChange = async (stage: string) => {
+    setSelectedStage(stage);
+    
+    try {
+      await AsyncStorage.setItem('lineup_stage', stage);
+    } catch (e) {
+      console.error('Failed to save stage filter', e);
+    }
   };
 
   // Get data for the selected day
@@ -148,7 +240,7 @@ export default function LineupScreen() {
             </View>
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
-              onPress={() => router.push('/user')}
+              onPress={() => router.push('/login')}
             >
               <Ionicons
                 name="person-circle-outline"
@@ -212,7 +304,7 @@ export default function LineupScreen() {
           >
             <TouchableOpacity 
               style={[styles.stageButton, selectedStage === 'ALL' && styles.stageButtonActive]}
-              onPress={() => setSelectedStage('ALL')}
+              onPress={() => handleStageChange('ALL')}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                 <Ionicons name="apps-outline" size={16} color={selectedStage === 'ALL' ? GOLD : MUTED} />
@@ -226,7 +318,7 @@ export default function LineupScreen() {
                 <TouchableOpacity 
                   key={stage}
                   style={[styles.stageButton, isActive && { borderColor: config.color, backgroundColor: `${config.color}20` }]}
-                  onPress={() => setSelectedStage(stage)}
+                  onPress={() => handleStageChange(stage)}
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                     <Ionicons name={config.icon} size={16} color={isActive ? config.color : MUTED} />
@@ -245,10 +337,14 @@ export default function LineupScreen() {
               const stageConfig = getStageConfig(artist.stage);
               const artistImgUrl = (artistImages as Record<string, string>)[artist.name];
               const imageSource = artistImgUrl ? { uri: artistImgUrl } : require('../../assets/images/lineup.jpg');
-              const isFav = isFavorite(artist.name);
 
               return (
-                <View key={`${artist.name}-${index}`} style={styles.artistCard}>
+                <TouchableOpacity 
+                  key={`${artist.name}-${index}`} 
+                  style={styles.artistCard}
+                  activeOpacity={0.8}
+                  onPress={() => router.push(`/artist/${encodeURIComponent(artist.name)}`)}
+                >
                   <Image 
                     source={imageSource}
                     style={styles.artistImage}
@@ -267,27 +363,37 @@ export default function LineupScreen() {
                           <Text style={[styles.stageName, { color: stageConfig.color }]}>{artist.stage}</Text>
                         </View>
                       </View>
-                      <TouchableOpacity 
-                style={{ padding: 8 }}
-                onPress={() => {
-                  toggleFavorite({
-                    name: artist.name,
-                    stage: artist.stage,
-                    start: artist.start,
-                    end: artist.end,
-                    date: dayData.label 
-                  });
-                }}
-              >
-                <Ionicons 
-                  name={isFav ? "heart" : "heart-outline"} 
-                  size={28} 
-                  color={ACCENT} 
-                />
-              </TouchableOpacity>
+                      <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity 
+                          style={{ padding: 4 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            handleSchedulePress(artist);
+                          }}
+                        >
+                          <Ionicons 
+                            name={isScheduled(artist.name, selectedDate, artist.start) ? "calendar" : "calendar-outline"} 
+                            size={24} 
+                            color={GOLD} 
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                          style={{ padding: 4 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            handleFavoritePress(artist.name);
+                          }}
+                        >
+                          <Ionicons 
+                            name={isFavorite(artist.name) ? "heart" : "heart-outline"} 
+                            size={24} 
+                            color={ACCENT} 
+                          />
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })
           ) : (
@@ -299,6 +405,105 @@ export default function LineupScreen() {
 
         <View style={{ height: 80 }} />
       </ScrollView>
+
+      {/* LOGIN NOTICE MODAL */}
+      <Modal
+        visible={showLoginNotice}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowLoginNotice(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 32, width: '100%', maxWidth: 400, borderWidth: 1, borderColor: GOLD, alignItems: 'center' }}>
+            <TouchableOpacity 
+              style={{ position: 'absolute', top: 16, right: 16, padding: 4 }}
+              onPress={() => setShowLoginNotice(false)}
+            >
+              <Ionicons name="close" size={28} color={MUTED} />
+            </TouchableOpacity>
+            
+            <Ionicons name="heart-half-outline" size={64} color={ACCENT} style={{ marginBottom: 20 }} />
+            
+            <Text style={{ color: WHITE, fontSize: 24, fontWeight: '700', textAlign: 'center', marginBottom: 12 }}>
+              Save Your Magic
+            </Text>
+            
+            <Text style={{ color: MUTED, fontSize: 16, textAlign: 'center', lineHeight: 24, marginBottom: 32 }}>
+              Please sign in to your Tomorrowland Account to save your favorite artists.
+            </Text>
+            
+            <TouchableOpacity 
+              style={{ 
+                backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                paddingVertical: 16, 
+                paddingHorizontal: 32, 
+                borderRadius: 12, 
+                width: '100%', 
+                alignItems: 'center',
+                borderWidth: 1.5,
+                borderColor: ACCENT,
+                shadowColor: ACCENT,
+                shadowOffset: { width: 0, height: 0 },
+                shadowOpacity: 0.2,
+                shadowRadius: 10
+              }}
+              onPress={() => {
+                setShowLoginNotice(false);
+                router.push('/login');
+              }}
+            >
+              <Text style={{ color: WHITE, fontSize: 16, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Sign In Now</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={{ marginTop: 20, padding: 8 }}
+              onPress={() => setShowLoginNotice(false)}
+            >
+              <Text style={{ color: MUTED, fontSize: 14, fontWeight: '500' }}>Maybe Later</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* CONFLICT NOTICE MODAL */}
+      <Modal
+        visible={!!conflictError}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setConflictError(null)}
+      >
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center' }}
+        >
+          <View style={{ padding: 24, alignItems: 'center' }}>
+            <View style={{ backgroundColor: '#1A1A1A', borderRadius: 24, padding: 24, paddingBottom: 32, borderWidth: 1, borderColor: ACCENT, width: '100%', maxWidth: 360, alignItems: 'center' }}>
+              <Ionicons name="warning-outline" size={56} color={ACCENT} style={{ marginBottom: 16, marginTop: 8 }} />
+              
+              <Text style={{ color: MUTED, fontSize: 15, textAlign: 'center', lineHeight: 22, paddingHorizontal: 12 }}>
+                {conflictError}
+              </Text>
+
+              <TouchableOpacity 
+                style={{ 
+                  backgroundColor: 'rgba(200, 65, 122, 0.15)', 
+                  marginTop: 24, 
+                  paddingVertical: 14, 
+                  paddingHorizontal: 32, 
+                  borderRadius: 12, 
+                  alignItems: 'center',
+                  borderWidth: 1.5,
+                  borderColor: ACCENT,
+                  width: '100%'
+                }}
+                onPress={() => setConflictError(null)}
+              >
+                <Text style={{ color: ACCENT, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Understood</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
 
       <AppBottomNav />
     </SafeAreaView>

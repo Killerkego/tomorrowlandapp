@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-// Design system színek a lineup.styles.ts alapján
+// Design system colors (same as lineup)
 export const BG = '#000000';
 export const WHITE = '#ffffff';
 export const MUTED = 'rgba(255,255,255,0.75)';
@@ -9,127 +9,175 @@ export const GOLD = '#d4af37';
 export const ACCENT = '#c8417a';
 
 export const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: BG 
+  safeArea: { flex: 1, backgroundColor: BG },
+  scroll: { flex: 1 },
+  scrollContent: { flexGrow: 1 },
+
+  // Hero section
+  heroContainer: {
+    minHeight: 380,
+    backgroundColor: BG,
+    overflow: 'hidden',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
   },
-  screen: { 
-    flex: 1 
+  heroBgImage: {
+    ...StyleSheet.absoluteFillObject,
+    opacity: 0.85,
   },
-  content: { 
-    flex: 1, 
-    paddingTop: 16 
-  },
-  
-  // Kereső sáv
-  searchContainer: {
+  overlayHeader: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: 56,
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderWidth: 1,
-    borderColor: BORDER,
-    borderRadius: 12,
-    paddingHorizontal: 16,
     alignItems: 'center',
-    height: 48,
-    marginHorizontal: 16,
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    zIndex: 10,
   },
-  searchIcon: { 
-    fontSize: 18, 
-    marginRight: 8, 
-    color: MUTED 
+  headerSide: {
+    width: 44,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
-  searchInput: { 
-    flex: 1, 
-    color: WHITE, 
-    fontSize: 16 
+  headerSideRight: { alignItems: 'flex-end' },
+  headerCenter: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'none',
+  },
+  centerLogo: { width: 40, height: 40, tintColor: '#ffffff' },
+
+  heroContent: {
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 24,
+    gap: 8,
+    zIndex: 1,
+    width: '100%',
+  },
+  heroBreadcrumb: {
+    color: GOLD,
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 3,
+    textTransform: 'uppercase',
+    opacity: 0.9,
+  },
+  heroTitle: {
+    color: WHITE,
+    fontSize: 34,
+    fontWeight: '800',
+    textAlign: 'center',
+    lineHeight: 42,
+    letterSpacing: 0.5,
   },
 
-  // Szűrők (Kategória és Ár)
-  filterRow: {
-    flexDirection: 'row',
+  // Category Selector (Horizontal Scroll)
+  categorySelector: {
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: BORDER,
     gap: 8,
   },
-  filterPill: {
-    flex: 1,
-    paddingVertical: 10,
-    alignItems: 'center',
+  categoryButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 8,
     borderRadius: 8,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderWidth: 1,
-    borderColor: BORDER,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
-  activePill: {
-    backgroundColor: 'rgba(212, 175, 55, 0.15)', // Arany árnyalat
+  categoryButtonActive: {
+    backgroundColor: 'rgba(212, 175, 55, 0.15)',
     borderColor: GOLD,
   },
-  filterText: {
+  categoryButtonText: {
     color: MUTED,
     fontSize: 13,
     fontWeight: '600',
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
-  filterTextActive: {
+  categoryButtonTextActive: {
     color: GOLD,
     fontWeight: '700',
   },
 
-  // Lista és Kártyák (artistCard stílushoz hasonlóan)
-  listContainer: { 
-    paddingBottom: 20,
-    paddingTop: 10,
+  // Menu item cards
+  body: {
+    backgroundColor: BG,
+    paddingTop: 16,
+    paddingBottom: 40,
   },
-  card: {
+  itemCard: {
     flexDirection: 'row',
     marginHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.04)',
     borderRadius: 16,
     borderWidth: 1,
     borderColor: BORDER,
     overflow: 'hidden',
   },
-  imagePlaceholder: {
-    width: 100,
-    height: 100,
-    backgroundColor: '#111', // Sötét háttér a képnek
-    justifyContent: 'center',
-    alignItems: 'center',
+  itemImage: {
+    width: 110,
+    height: 110,
+    backgroundColor: '#111',
   },
-  imageIcon: {
-    fontSize: 32,
-    opacity: 0.5,
-  },
-  cardInfo: {
+  itemInfo: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'center',
+    padding: 12,
+    justifyContent: 'space-between',
   },
-  cardTitle: {
+  itemName: {
     color: WHITE,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    marginBottom: 6,
+    marginBottom: 4,
+    lineHeight: 20,
   },
-  cardSubtitle: {
+  priceTag: {
+    color: GOLD,
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  restaurantRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 4,
+  },
+  restaurantText: {
     color: MUTED,
     fontSize: 12,
     fontWeight: '500',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
   },
-  priceRow: {
+  hoursRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
-    gap: 6,
+    gap: 4,
+    marginTop: 2,
   },
-  priceText: {
-    color: GOLD,
-    fontSize: 13,
-    fontWeight: '700',
-  }
+  hoursText: {
+    color: 'rgba(255,255,255,0.5)',
+    fontSize: 11,
+    fontWeight: '400',
+  },
+  emptyContainer: {
+    padding: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    color: MUTED,
+    fontSize: 16,
+    textAlign: 'center',
+  },
 });

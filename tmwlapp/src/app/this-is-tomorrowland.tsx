@@ -63,7 +63,7 @@ const BRASIL_IMAGES = [
 export default function ThisIsTomorrowlandScreen() {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
-  const isUserActive = pathname === '/user';
+  const isUserActive = pathname === '/login';
 
   return (
     <SafeAreaView style={styles.safeArea} edges={[]}>
@@ -97,7 +97,7 @@ export default function ThisIsTomorrowlandScreen() {
             </View>
             <TouchableOpacity
               style={[styles.headerSide, styles.headerSideRight]}
-              onPress={() => router.push('/user')}
+              onPress={() => router.push('/login')}
             >
               <Ionicons
                 name="person-circle-outline"
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     pointerEvents: 'none',
   },
-  centerLogo: { width: 40, height: 40 },
+  centerLogo: { width: 40, height: 40, tintColor: '#ffffff' },
   heroContent: {
     alignItems: 'center',
     paddingHorizontal: 20,

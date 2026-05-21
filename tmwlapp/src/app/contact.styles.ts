@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     pointerEvents: 'none',
   },
-  centerLogo: { width: 40, height: 40 },
+  centerLogo: { width: 40, height: 40, tintColor: '#ffffff' },
   heroContent: {
     alignItems: 'center',
     paddingHorizontal: 20,

@@ -3,16 +3,37 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router, usePathname } from 'expo-router';
 
-export function AppHeader() {
+type AppHeaderProps = {
+  showBack?: boolean;
+  transparent?: boolean;
+};
+
+export function AppHeader({ showBack = false, transparent = false }: AppHeaderProps = {}) {
   const pathname = usePathname();
   const isContactActive = pathname === '/contact';
-  const isUserActive = pathname === '/user';
+  const isUserActive = pathname === '/login' || pathname === '/user' || pathname === '/register';
+
+  const handleUserPress = () => {
+    router.push('/user');
+  };
 
   return (
-    <View style={styles.heroHeader}>
-      <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
-        <Ionicons name="information-circle-outline" size={36} color={isContactActive ? '#d4af37' : '#ffffff'} />
-      </TouchableOpacity>
+    <View style={[styles.heroHeader, transparent && styles.heroHeaderTransparent]}>
+      {showBack ? (
+        <TouchableOpacity style={styles.headerSide} onPress={() => {
+          if (router.canGoBack()) {
+            router.back();
+          } else {
+            router.replace('/lineup');
+          }
+        }}>
+          <Ionicons name="chevron-back" size={28} color="#ffffff" />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.headerSide} onPress={() => router.push('/contact')}>
+          <Ionicons name="information-circle-outline" size={36} color={isContactActive ? '#d4af37' : '#ffffff'} />
+        </TouchableOpacity>
+      )}
 
       <View style={styles.headerCenter}>
         <Image
@@ -22,7 +43,7 @@ export function AppHeader() {
         />
       </View>
 
-      <TouchableOpacity style={[styles.headerSide, styles.headerSideRight]} onPress={() => router.push('/user')}>
+      <TouchableOpacity style={[styles.headerSide, styles.headerSideRight]} onPress={handleUserPress}>
         <Ionicons name="person-circle-outline" size={36} color={isUserActive ? '#d4af37' : '#ffffff'} />
       </TouchableOpacity>
     </View>
@@ -37,6 +58,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     zIndex: 2,
+  },
+  heroHeaderTransparent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'transparent',
   },
   headerSide: {
     width: 44,
@@ -55,5 +83,6 @@ const styles = StyleSheet.create({
   centerLogo: {
     width: 40,
     height: 40,
+    tintColor: '#ffffff',
   },
 });
