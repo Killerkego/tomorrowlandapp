@@ -18,6 +18,7 @@ import { router } from 'expo-router';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
 import { useSchedule } from '@/context/ScheduleContext';
+import { useFavorites } from '@/context/FavoritesContext';
 import artistImages from '../../assets/data/artist_images.json';
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
 
@@ -44,6 +45,7 @@ const getStageConfig = (name: string) => STAGE_CONFIG[name] || { color: '#ffffff
 export default function ScheduleScreen() {
   const insets = useSafeAreaInsets();
   const { schedule, toggleSchedule } = useSchedule();
+  const { isFavorite, toggleFavorite } = useFavorites();
   
   const [conflictError, setConflictError] = useState<string | null>(null);
 
@@ -189,23 +191,33 @@ export default function ScheduleScreen() {
                     contentFit="cover"
                   />
                   <View style={styles.artistInfo}>
-                    <View style={styles.timeRow}>
-                      <Ionicons name="time-outline" size={14} color={GOLD} />
-                      <Text style={styles.timeText}>{gig.start} - {gig.end}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.artistName}>{gig.artistName}</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                          <Ionicons name={stageConfig.icon} size={12} color={stageConfig.color} />
-                          <Text style={[styles.stageName, { color: stageConfig.color }]}>{gig.stage}</Text>
-                        </View>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                      <View style={styles.timeRow}>
+                        <Ionicons name="time-outline" size={14} color={GOLD} />
+                        <Text style={styles.timeText}>{gig.start} - {gig.end}</Text>
                       </View>
-                      <TouchableOpacity 
-                        style={{ padding: 8 }}
-                        onPress={() => toggleSchedule(gig)}
+                      <Text style={styles.artistName}>{gig.artistName}</Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Ionicons name={stageConfig.icon} size={12} color={stageConfig.color} />
+                        <Text style={[styles.stageName, { color: stageConfig.color }]}>{gig.stage}</Text>
+                      </View>
+                    </View>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 8, gap: 4 }}>
+                      <TouchableOpacity
+                        style={{ padding: 4 }}
+                        onPress={(e) => { e.stopPropagation(); toggleSchedule(gig); }}
                       >
-                        <Ionicons name="calendar" size={28} color={GOLD} />
+                        <Ionicons name="calendar" size={24} color={GOLD} />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{ padding: 4 }}
+                        onPress={(e) => { e.stopPropagation(); toggleFavorite({ name: gig.artistName }); }}
+                      >
+                        <Ionicons
+                          name={isFavorite(gig.artistName) ? 'heart' : 'heart-outline'}
+                          size={24}
+                          color={ACCENT}
+                        />
                       </TouchableOpacity>
                     </View>
                   </View>

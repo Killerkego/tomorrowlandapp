@@ -351,46 +351,44 @@ export default function LineupScreen() {
                     contentFit="cover"
                   />
                   <View style={styles.artistInfo}>
-                    <View style={styles.timeRow}>
-                      <Ionicons name="time-outline" size={14} color={GOLD} />
-                      <Text style={styles.timeText}>{artist.start} - {artist.end}</Text>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                      <View style={styles.timeRow}>
+                        <Ionicons name="time-outline" size={14} color={GOLD} />
+                        <Text style={styles.timeText}>{artist.start} - {artist.end}</Text>
+                      </View>
+                      <Text style={styles.artistName}>{artist.name}</Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        <Ionicons name={stageConfig.icon} size={12} color={stageConfig.color} />
+                        <Text style={[styles.stageName, { color: stageConfig.color }]}>{artist.stage}</Text>
+                      </View>
                     </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.artistName}>{artist.name}</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                          <Ionicons name={stageConfig.icon} size={12} color={stageConfig.color} />
-                          <Text style={[styles.stageName, { color: stageConfig.color }]}>{artist.stage}</Text>
-                        </View>
-                      </View>
-                      <View style={{ alignItems: 'center' }}>
-                        <TouchableOpacity 
-                          style={{ padding: 4 }}
-                          onPress={(e) => {
-                            e.stopPropagation();
-                            handleSchedulePress(artist);
-                          }}
-                        >
-                          <Ionicons 
-                            name={isScheduled(artist.name, selectedDate, artist.start) ? "calendar" : "calendar-outline"} 
-                            size={24} 
-                            color={GOLD} 
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                          style={{ padding: 4 }}
-                          onPress={(e) => {
-                            e.stopPropagation();
-                            handleFavoritePress(artist.name);
-                          }}
-                        >
-                          <Ionicons 
-                            name={isFavorite(artist.name) ? "heart" : "heart-outline"} 
-                            size={24} 
-                            color={ACCENT} 
-                          />
-                        </TouchableOpacity>
-                      </View>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 8, gap: 4 }}>
+                      <TouchableOpacity 
+                        style={{ padding: 4 }}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          handleSchedulePress(artist);
+                        }}
+                      >
+                        <Ionicons 
+                          name={isScheduled(artist.name, selectedDate, artist.start) ? "calendar" : "calendar-outline"} 
+                          size={24} 
+                          color={GOLD} 
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity 
+                        style={{ padding: 4 }}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          handleFavoritePress(artist.name);
+                        }}
+                      >
+                        <Ionicons 
+                          name={isFavorite(artist.name) ? "heart" : "heart-outline"} 
+                          size={24} 
+                          color={ACCENT} 
+                        />
+                      </TouchableOpacity>
                     </View>
                   </View>
                 </TouchableOpacity>

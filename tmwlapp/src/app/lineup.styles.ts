@@ -185,13 +185,15 @@ export const styles = StyleSheet.create({
   },
   artistImage: {
     width: 100,
-    height: 100,
+    minHeight: 100,
+    alignSelf: 'stretch',
     backgroundColor: '#111',
   },
   artistInfo: {
     flex: 1,
     padding: 12,
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   timeRow: {
     flexDirection: 'row',

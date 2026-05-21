@@ -17,10 +17,12 @@ import { styles, WHITE, GOLD, MUTED, ACCENT } from './lineup.styles';
 import artistImages from '../../assets/data/artist_images.json';
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
 import { useFavorites } from '@/context/FavoritesContext';
+import { useSchedule } from '@/context/ScheduleContext';
 
 export default function FavoriteScreen() {
   const insets = useSafeAreaInsets();
   const { favorites, toggleFavorite } = useFavorites();
+  const { toggleSchedule, isScheduled } = useSchedule();
 
   // Helper function to get all dates for an artist in a compact way
   const getArtistDates = (artistName: string) => {
@@ -50,6 +52,21 @@ export default function FavoriteScreen() {
     }
 
     return parts.join(' | ');
+  };
+
+  // Get all gigs for an artist (for schedule toggle)
+  const getArtistGigs = (artistName: string) => {
+    const gigs: { artistName: string; date: string; start: string; end: string; stage: string }[] = [];
+    Object.entries(lineupData.lineup).forEach(([date, dayData]: [string, any]) => {
+      dayData.stages.forEach((stage: any) => {
+        stage.artists.forEach((artist: any) => {
+          if (artist.name === artistName) {
+            gigs.push({ artistName, date, start: artist.start, end: artist.end, stage: stage.name });
+          }
+        });
+      });
+    });
+    return gigs;
   };
 
   return (
@@ -117,19 +134,33 @@ export default function FavoriteScreen() {
                     contentFit="cover"
                   />
                   <View style={styles.artistInfo}>
-                    <View style={styles.timeRow}>
-                      <Ionicons name="calendar-outline" size={14} color={GOLD} />
-                      <Text style={styles.timeText}>{performanceDates}</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.artistName}>{artist.name}</Text>
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+                      <View style={styles.timeRow}>
+                        <Ionicons name="calendar-outline" size={14} color={GOLD} />
+                        <Text style={styles.timeText}>{performanceDates}</Text>
                       </View>
-                      <TouchableOpacity 
-                        style={{ padding: 8 }}
-                        onPress={() => toggleFavorite(artist)}
+                      <Text style={styles.artistName}>{artist.name}</Text>
+                    </View>
+                    <View style={{ alignItems: 'center', justifyContent: 'center', paddingLeft: 8, gap: 4 }}>
+                      <TouchableOpacity
+                        style={{ padding: 4 }}
+                        onPress={(e) => {
+                          e.stopPropagation();
+                          const gigs = getArtistGigs(artist.name);
+                          gigs.forEach(gig => toggleSchedule(gig));
+                        }}
                       >
-                        <Ionicons name="heart" size={28} color={ACCENT} />
+                        <Ionicons
+                          name={getArtistGigs(artist.name).some(g => isScheduled(g.artistName, g.date, g.start)) ? 'calendar' : 'calendar-outline'}
+                          size={24}
+                          color={GOLD}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{ padding: 4 }}
+                        onPress={(e) => { e.stopPropagation(); toggleFavorite(artist); }}
+                      >
+                        <Ionicons name="heart" size={24} color={ACCENT} />
                       </TouchableOpacity>
                     </View>
                   </View>
