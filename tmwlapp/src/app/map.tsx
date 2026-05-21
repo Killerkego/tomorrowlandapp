@@ -22,13 +22,14 @@ type Stage = {
   id: string;
   title: string;
   description: string;
-  image: any;
+  image?: any;
   coords: { latitude: number; longitude: number };
   color: string;
   icon: keyof typeof Ionicons.glyphMap;
+  type?: 'stage' | 'facility';
+  openingHours?: string;
 };
 
-// Nap rövidítések a badge-ekhez
 const DAY_LABELS: Record<string, string> = {
   '2026-07-17': 'FRI 17',
   '2026-07-18': 'SAT 18',
@@ -52,15 +53,15 @@ export default function MapScreen() {
   const router = useRouter();
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null);
 
-  // De Schorre, Boom, Belgium — Tomorrowland középpont
   const TOMORROWLAND_REGION = {
     latitude: 51.0913,
     longitude: 4.3843,
-    latitudeDelta: 0.010,
-    longitudeDelta: 0.010,
+    latitudeDelta: 0.006, 
+    longitudeDelta: 0.006,
   };
 
   const STAGES: Stage[] = [
+    // --- STAGES ---
     {
       id: 'MAINSTAGE',
       title: 'Mainstage',
@@ -69,6 +70,7 @@ export default function MapScreen() {
       coords: { latitude: 51.0913, longitude: 4.3843 },
       color: '#FACC15',
       icon: 'star',
+      type: 'stage',
     },
     {
       id: 'FREEDOM BY BUD',
@@ -78,6 +80,7 @@ export default function MapScreen() {
       coords: { latitude: 51.0932, longitude: 4.3862 },
       color: '#60A5FA',
       icon: 'shield-checkmark',
+      type: 'stage',
     },
     {
       id: 'ATMOSPHERE',
@@ -87,6 +90,7 @@ export default function MapScreen() {
       coords: { latitude: 51.0897, longitude: 4.3831 },
       color: '#38BDF8',
       icon: 'cloudy',
+      type: 'stage',
     },
     {
       id: 'CORE',
@@ -96,109 +100,202 @@ export default function MapScreen() {
       coords: { latitude: 51.0905, longitude: 4.3818 },
       color: '#4ADE80',
       icon: 'leaf',
+      type: 'stage',
     },
     {
       id: 'THE ROSE GARDEN',
       title: 'The Rose Garden',
       description: 'Watch out for the dragon. A magical floral experience.',
-      image: require('../../assets/images/rose.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0921, longitude: 4.3820 },
       color: '#FB7185',
       icon: 'flower',
+      type: 'stage',
     },
     {
       id: 'ELIXIR',
       title: 'Elixir',
       description: 'Magical vibes near the water. Alchemical sound journeys.',
-      image: require('../../assets/images/elixir.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0908, longitude: 4.3858 },
       color: '#C084FC',
       icon: 'beaker',
+      type: 'stage',
     },
     {
       id: 'CAGE',
       title: 'Cage',
       description: 'Dark, intense, unyielding. Hardcore energy unleashed.',
-      image: require('../../assets/images/cage.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0940, longitude: 4.3870 },
       color: '#94A3B8',
       icon: 'grid',
+      type: 'stage',
     },
     {
       id: 'THE RAVE CAVE',
       title: 'The Rave Cave',
       description: 'Intimate underground tunnel vibes.',
-      image: require('../../assets/images/ravecave.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0926, longitude: 4.3808 },
       color: '#CBD5E1',
       icon: 'flashlight',
+      type: 'stage',
     },
     {
       id: 'PLANAXIS',
       title: 'Planaxis',
       description: 'An underwater world of progressive sounds.',
-      image: require('../../assets/images/planaxis.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0900, longitude: 4.3872 },
       color: '#22D3EE',
       icon: 'water',
+      type: 'stage',
     },
     {
       id: 'MELODIA BY CORONA',
       title: 'Melodia by Corona',
       description: 'Sunset and chill vibes by the riverside.',
-      image: require('../../assets/images/melodia.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0888, longitude: 4.3862 },
       color: '#FB923C',
       icon: 'sunny',
+      type: 'stage',
     },
     {
       id: 'CELESTIA by Kucoin',
       title: 'Celestia by Kucoin',
       description: 'Journey to the stars. Euphoric, galactic soundscapes.',
-      image: require('../../assets/images/celestia.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0948, longitude: 4.3838 },
       color: '#818CF8',
       icon: 'sparkles',
+      type: 'stage',
     },
     {
       id: 'CRYSTAL GARDEN',
       title: 'Crystal Garden',
       description: 'Floating on the water. Crystal clear melodic sets.',
-      image: require('../../assets/images/crystal.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0929, longitude: 4.3880 },
       color: '#2DD4BF',
       icon: 'prism',
+      type: 'stage',
     },
     {
       id: 'THE GREAT LIBRARY',
       title: 'The Great Library',
       description: 'Stories come alive with eclectic sounds.',
-      image: require('../../assets/images/library.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0878, longitude: 4.3848 },
       color: '#FBBF24',
       icon: 'book',
+      type: 'stage',
     },
     {
       id: 'MOOSE BAR',
       title: 'Moose Bar',
       description: 'Après-ski madness in summer. Party all day long!',
-      image: require('../../assets/images/moose.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0937, longitude: 4.3815 },
       color: '#A3E635',
       icon: 'paw',
+      type: 'stage',
     },
     {
       id: 'HOUSE OF FORTUNE BY JBL',
       title: 'House of Fortune by JBL',
       description: 'Discover your destiny in this immersive stage experience.',
-      image: require('../../assets/images/house.jpg'),
+      image: require('../../assets/images/mainstage.jpg'),
       coords: { latitude: 51.0884, longitude: 4.3820 },
       color: '#F472B6',
       icon: 'musical-notes',
+      type: 'stage',
+    },
+
+    // --- UTILITIES (First Aid & Restrooms - KÉPEK NÉLKÜL) ---
+    {
+      id: 'FIRST_AID_1',
+      title: 'First Aid Station',
+      description: 'Professional medical team available for any emergencies or assistance.',
+      coords: { latitude: 51.0920, longitude: 4.3830 }, 
+      color: '#EF4444', 
+      icon: 'medkit',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'FIRST_AID_2',
+      title: 'First Aid Station',
+      description: 'Professional medical team available for any emergencies or assistance.',
+      coords: { latitude: 51.0945, longitude: 4.3850 }, 
+      color: '#EF4444',
+      icon: 'medkit',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'FIRST_AID_3',
+      title: 'First Aid Station',
+      description: 'Professional medical team available for any emergencies or assistance.',
+      coords: { latitude: 51.0890, longitude: 4.3845 }, 
+      color: '#EF4444',
+      icon: 'medkit',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'RESTROOM_1',
+      title: 'Restrooms & Water',
+      description: 'Free toilets, refreshment areas, and drinking water stations.',
+      coords: { latitude: 51.0915, longitude: 4.3855 }, 
+      color: '#14B8A6', 
+      icon: 'water-outline', 
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'RESTROOM_2',
+      title: 'Restrooms & Water',
+      description: 'Free toilets, refreshment areas, and drinking water stations.',
+      coords: { latitude: 51.0938, longitude: 4.3865 }, 
+      color: '#14B8A6',
+      icon: 'water-outline',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'RESTROOM_3',
+      title: 'Restrooms & Water',
+      description: 'Free toilets, refreshment areas, and drinking water stations.',
+      coords: { latitude: 51.0895, longitude: 4.3820 }, 
+      color: '#14B8A6',
+      icon: 'water-outline',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'RESTROOM_4',
+      title: 'Restrooms & Water',
+      description: 'Free toilets, refreshment areas, and drinking water stations.',
+      coords: { latitude: 51.0925, longitude: 4.3810 }, 
+      color: '#14B8A6',
+      icon: 'water-outline',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
+    },
+    {
+      id: 'RESTROOM_5',
+      title: 'Restrooms & Water',
+      description: 'Free toilets, refreshment areas, and drinking water stations.',
+      coords: { latitude: 51.0880, longitude: 4.3860 }, 
+      color: '#14B8A6',
+      icon: 'water-outline',
+      type: 'facility',
+      openingHours: '0-24h (Non-stop)',
     },
   ];
 
-  // Felépítjük a stage→napok mappinget a lineupból
   const stageDays = useMemo(() => {
     const map: Record<string, string[]> = {};
     Object.entries((lineupData as any).lineup).forEach(([dateStr, dayData]: [string, any]) => {
@@ -246,6 +343,8 @@ export default function MapScreen() {
           >
             {STAGES.map((stage) => {
               const isSelected = selectedStageId === stage.id;
+              const isUtility = stage.type === 'facility';
+              
               return (
                 <Marker
                   key={stage.id}
@@ -260,6 +359,9 @@ export default function MapScreen() {
                     <View style={[
                       localStyles.markerIconBox,
                       {
+                        width: isUtility ? 28 : 34,
+                        height: isUtility ? 28 : 34,
+                        borderRadius: isUtility ? 14 : 17,
                         borderColor: stage.color,
                         backgroundColor: isSelected ? stage.color : '#1e293b',
                         transform: [{ scale: isSelected ? 1.18 : 1 }],
@@ -267,7 +369,7 @@ export default function MapScreen() {
                     ]}>
                       <Ionicons
                         name={stage.icon}
-                        size={16}
+                        size={isUtility ? 14 : 16}
                         color={isSelected ? '#fff' : stage.color}
                       />
                     </View>
@@ -281,15 +383,17 @@ export default function MapScreen() {
             })}
           </MapView>
 
-          {/* STAGE KÁRTYA */}
+          {/* STAGE VAGY FACILITY KÁRTYA */}
           {selectedStage && (
             <View style={localStyles.cardWrapper}>
               <View style={[localStyles.card, { borderColor: selectedStage.color }]}>
 
-                {/* FELSŐ SOR: kép + infó */}
-                <View style={localStyles.cardTop}>
-                  <Image source={selectedStage.image} style={localStyles.cardImage} />
-                  <View style={localStyles.cardInfo}>
+                {/* FELSŐ SOR: kép (csak színpadoknál) + infó */}
+                <View style={[localStyles.cardTop, selectedStage.type === 'facility' && { minHeight: 90, alignItems: 'center' }]}>
+                  {selectedStage.type === 'stage' && selectedStage.image && (
+                    <Image source={selectedStage.image} style={localStyles.cardImage} />
+                  )}
+                  <View style={[localStyles.cardInfo, selectedStage.type === 'facility' && { paddingLeft: 18, paddingTop: 16, paddingBottom: 16 }]}>
                     {/* Stage neve + ikon */}
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 }}>
                       <View style={[localStyles.iconBadge, { backgroundColor: selectedStage.color + '22', borderColor: selectedStage.color }]}>
@@ -300,58 +404,70 @@ export default function MapScreen() {
 
                     {/* Leírás */}
                     <Text style={localStyles.cardDesc} numberOfLines={3}>{selectedStage.description}</Text>
-                  </View>
-                </View>
 
-                {/* DIVIDER */}
-                <View style={[localStyles.divider, { backgroundColor: selectedStage.color + '33' }]} />
-
-                {/* NAPOK + LINEUP GOMB */}
-                <View style={localStyles.cardBottom}>
-                  {/* Active Days */}
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 8 }}>
-                    <Ionicons name="calendar-outline" size={12} color={MUTED} />
-                    <Text style={localStyles.daysLabel}>
-                      {activeDays.length > 0 ? 'Active Days' : 'Coming Soon'}
-                    </Text>
-                  </View>
-                  {activeDays.length > 0 ? (
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
-                      <View style={{ flexDirection: 'row', gap: 5 }}>
-                        {activeDays.map(dateStr => (
-                          <View
-                            key={dateStr}
-                            style={[
-                              localStyles.dayBadge,
-                              {
-                                backgroundColor: selectedStage.color + '20',
-                                borderColor: selectedStage.color + '80',
-                              },
-                            ]}
-                          >
-                            <Text style={[localStyles.dayBadgeWeek, { color: selectedStage.color }]}>
-                              {WEEK_LABEL[dateStr]}
-                            </Text>
-                            <Text style={[localStyles.dayBadgeText, { color: WHITE }]}>
-                              {DAY_LABELS[dateStr]}
-                            </Text>
-                          </View>
-                        ))}
+                    {/* Opening Hours - Csak a facility pontoknál jelenik meg */}
+                    {selectedStage.type === 'facility' && selectedStage.openingHours && (
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 8 }}>
+                        <Ionicons name="time-outline" size={14} color={selectedStage.color} />
+                        <Text style={{ color: WHITE, fontSize: 12, fontWeight: '700' }}>
+                          Opening Hours: <Text style={{ fontWeight: '400', color: MUTED }}>{selectedStage.openingHours}</Text>
+                        </Text>
                       </View>
-                    </ScrollView>
-                  ) : (
-                    <Text style={{ color: MUTED, fontSize: 12, marginBottom: 12 }}>—</Text>
-                  )}
+                    )}
 
-                  {/* LINEUP gomb — teljes szélességű */}
-                  <TouchableOpacity
-                    style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
-                    onPress={() => handleLineupNavigation(selectedStage.id)}
-                  >
-                    <Ionicons name="musical-notes" size={15} color="#fff" />
-                    <Text style={localStyles.lineupButtonText}>View Lineup</Text>
-                  </TouchableOpacity>
+                  </View>
                 </View>
+
+                {/* DIVIDER & LINEUP BUTTON - Csak színpadoknál mutatjuk */}
+                {selectedStage.type === 'stage' && (
+                  <>
+                    <View style={[localStyles.divider, { backgroundColor: selectedStage.color + '33' }]} />
+
+                    <View style={localStyles.cardBottom}>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 8 }}>
+                        <Ionicons name="calendar-outline" size={12} color={MUTED} />
+                        <Text style={localStyles.daysLabel}>
+                          {activeDays.length > 0 ? 'Active Days' : 'Coming Soon'}
+                        </Text>
+                      </View>
+                      {activeDays.length > 0 ? (
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 12 }}>
+                          <View style={{ flexDirection: 'row', gap: 5 }}>
+                            {activeDays.map(dateStr => (
+                              <View
+                                key={dateStr}
+                                style={[
+                                  localStyles.dayBadge,
+                                  {
+                                    backgroundColor: selectedStage.color + '20',
+                                    borderColor: selectedStage.color + '80',
+                                  },
+                                ]}
+                              >
+                                <Text style={[localStyles.dayBadgeWeek, { color: selectedStage.color }]}>
+                                  {WEEK_LABEL[dateStr]}
+                                </Text>
+                                <Text style={[localStyles.dayBadgeText, { color: WHITE }]}>
+                                  {DAY_LABELS[dateStr]}
+                                </Text>
+                              </View>
+                            ))}
+                          </View>
+                        </ScrollView>
+                      ) : (
+                        <Text style={{ color: MUTED, fontSize: 12, marginBottom: 12 }}>—</Text>
+                      )}
+
+                      <TouchableOpacity
+                        style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
+                        onPress={() => handleLineupNavigation(selectedStage.id)}
+                      >
+                        <Ionicons name="musical-notes" size={15} color="#fff" />
+                        <Text style={localStyles.lineupButtonText}>View Lineup</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
 
               </View>
             </View>
@@ -395,7 +511,6 @@ const localStyles = StyleSheet.create({
     marginTop: -1,
   },
 
-  // Kártya wrapper
   cardWrapper: {
     position: 'absolute',
     bottom: 20,
@@ -417,21 +532,21 @@ const localStyles = StyleSheet.create({
     shadowRadius: 10,
   },
 
-  // Felső rész: kép + szöveg
   cardTop: {
     flexDirection: 'row',
     minHeight: 110,
   },
   cardImage: {
     width: 100,
-    height: 130,
+    height: '100%', 
+    minHeight: 130,
     resizeMode: 'cover',
   },
   cardInfo: {
     flex: 1,
     paddingHorizontal: 14,
     paddingTop: 14,
-    paddingBottom: 10,
+    paddingBottom: 14,
     justifyContent: 'flex-start',
   },
   iconBadge: {
@@ -455,13 +570,11 @@ const localStyles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  // Divider
   divider: {
     height: 1,
     marginHorizontal: 0,
   },
 
-  // Alsó rész: napok + gomb
   cardBottom: {
     flexDirection: 'column',
     paddingHorizontal: 14,
@@ -497,7 +610,6 @@ const localStyles = StyleSheet.create({
     marginTop: 1,
   },
 
-  // Lineup gomb
   lineupButton: {
     paddingVertical: 13,
     paddingHorizontal: 16,
