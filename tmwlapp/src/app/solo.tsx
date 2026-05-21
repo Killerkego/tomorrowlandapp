@@ -71,7 +71,7 @@ export default function SoloScreen() {
         {/* HERO BANNER */}
         <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
           <Image
-            source={require('../../assets/images/lineup.jpg')}
+            source={require('../../assets/images/solocrew.jpg')}
             style={styles.heroBgImage}
             contentFit="cover"
           />

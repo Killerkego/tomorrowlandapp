@@ -88,7 +88,7 @@ export default function ScheduleScreen() {
         {/* HERO BANNER */}
         <View style={[styles.heroContainer, { paddingTop: insets.top }]}>
           <Image
-            source={require('../../assets/images/lineup.jpg')}
+            source={require('../../assets/images/myschedule.jpg')}
             style={styles.heroBgImage}
             contentFit="cover"
           />
