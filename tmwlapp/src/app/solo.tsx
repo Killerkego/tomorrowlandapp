@@ -197,7 +197,7 @@ export default function SoloScreen() {
                           };
                         }
                         setTrackedUser(userToTrack);
-                        router.push('/map');
+                        router.push({ pathname: '/map', params: { trackUser: 'true' } });
                       }
                     }}
                   >

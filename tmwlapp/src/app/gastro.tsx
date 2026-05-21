@@ -42,6 +42,17 @@ type MenuItem = {
   categoryName?: string;
 };
 
+const getRestaurantStageId = (restaurantName: string): string => {
+  const map: Record<string, string> = {
+    'Burger Master': 'REST_BURGER',
+    'Juicy BBQ': 'REST_BBQ',
+    'Mexican Fiesta': 'REST_MEXICAN',
+    'Cocktail Island': 'REST_COCKTAIL',
+    'Chimney Cake Cabin': 'REST_CHIMNEY',
+  };
+  return map[restaurantName] || '';
+};
+
 // Persist selected category across navigation (module-level variable)
 let persistedCategory = 'ALL';
 
@@ -230,7 +241,17 @@ export default function GastroScreen() {
                   </View>
 
                   {/* Location icon on the right */}
-                  <TouchableOpacity style={{ padding: 8, justifyContent: 'center', alignItems: 'center' }}>
+                  <TouchableOpacity 
+                    style={{ padding: 8, justifyContent: 'center', alignItems: 'center' }}
+                    onPress={() => {
+                      const stageId = getRestaurantStageId(item.restaurant.name);
+                      if (stageId) {
+                        router.push({ pathname: '/map', params: { stageId } });
+                      } else {
+                        router.push('/map');
+                      }
+                    }}
+                  >
                     <Ionicons name="location-outline" size={24} color={WHITE} />
                   </TouchableOpacity>
                 </View>

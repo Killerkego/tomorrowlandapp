@@ -1,8 +1,9 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import MapView, { Marker } from 'react-native-maps';
-import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
@@ -39,7 +40,7 @@ type Stage = {
   coords: { latitude: number; longitude: number };
   color: string;
   icon: keyof typeof Ionicons.glyphMap;
-  type?: 'stage' | 'facility';
+  type?: 'stage' | 'facility' | 'restaurant';
   openingHours?: string;
 };
 
@@ -62,8 +63,10 @@ const WEEK_LABEL: Record<string, string> = {
 };
 
 export default function MapScreen() {
+  const insets = useSafeAreaInsets();
   const mapRef = useRef<MapView>(null);
   const router = useRouter();
+  const params = useLocalSearchParams<{ stageId?: string, trackUser?: string }>();
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null);
   const [isUserSelected, setIsUserSelected] = useState(false);
   const [isTrackedUserSelected, setIsTrackedUserSelected] = useState(false);
@@ -312,6 +315,63 @@ export default function MapScreen() {
       type: 'facility',
       openingHours: '0-24h (Non-stop)',
     },
+
+    // --- RESTAURANTS ---
+    {
+      id: 'REST_BURGER',
+      title: 'Burger Master',
+      description: 'Classic festival burgers, double bacon cheeseburgers, and spicy jalapeno specials.',
+      image: require('../../assets/images/menu.jpg'),
+      coords: { latitude: 51.0918, longitude: 4.3835 },
+      color: '#fb923c',
+      icon: 'restaurant',
+      type: 'restaurant',
+      openingHours: '11:00 - 02:00 (Every Day)',
+    },
+    {
+      id: 'REST_BBQ',
+      title: 'Juicy BBQ',
+      description: 'Slow-cooked pulled pork, smoked beef brisket, and sticky BBQ ribs.',
+      image: require('../../assets/images/menu.jpg'),
+      coords: { latitude: 51.0925, longitude: 4.3855 },
+      color: '#fb923c',
+      icon: 'flame',
+      type: 'restaurant',
+      openingHours: '12:00 - 00:00 (Every Day)',
+    },
+    {
+      id: 'REST_MEXICAN',
+      title: 'Mexican Fiesta',
+      description: 'Spicy chicken burritos, crunchy beef tacos, and loaded nachos.',
+      image: require('../../assets/images/menu.jpg'),
+      coords: { latitude: 51.0905, longitude: 4.3860 },
+      color: '#fb923c',
+      icon: 'fast-food',
+      type: 'restaurant',
+      openingHours: '12:00 - 01:00 (Every Day)',
+    },
+    {
+      id: 'REST_COCKTAIL',
+      title: 'Cocktail Island',
+      description: 'Refreshing Aperol Spritz, Classic Mojito, and more festival cocktails.',
+      image: require('../../assets/images/menu.jpg'),
+      coords: { latitude: 51.0895, longitude: 4.3845 },
+      color: '#60a5fa',
+      icon: 'beer',
+      type: 'restaurant',
+      openingHours: '14:00 - 04:00 (Every Day)',
+    },
+    {
+      id: 'REST_CHIMNEY',
+      title: 'Chimney Cake Cabin',
+      description: 'Sweet cinnamon and walnut vanilla chimney cakes baked over coals.',
+      image: require('../../assets/images/menu.jpg'),
+      coords: { latitude: 51.0935, longitude: 4.3825 },
+      color: '#f472b6',
+      icon: 'ice-cream',
+      type: 'restaurant',
+      openingHours: '10:00 - 00:00 (Every Day)',
+    },
   ];
 
   const stageDays = useMemo(() => {
@@ -365,18 +425,35 @@ export default function MapScreen() {
   const handleLineupNavigation = (stageId: string) => {
     router.push({
       pathname: '/lineup',
-      params: { stage: stageId },
+      params: { stage: stageId }
     });
   };
+
+  // Kívülről érkező stageId vagy trackUser kezelése (pl. Gastro, Solo oldalról)
+  React.useEffect(() => {
+    if (params.stageId) {
+      const stage = STAGES.find(s => s.id === params.stageId);
+      if (stage) {
+        // Várjunk picit, hogy a térkép biztosan beálljon
+        setTimeout(() => {
+          onStagePress(stage);
+        }, 500);
+      }
+    } else if (params.trackUser === 'true') {
+      setTimeout(() => {
+        onTrackedUserPress();
+      }, 500);
+    }
+  }, [params.stageId, params.trackUser]);
 
   const selectedStage = STAGES.find(s => s.id === selectedStageId);
   const activeDays = selectedStage ? (stageDays[selectedStage.id] || []) : [];
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={[]}>
       <View style={styles.screen}>
-        <AppHeader />
-
+        
+        {/* MAP CONTENT */}
         <View style={{ flex: 1, backgroundColor: '#000000' }}>
           <MapView
             ref={mapRef}
@@ -504,9 +581,9 @@ export default function MapScreen() {
             <View style={localStyles.cardWrapper}>
               <View style={[localStyles.card, { borderColor: selectedStage.color }]}>
 
-                {/* FELSŐ SOR: kép (csak színpadoknál) + infó */}
+                {/* FELSŐ SOR: kép (csak színpadoknál/éttermeknél) + infó */}
                 <View style={[localStyles.cardTop, selectedStage.type === 'facility' && { minHeight: 90, alignItems: 'center' }]}>
-                  {selectedStage.type === 'stage' && selectedStage.image && (
+                  {(selectedStage.type === 'stage' || selectedStage.type === 'restaurant') && selectedStage.image && (
                     <Image source={selectedStage.image} style={localStyles.cardImage} />
                   )}
                   <View style={[localStyles.cardInfo, selectedStage.type === 'facility' && { paddingLeft: 18, paddingTop: 16, paddingBottom: 16 }]}>
@@ -521,8 +598,8 @@ export default function MapScreen() {
                     {/* Leírás */}
                     <Text style={localStyles.cardDesc} numberOfLines={3}>{selectedStage.description}</Text>
                     
-                    {/* Opening Hours - Csak a facility pontoknál jelenik meg */}
-                    {selectedStage.type === 'facility' && selectedStage.openingHours && (
+                    {/* Opening Hours - Csak a facility és restaurant pontoknál jelenik meg */}
+                    {(selectedStage.type === 'facility' || selectedStage.type === 'restaurant') && selectedStage.openingHours && (
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 8 }}>
                         <Ionicons name="time-outline" size={14} color={selectedStage.color} />
                         <Text style={{ color: WHITE, fontSize: 12, fontWeight: '700' }}>
@@ -683,6 +760,24 @@ export default function MapScreen() {
               </View>
             </View>
           )}
+        </View>
+
+        {/* HEADER OVERLAY */}
+        <LinearGradient
+          colors={['rgba(0,0,0,0.7)', 'rgba(0,0,0,0.3)', 'transparent']}
+          locations={[0, 0.5, 1]}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 90 + insets.top,
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        />
+        <View style={{ position: 'absolute', top: insets.top, left: 0, right: 0, zIndex: 2 }}>
+          <AppHeader transparent={true} />
         </View>
 
         <AppBottomNav />
