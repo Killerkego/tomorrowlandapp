@@ -17,6 +17,7 @@ import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles, WHITE, GOLD, MUTED, ACCENT, BG } from './lineup.styles';
 import { API_BASE_URL, SERVER_URL } from '@/services/apiConfig';
 import { useAuth } from '@/context/AuthContext';
+import { useTrack } from '@/context/TrackContext';
 
 type SoloUser = {
   _id: string;
@@ -25,11 +26,13 @@ type SoloUser = {
   profilePicture: string | null;
   favorites: any[];
   schedule: any[];
+  location?: { latitude: number; longitude: number };
 };
 
 export default function SoloScreen() {
   const insets = useSafeAreaInsets();
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
+  const { trackedUser, setTrackedUser } = useTrack();
   const [soloUsers, setSoloUsers] = useState<SoloUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -52,8 +55,10 @@ export default function SoloScreen() {
 
   useFocusEffect(
     React.useCallback(() => {
-      fetchSoloUsers();
-    }, [user])
+      if (isLoggedIn) {
+        fetchSoloUsers();
+      }
+    }, [user, isLoggedIn])
   );
 
   return (
@@ -108,7 +113,32 @@ export default function SoloScreen() {
 
         {/* CONTENT */}
         <View style={styles.body}>
-          {isLoading ? (
+          {!isLoggedIn ? (
+            <View style={{ alignItems: 'center', padding: 24, marginTop: 40 }}>
+              <Ionicons name="people-circle-outline" size={80} color={ACCENT} style={{ marginBottom: 20 }} />
+              <Text style={{ color: WHITE, fontSize: 24, fontWeight: '800', textAlign: 'center', marginBottom: 12 }}>
+                Join the Solo Crew
+              </Text>
+              <Text style={{ color: MUTED, fontSize: 16, textAlign: 'center', lineHeight: 24, marginBottom: 32 }}>
+                Connect with other People of Tomorrow who are attending the festival solo. Sign in to unlock this feature!
+              </Text>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgba(200, 65, 122, 0.15)',
+                  paddingVertical: 16,
+                  paddingHorizontal: 32,
+                  borderRadius: 12,
+                  width: '100%',
+                  alignItems: 'center',
+                  borderWidth: 1.5,
+                  borderColor: ACCENT,
+                }}
+                onPress={() => router.push('/login')}
+              >
+                <Text style={{ color: WHITE, fontSize: 16, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1 }}>Sign In Now</Text>
+              </TouchableOpacity>
+            </View>
+          ) : isLoading ? (
             <ActivityIndicator color={GOLD} style={{ marginTop: 32 }} />
           ) : soloUsers.length > 0 ? (
             soloUsers.map((soloUser, index) => {
@@ -151,8 +181,31 @@ export default function SoloScreen() {
                     </View>
                   </View>
 
-                  <TouchableOpacity style={{ padding: 8 }}>
-                    <Ionicons name="location-outline" size={24} color={WHITE} />
+                  <TouchableOpacity 
+                    style={{ padding: 8 }}
+                    onPress={() => {
+                      const isCurrentlyTracked = trackedUser?._id === soloUser._id;
+                      if (isCurrentlyTracked) {
+                        setTrackedUser(null);
+                      } else {
+                        // Ha nincs API-ból kapott lokáció, generálunk egyet Tomorrowland környékén a demóhoz
+                        const userToTrack = { ...soloUser };
+                        if (!userToTrack.location) {
+                          userToTrack.location = {
+                            latitude: 51.0910 + (Math.random() * 0.005 - 0.0025),
+                            longitude: 4.3840 + (Math.random() * 0.005 - 0.0025)
+                          };
+                        }
+                        setTrackedUser(userToTrack);
+                        router.push('/map');
+                      }
+                    }}
+                  >
+                    <Ionicons 
+                      name={trackedUser?._id === soloUser._id ? "location" : "location-outline"} 
+                      size={24} 
+                      color={trackedUser?._id === soloUser._id ? GOLD : WHITE} 
+                    />
                   </TouchableOpacity>
                 </View>
               );

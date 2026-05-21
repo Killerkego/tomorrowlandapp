@@ -7,6 +7,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { AppHeader } from '@/components/AppHeader';
 import { AppBottomNav } from '@/components/AppBottomNav';
 import { styles } from './index.styles';
+import { useAuth } from '@/context/AuthContext';
+import { useTrack } from '@/context/TrackContext';
+import { SERVER_URL } from '@/services/apiConfig';
+
+// Helper: Calculate distance in meters
+function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371e3;
+  const rad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * rad;
+  const dLon = (lon2 - lon1) * rad;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+}
 
 import lineupData from '../../assets/data/tomorrowlan_data_2026.json';
 
@@ -52,6 +65,11 @@ export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
   const router = useRouter();
   const [selectedStageId, setSelectedStageId] = useState<string | null>(null);
+  const [isUserSelected, setIsUserSelected] = useState(false);
+  const [isTrackedUserSelected, setIsTrackedUserSelected] = useState(false);
+  const { user, isLoggedIn } = useAuth();
+  const { trackedUser } = useTrack();
+  const userLocation = user?.location || { latitude: 51.0915, longitude: 4.3845 };
 
   const TOMORROWLAND_REGION = {
     latitude: 51.0913,
@@ -311,11 +329,37 @@ export default function MapScreen() {
 
   const onStagePress = (stage: Stage) => {
     setSelectedStageId(stage.id);
+    setIsUserSelected(false);
+    setIsTrackedUserSelected(false);
     mapRef.current?.animateToRegion({
       ...stage.coords,
       latitudeDelta: 0.003,
       longitudeDelta: 0.003,
     }, 800);
+  };
+
+  const onUserPress = () => {
+    setSelectedStageId(null);
+    setIsUserSelected(true);
+    setIsTrackedUserSelected(false);
+    mapRef.current?.animateToRegion({
+      ...userLocation,
+      latitudeDelta: 0.003,
+      longitudeDelta: 0.003,
+    }, 800);
+  };
+
+  const onTrackedUserPress = () => {
+    setSelectedStageId(null);
+    setIsUserSelected(false);
+    setIsTrackedUserSelected(true);
+    if (trackedUser?.location) {
+      mapRef.current?.animateToRegion({
+        ...trackedUser.location,
+        latitudeDelta: 0.003,
+        longitudeDelta: 0.003,
+      }, 800);
+    }
   };
 
   const handleLineupNavigation = (stageId: string) => {
@@ -339,7 +383,11 @@ export default function MapScreen() {
             style={StyleSheet.absoluteFillObject}
             initialRegion={TOMORROWLAND_REGION}
             mapType="satellite"
-            onPress={() => setSelectedStageId(null)}
+            onPress={() => {
+              setSelectedStageId(null);
+              setIsUserSelected(false);
+              setIsTrackedUserSelected(false);
+            }}
           >
             {STAGES.map((stage) => {
               const isSelected = selectedStageId === stage.id;
@@ -381,6 +429,74 @@ export default function MapScreen() {
                 </Marker>
               );
             })}
+
+            {/* USER MARKER */}
+            {isLoggedIn && user && (
+              <Marker
+                coordinate={userLocation}
+                style={{ zIndex: 999 }}
+                calloutEnabled={false}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  onUserPress();
+                }}
+              >
+                <View style={localStyles.customMarkerContainer}>
+                  <View style={[
+                    localStyles.markerIconBox,
+                    {
+                      borderColor: ACCENT,
+                      backgroundColor: '#1e293b',
+                      transform: [{ scale: 1.1 }],
+                    },
+                  ]}>
+                    {user.profilePicture ? (
+                      <Image 
+                        source={{ uri: `${SERVER_URL}${user.profilePicture}` }} 
+                        style={{ width: 30, height: 30, borderRadius: 15 }} 
+                      />
+                    ) : (
+                      <Ionicons name="person" size={16} color={ACCENT} />
+                    )}
+                  </View>
+                  <View style={[localStyles.markerArrow, { borderTopColor: '#1e293b' }]} />
+                </View>
+              </Marker>
+            )}
+
+            {/* TRACKED USER MARKER */}
+            {isLoggedIn && trackedUser && trackedUser.location && (
+              <Marker
+                coordinate={trackedUser.location}
+                style={{ zIndex: 998 }}
+                calloutEnabled={false}
+                onPress={(e) => {
+                  e.stopPropagation();
+                  onTrackedUserPress();
+                }}
+              >
+                <View style={localStyles.customMarkerContainer}>
+                  <View style={[
+                    localStyles.markerIconBox,
+                    {
+                      borderColor: GOLD,
+                      backgroundColor: '#1e293b',
+                      transform: [{ scale: 1.15 }],
+                    },
+                  ]}>
+                    {trackedUser.profilePicture ? (
+                      <Image 
+                        source={{ uri: `${SERVER_URL}${trackedUser.profilePicture}` }} 
+                        style={{ width: 30, height: 30, borderRadius: 15 }} 
+                      />
+                    ) : (
+                      <Ionicons name="person" size={16} color={GOLD} />
+                    )}
+                  </View>
+                  <View style={[localStyles.markerArrow, { borderTopColor: '#1e293b' }]} />
+                </View>
+              </Marker>
+            )}
           </MapView>
 
           {/* STAGE VAGY FACILITY KÁRTYA */}
@@ -404,7 +520,7 @@ export default function MapScreen() {
 
                     {/* Leírás */}
                     <Text style={localStyles.cardDesc} numberOfLines={3}>{selectedStage.description}</Text>
-
+                    
                     {/* Opening Hours - Csak a facility pontoknál jelenik meg */}
                     {selectedStage.type === 'facility' && selectedStage.openingHours && (
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 8 }}>
@@ -424,6 +540,7 @@ export default function MapScreen() {
                     <View style={[localStyles.divider, { backgroundColor: selectedStage.color + '33' }]} />
 
                     <View style={localStyles.cardBottom}>
+                      {/* Active Days */}
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 8 }}>
                         <Ionicons name="calendar-outline" size={12} color={MUTED} />
                         <Text style={localStyles.daysLabel}>
@@ -458,6 +575,7 @@ export default function MapScreen() {
                         <Text style={{ color: MUTED, fontSize: 12, marginBottom: 12 }}>—</Text>
                       )}
 
+                      {/* LINEUP gomb — teljes szélességű */}
                       <TouchableOpacity
                         style={[localStyles.lineupButton, { backgroundColor: selectedStage.color }]}
                         onPress={() => handleLineupNavigation(selectedStage.id)}
@@ -468,6 +586,99 @@ export default function MapScreen() {
                     </View>
                   </>
                 )}
+
+              </View>
+            </View>
+          )}
+
+          {/* USER KÁRTYA */}
+          {isUserSelected && user && (
+            <View style={localStyles.cardWrapper}>
+              <View style={[localStyles.card, { borderColor: ACCENT }]}>
+                {/* FELSŐ SOR: kép + infó */}
+                <View style={localStyles.cardTop}>
+                  {user.profilePicture ? (
+                    <Image 
+                      source={{ uri: `${SERVER_URL}${user.profilePicture}` }} 
+                      style={localStyles.cardImage} 
+                    />
+                  ) : (
+                    <View style={[localStyles.cardImage, { backgroundColor: '#1e293b', justifyContent: 'center', alignItems: 'center' }]}>
+                      <Ionicons name="person" size={48} color={ACCENT} />
+                    </View>
+                  )}
+                  <View style={localStyles.cardInfo}>
+                    {/* Név + ikon */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                      <View style={[localStyles.iconBadge, { backgroundColor: ACCENT + '22', borderColor: ACCENT }]}>
+                        <Ionicons name="person" size={14} color={ACCENT} />
+                      </View>
+                      <Text style={localStyles.cardTitle} numberOfLines={2}>You are here</Text>
+                    </View>
+
+                    {/* Leírás */}
+                    <Text style={localStyles.cardDesc} numberOfLines={3}>Your current location in Tomorrowland.</Text>
+                  </View>
+                </View>
+
+                {/* DIVIDER */}
+                <View style={[localStyles.divider, { backgroundColor: ACCENT + '33' }]} />
+
+                {/* PROFILE GOMB */}
+                <View style={localStyles.cardBottom}>
+                  <TouchableOpacity
+                    style={[localStyles.lineupButton, { backgroundColor: ACCENT, marginTop: 4 }]}
+                    onPress={() => router.push('/user')}
+                  >
+                    <Ionicons name="person-circle" size={18} color="#fff" />
+                    <Text style={localStyles.lineupButtonText}>View My Profile</Text>
+                  </TouchableOpacity>
+                </View>
+
+              </View>
+            </View>
+          )}
+
+          {/* TRACKED USER KÁRTYA */}
+          {isTrackedUserSelected && trackedUser && trackedUser.location && (
+            <View style={localStyles.cardWrapper}>
+              <View style={[localStyles.card, { borderColor: GOLD }]}>
+                {/* FELSŐ SOR: kép + infó */}
+                <View style={localStyles.cardTop}>
+                  {trackedUser.profilePicture ? (
+                    <Image 
+                      source={{ uri: `${SERVER_URL}${trackedUser.profilePicture}` }} 
+                      style={localStyles.cardImage} 
+                    />
+                  ) : (
+                    <View style={[localStyles.cardImage, { backgroundColor: '#1e293b', justifyContent: 'center', alignItems: 'center' }]}>
+                      <Ionicons name="person" size={48} color={GOLD} />
+                    </View>
+                  )}
+                  <View style={localStyles.cardInfo}>
+                    {/* Név + ikon */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                      <View style={[localStyles.iconBadge, { backgroundColor: GOLD + '22', borderColor: GOLD }]}>
+                        <Ionicons name="location" size={14} color={GOLD} />
+                      </View>
+                      <Text style={localStyles.cardTitle} numberOfLines={2}>
+                        {trackedUser.fullName || trackedUser.username}
+                      </Text>
+                    </View>
+
+                    {/* Távolság leírás */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 4 }}>
+                      <Ionicons name="navigate-outline" size={16} color={MUTED} />
+                      <Text style={localStyles.cardDesc} numberOfLines={2}>
+                        {getDistance(userLocation.latitude, userLocation.longitude, trackedUser.location.latitude, trackedUser.location.longitude)} meters away from you
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+                {/* DIVIDER 
+                <View style={[localStyles.divider, { backgroundColor: GOLD + '33' }]} />
+                */}
 
               </View>
             </View>
